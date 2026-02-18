@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Empieza en el Gym</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <!-- (bloque común) -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top shadow-sm">
+    <div class="container">
+      <a class="navbar-brand fw-bold" href="index.html">
+        <span class="logo-dot"></span> Empieza en el Gym
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="menu">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="primer-dia.html">Primer día</a></li>
+          <li class="nav-item"><a class="nav-link" href="errores.html">Errores típicos</a></li>
+          <li class="nav-item"><a class="nav-link" href="mitos.html">Mitos</a></li>
+          <li class="nav-item"><a class="nav-link" href="ejercicios.html">Ejercicios</a></li>
+          <li class="nav-item"><a class="nav-link" href="test.html">Test</a></li>
+          <li class="nav-item"><a class="nav-link" href="contacto.html">Contacto</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <header class="hero-home d-flex align-items-center">
+    <div class="container text-center text-light">
+      <p class="badge bg-success-subtle text-success-emphasis mb-3">
+        Guía web para tu primer día de gimnasio
+      </p>
+      <h1 class="display-4 fw-bold mb-3">Empieza en el Gym sin vergüenza ni miedo</h1>
+      <p class="lead mb-4">
+        Aprende qué hacer el primer día, qué errores evitar y cómo entrenar seguro paso a paso.
+      </p>
+      <a href="primer-dia.html" class="btn btn-primary btn-lg me-2">
+        <i class="bi bi-play-circle"></i> Empezar ahora
+      </a>
+      <a href="test.html" class="btn btn-outline-light btn-lg">
+        <i class="bi bi-clipboard-check"></i> Hacer el test
+      </a>
+    </div>
+  </header>
+
+  <!-- TARJETAS SECCIONES -->
+  <main class="container sections-grid">
+    <div class="row g-4">
+      <div class="col-md-4">
+        <a href="primer-dia.html" class="card link-card h-100">
+          <div class="card-body">
+            <div class="icon-circle bg-primary-subtle text-primary mb-3">
+              <i class="bi bi-door-open"></i>
+            </div>
+            <h2 class="h4">Primer día</h2>
+            <p>Qué llevar, cómo moverte por la sala y cómo perder la vergüenza desde el minuto uno.</p>
+          </div>
+        </a>
+      </div>
+
+      <div class="col-md-4">
+        <a href="errores.html" class="card link-card h-100">
+          <div class="card-body">
+            <div class="icon-circle bg-danger-subtle text-danger mb-3">
+              <i class="bi bi-exclamation-triangle"></i>
+            </div>
+            <h2 class="h4">Errores típicos</h2>
+            <p>Evita las cagadas más comunes de principiantes y entrena de forma inteligente.</p>
+          </div>
+        </a>
+      </div>
+
+      <div class="col-md-4">
+        <a href="mitos.html" class="card link-card h-100">
+          <div class="card-body">
+            <div class="icon-circle bg-warning-subtle text-warning mb-3">
+              <i class="bi bi-lightbulb"></i>
+            </div>
+            <h2 class="h4">Mitos del gym</h2>
+            <p>Desmontamos las frases típicas que escuchas en redes y en el vestuario.</p>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <div class="row g-4 mt-1">
+      <div class="col-md-4">
+        <a href="ejercicios.html" class="card link-card h-100">
+          <div class="card-body">
+            <div class="icon-circle bg-success-subtle text-success mb-3">
+              <i class="bi bi-bar-chart"></i>
+            </div>
+            <h2 class="h4">Ejercicios básicos</h2>
+            <p>Fichas claras por grupo muscular, con errores comunes y consejos de seguridad.</p>
+          </div>
+        </a>
+      </div>
+
+      <div class="col-md-4">
+        <a href="test.html" class="card link-card h-100">
+          <div class="card-body">
+            <div class="icon-circle bg-info-subtle text-info mb-3">
+              <i class="bi bi-clipboard-check"></i>
+            </div>
+            <h2 class="h4">Test interactivo</h2>
+            <p>Comprueba si ya controlas lo básico antes de pisar el gimnasio.</p>
+          </div>
+        </a>
+      </div>
+
+      <div class="col-md-4">
+        <a href="contacto.html" class="card link-card h-100">
+          <div class="card-body">
+            <div class="icon-circle bg-secondary-subtle text-secondary mb-3">
+              <i class="bi bi-chat-dots"></i>
+            </div>
+            <h2 class="h4">Contacto</h2>
+            <p>Manda dudas, sugerencias o ideas para mejorar la guía.</p>
+          </div>
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="main-footer">
+    <div class="container text-center">
+      <small>© 2026 Empieza en el Gym – Proyecto 2º DAW</small>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
