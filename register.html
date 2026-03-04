@@ -4,10 +4,8 @@
   <meta charset="UTF-8">
   <title>Registro | Empieza en el Gym</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
-  <link rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -41,35 +39,24 @@
     <div class="container" style="max-width: 420px; margin-top: -40px;">
       <section class="contact-card">
         <div class="text-center mb-4">
-          <span class="badge bg-success-subtle text-success-emphasis mb-2">
-            Crea tu cuenta
-          </span>
+          <span class="badge bg-success-subtle text-success-emphasis mb-2">Crea tu cuenta</span>
           <h1 class="h4 fw-bold mb-1">Regístrate gratis</h1>
-          <p class="text-secondary mb-0">
-            Crea tu cuenta para guardar rutinas y progreso personal.
-          </p>
         </div>
 
-        <form action="#" method="post">
+        <form id="registerForm" onsubmit="event.preventDefault(); procesarRegistro();">
           <div class="mb-3">
             <label class="form-label">Nombre completo</label>
             <div class="input-group">
-              <span class="input-group-text bg-transparent text-secondary">
-                <i class="bi bi-person"></i>
-              </span>
-              <input type="text" class="form-control" name="nombre"
-                     placeholder="Juan Pérez García" required>
+              <span class="input-group-text bg-transparent text-secondary"><i class="bi bi-person"></i></span>
+              <input type="text" class="form-control" id="regNombre" placeholder="Juan Pérez García" required>
             </div>
           </div>
 
           <div class="mb-3">
             <label class="form-label">Correo electrónico</label>
             <div class="input-group">
-              <span class="input-group-text bg-transparent text-secondary">
-                <i class="bi bi-envelope"></i>
-              </span>
-              <input type="email" class="form-control" name="email"
-                     placeholder="tucorreo@example.com" required>
+              <span class="input-group-text bg-transparent text-secondary"><i class="bi bi-envelope"></i></span>
+              <input type="email" class="form-control" id="regEmail" placeholder="tucorreo@example.com" required>
             </div>
           </div>
 
@@ -77,36 +64,14 @@
             <div class="col-6">
               <div class="mb-3">
                 <label class="form-label">Contraseña</label>
-                <div class="input-group">
-                  <span class="input-group-text bg-transparent text-secondary">
-                    <i class="bi bi-lock"></i>
-                  </span>
-                  <input type="password" class="form-control" name="password"
-                         placeholder="Mínimo 8 caracteres" required>
-                </div>
+                <input type="password" class="form-control" id="regPass" placeholder="Mínimo 6" minlength="6" required>
               </div>
             </div>
             <div class="col-6">
               <div class="mb-3">
-                <label class="form-label">Repite contraseña</label>
-                <div class="input-group">
-                  <span class="input-group-text bg-transparent text-secondary">
-                    <i class="bi bi-lock"></i>
-                  </span>
-                  <input type="password" class="form-control" name="password_confirm"
-                         placeholder="Repite la contraseña" required>
-                </div>
+                <label class="form-label">Repetir</label>
+                <input type="password" class="form-control" id="regPassConfirm" placeholder="Repite" required>
               </div>
-            </div>
-          </div>
-
-          <div class="mb-3">
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="acepto" required>
-              <label class="form-check-label small" for="acepto">
-                Acepto las <a href="#" class="text-success">condiciones de uso</a> y 
-                <a href="#" class="text-success">política de privacidad</a>
-              </label>
             </div>
           </div>
 
@@ -115,20 +80,93 @@
           </button>
 
           <p class="text-center text-secondary small mb-0">
-            ¿Ya tienes cuenta?
-            <a href="login.html" class="text-success text-decoration-none">Inicia sesión</a>
+            ¿Ya tienes cuenta? <a href="login.html" class="text-success text-decoration-none">Inicia sesión</a>
           </p>
         </form>
       </section>
     </div>
   </main>
 
-  <footer class="main-footer">
-    <div class="container text-center">
-      <small>© 2026 Empieza en el Gym</small>
-    </div>
-  </footer>
+  <!-- SCRIPT LOGICA REGISTRO -->
+  <script>
+    function procesarRegistro() {
+      const nombre = document.getElementById('regNombre').value;
+      const email = document.getElementById('regEmail').value;
+      const pass = document.getElementById('regPass').value;
+      const passConfirm = document.getElementById('regPassConfirm').value;
 
+      // Validar contraseñas iguales
+      if (pass !== passConfirm) {
+        alert('Las contraseñas no coinciden');
+        return;
+      }
+
+      // Obtener usuarios previos o array vacío
+      let usuarios = JSON.parse(localStorage.getItem('gymUsers')) || [];
+
+      // Validar que el email no exista ya
+      if (usuarios.find(u => u.email === email)) {
+        alert('Este correo ya está registrado');
+        return;
+      }
+
+      // Guardar nuevo usuario
+      usuarios.push({ nombre, email, password: pass });
+      localStorage.setItem('gymUsers', JSON.stringify(usuarios));
+      
+      alert('¡Cuenta creada correctamente! Ahora puedes iniciar sesión.');
+      window.location.href = 'login.html'; // redirigir al login
+    }
+  </script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+  // Ejecutar cuando cargue la página
+  document.addEventListener("DOMContentLoaded", function() {
+    // Comprobar si hay un usuario logueado
+    const isLogged = localStorage.getItem('isLogged') === 'true';
+    const currentUser = JSON.parse(localStorage.getItem('gymCurrentUser'));
+    
+    if (isLogged && currentUser) {
+      // 1. Ocultar los enlaces de Login y Registro en el menú
+      const loginLink = document.querySelector('a[href="login.html"]');
+      const registerLink = document.querySelector('a[href="register.html"]');
+      if (loginLink) loginLink.parentElement.style.display = 'none';
+      if (registerLink) registerLink.parentElement.style.display = 'none';
+      
+      // 2. Añadir botón de perfil y cerrar sesión
+      const menu = document.querySelector('.navbar-nav');
+      
+      // Crear el nombre del usuario
+      const userItem = document.createElement('li');
+      userItem.className = 'nav-item d-flex align-items-center ms-lg-3';
+      userItem.innerHTML = `
+        <span class="text-success fw-bold me-3">
+          <i class="bi bi-person-circle"></i> Hola, ${currentUser.nombre}
+        </span>
+      `;
+      
+      // Crear el botón de cerrar sesión
+      const logoutItem = document.createElement('li');
+      logoutItem.className = 'nav-item';
+      logoutItem.innerHTML = `
+        <button onclick="cerrarSesion()" class="btn btn-outline-danger btn-sm mt-2 mt-lg-0">
+          <i class="bi bi-box-arrow-right"></i> Salir
+        </button>
+      `;
+      
+      menu.appendChild(userItem);
+      menu.appendChild(logoutItem);
+    }
+  });
+
+  // Función para cerrar sesión
+  function cerrarSesion() {
+    localStorage.removeItem('isLogged');
+    localStorage.removeItem('gymCurrentUser');
+    alert('Has cerrado sesión correctamente.');
+    window.location.reload(); // Recarga la página para restaurar el menú
+  }
+</script>
+
 </body>
 </html>

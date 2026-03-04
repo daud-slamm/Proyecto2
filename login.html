@@ -4,15 +4,13 @@
   <meta charset="UTF-8">
   <title>Iniciar sesión | Empieza en el Gym</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
-  <link rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-  <!-- NAVBAR (igual que en las otras páginas, añade Login si quieres) -->
+  <!-- NAVBAR -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top shadow-sm">
     <div class="container">
       <a class="navbar-brand fw-bold" href="index.html">
@@ -30,8 +28,7 @@
           <li class="nav-item"><a class="nav-link" href="test.html">Test</a></li>
           <li class="nav-item"><a class="nav-link" href="contacto.html">Contacto</a></li>
           <li class="nav-item"><a class="nav-link active" href="login.html">Login</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="register.html">Registro</a></li>
-
+          <li class="nav-item"><a class="nav-link" href="register.html">Registro</a></li>
         </ul>
       </div>
     </div>
@@ -42,48 +39,26 @@
     <div class="container" style="max-width: 420px; margin-top: -40px;">
       <section class="contact-card">
         <div class="text-center mb-4">
-          <span class="badge bg-success-subtle text-success-emphasis mb-2">
-            Área privada
-          </span>
+          <span class="badge bg-success-subtle text-success-emphasis mb-2">Área privada</span>
           <h1 class="h4 fw-bold mb-1">Inicia sesión</h1>
-          <p class="text-secondary mb-0">
-            Accede a tu espacio para guardar rutinas y progreso.
-          </p>
+          <p class="text-secondary mb-0">Accede a tu espacio para guardar rutinas y progreso.</p>
         </div>
 
-        <form action="#" method="post">
+        <form id="loginForm" onsubmit="event.preventDefault(); procesarLogin();">
           <div class="mb-3">
             <label class="form-label">Correo electrónico</label>
             <div class="input-group">
-              <span class="input-group-text bg-transparent text-secondary">
-                <i class="bi bi-envelope"></i>
-              </span>
-              <input type="email" class="form-control" name="email"
-                     placeholder="tucorreo@example.com" required>
+              <span class="input-group-text bg-transparent text-secondary"><i class="bi bi-envelope"></i></span>
+              <input type="email" class="form-control" id="loginEmail" placeholder="tucorreo@example.com" required>
             </div>
           </div>
 
           <div class="mb-3">
             <label class="form-label">Contraseña</label>
             <div class="input-group">
-              <span class="input-group-text bg-transparent text-secondary">
-                <i class="bi bi-lock"></i>
-              </span>
-              <input type="password" class="form-control" name="password"
-                     placeholder="Tu contraseña" required>
+              <span class="input-group-text bg-transparent text-secondary"><i class="bi bi-lock"></i></span>
+              <input type="password" class="form-control" id="loginPass" placeholder="Tu contraseña" required>
             </div>
-          </div>
-
-          <div class="d-flex justify-content-between align-items-center mb-3">
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="recordarme">
-              <label class="form-check-label" for="recordarme">
-                Recuérdame
-              </label>
-            </div>
-            <a href="#" class="small text-decoration-none text-secondary">
-              ¿Has olvidado la contraseña?
-            </a>
           </div>
 
           <button type="submit" class="btn btn-success w-100 mb-3">
@@ -91,20 +66,86 @@
           </button>
 
           <p class="text-center text-secondary small mb-0">
-            ¿Aún no tienes cuenta?
-            <a href="#" class="text-success text-decoration-none">Regístrate</a>
+            ¿Aún no tienes cuenta? <a href="register.html" class="text-success text-decoration-none">Regístrate</a>
           </p>
         </form>
       </section>
     </div>
   </main>
 
-  <footer class="main-footer">
-    <div class="container text-center">
-      <small>© 2026 Empieza en el Gym</small>
-    </div>
-  </footer>
-
+  <!-- SCRIPT LOGICA LOGIN -->
+  <script>
+    function procesarLogin() {
+      const email = document.getElementById('loginEmail').value;
+      const pass = document.getElementById('loginPass').value;
+      
+      // Obtener usuarios guardados
+      let usuarios = JSON.parse(localStorage.getItem('gymUsers')) || [];
+      
+      // Buscar si existe el usuario con esa contraseña
+      const usuarioEncontrado = usuarios.find(u => u.email === email && u.password === pass);
+      
+      if (usuarioEncontrado) {
+        // Guardar sesión iniciada
+        localStorage.setItem('gymCurrentUser', JSON.stringify(usuarioEncontrado));
+        localStorage.setItem('isLogged', 'true');
+        alert('¡Login exitoso! Bienvenido ' + usuarioEncontrado.nombre);
+        // Redirigir a la home o dashboard
+        window.location.href = 'index.html'; 
+      } else {
+        alert('Error: Correo o contraseña incorrectos.');
+      }
+    }
+  </script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+  // Ejecutar cuando cargue la página
+  document.addEventListener("DOMContentLoaded", function() {
+    // Comprobar si hay un usuario logueado
+    const isLogged = localStorage.getItem('isLogged') === 'true';
+    const currentUser = JSON.parse(localStorage.getItem('gymCurrentUser'));
+    
+    if (isLogged && currentUser) {
+      // 1. Ocultar los enlaces de Login y Registro en el menú
+      const loginLink = document.querySelector('a[href="login.html"]');
+      const registerLink = document.querySelector('a[href="register.html"]');
+      if (loginLink) loginLink.parentElement.style.display = 'none';
+      if (registerLink) registerLink.parentElement.style.display = 'none';
+      
+      // 2. Añadir botón de perfil y cerrar sesión
+      const menu = document.querySelector('.navbar-nav');
+      
+      // Crear el nombre del usuario
+      const userItem = document.createElement('li');
+      userItem.className = 'nav-item d-flex align-items-center ms-lg-3';
+      userItem.innerHTML = `
+        <span class="text-success fw-bold me-3">
+          <i class="bi bi-person-circle"></i> Hola, ${currentUser.nombre}
+        </span>
+      `;
+      
+      // Crear el botón de cerrar sesión
+      const logoutItem = document.createElement('li');
+      logoutItem.className = 'nav-item';
+      logoutItem.innerHTML = `
+        <button onclick="cerrarSesion()" class="btn btn-outline-danger btn-sm mt-2 mt-lg-0">
+          <i class="bi bi-box-arrow-right"></i> Salir
+        </button>
+      `;
+      
+      menu.appendChild(userItem);
+      menu.appendChild(logoutItem);
+    }
+  });
+
+  // Función para cerrar sesión
+  function cerrarSesion() {
+    localStorage.removeItem('isLogged');
+    localStorage.removeItem('gymCurrentUser');
+    alert('Has cerrado sesión correctamente.');
+    window.location.reload(); // Recarga la página para restaurar el menú
+  }
+</script>
+
 </body>
 </html>

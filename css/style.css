@@ -199,6 +199,7 @@ a {
   background: #020617;
   color: #9ca3af;
 }
+
 .link-card, .content-card, .contact-card {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }

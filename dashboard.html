@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Test interactivo | Empieza en el Gym</title>
+  <title>Dashboard | Empieza en el Gym</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
@@ -12,57 +12,45 @@
 </head>
 <body>
 
-  <!-- NAVBAR -->
+  <!-- NAVBAR (automáticamente se cambia por JS) -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top shadow-sm">
-    <div class="container">
-      <a class="navbar-brand fw-bold" href="index.html">
-        <span class="logo-dot"></span> Empieza en el Gym
-      </a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="menu">
-        <ul class="navbar-nav ms-auto">
-          <li class="nav-item"><a class="nav-link" href="primer-dia.html">Primer día</a></li>
-          <li class="nav-item"><a class="nav-link" href="errores.html">Errores típicos</a></li>
-          <li class="nav-item"><a class="nav-link" href="mitos.html">Mitos</a></li>
-          <li class="nav-item"><a class="nav-link" href="ejercicios.html">Ejercicios</a></li>
-          <li class="nav-item"><a class="nav-link active" href="test.html">Test</a></li>
-          <li class="nav-item"><a class="nav-link" href="contacto.html">Contacto</a></li>
-          <li class="nav-item"><a class="nav-link" href="login.html">Login</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="register.html">Registro</a></li>
-
-
-        </ul>
-      </div>
-    </div>
+    <!-- Se modifica dinámicamente -->
   </nav>
 
   <main class="page-content container py-5">
-    <header class="page-header">
-      <span class="badge bg-info-subtle text-info-emphasis mb-2">Autoevaluación</span>
-      <h1 class="h2 fw-bold">Test básico antes de tu primer día</h1>
-      <p>Responde a estas preguntas y descubre si estás listo para empezar.</p>
+    <header class="page-header mb-5">
+      <div class="d-flex align-items-center">
+        <div class="avatar-circle bg-success-subtle text-success me-3">
+          <i class="bi bi-person-circle fs-1"></i>
+        </div>
+        <div>
+          <h1 class="h3 mb-0" id="userName">Cargando...</h1>
+          <p class="text-secondary mb-0" id="userEmail">Cargando...</p>
+        </div>
+      </div>
     </header>
 
-    <section class="test-card">
-      <h2 class="h5 mb-3">1. ¿Cuánto tiempo deberías dedicar al calentamiento?</h2>
-      <div class="mb-3">
-        <div class="test-option mb-2">a) 1–2 minutos, lo justo para empezar a sudar.</div>
-        <div class="test-option mb-2">b) 5–10 minutos de cardio suave.</div>
-        <div class="test-option mb-2">c) No hace falta calentar si tienes prisa.</div>
+    <div class="row g-4">
+      <div class="col-md-6">
+        <section class="content-card h-100">
+          <h2 class="h5 mb-3"><i class="bi bi-calendar-check"></i> Rutinas guardadas</h2>
+          <p class="text-muted">Aún no has guardado rutinas.</p>
+          <a href="ejercicios.html" class="btn btn-success">
+            <i class="bi bi-plus-circle"></i> Guardar rutina
+          </a>
+        </section>
       </div>
 
-      <h2 class="h5 mb-3 mt-4">2. ¿Qué haces si no sabes usar una máquina?</h2>
-      <div class="mb-3">
-        <div class="test-option mb-2">a) Copiar lo que hace la persona de al lado.</div>
-        <div class="test-option mb-2">b) Preguntar a un monitor o leer las instrucciones.</div>
-        <div class="test-option mb-2">c) Mejor evitarla para siempre.</div>
+      <div class="col-md-6">
+        <section class="content-card h-100">
+          <h2 class="h5 mb-3"><i class="bi bi-graph-up"></i> Progreso</h2>
+          <div class="progress mb-2" style="height:8px;">
+            <div class="progress-bar bg-success" style="width:25%"></div>
+          </div>
+          <small class="text-muted">25% completado</small>
+        </section>
       </div>
-
-      <p class="mt-4 text-secondary">
-       
-    </section>
+    </div>
   </main>
 
   <footer class="main-footer">
@@ -71,9 +59,21 @@
     </div>
   </footer>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- JS AUTENTICACIÓN -->
   <script src="js/auth.js"></script>
   <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const user = AuthManager.currentUser();
+      if (!user) {
+        window.location.href = 'login.html';
+        return;
+      }
+      
+      document.getElementById('userName').textContent = user.nombre;
+      document.getElementById('userEmail').textContent = user.email;
+    });
+  </script>
+<script>
   // Ejecutar cuando cargue la página
   document.addEventListener("DOMContentLoaded", function() {
     // Comprobar si hay un usuario logueado
@@ -121,7 +121,6 @@
     window.location.reload(); // Recarga la página para restaurar el menú
   }
 </script>
-
 
 </body>
 </html>
