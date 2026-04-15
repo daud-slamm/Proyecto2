@@ -2,198 +2,298 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Empieza en el Gym</title>
+  <title>Empieza en el Gym — Tu guía definitiva</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
-  <link rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
-  <link rel="stylesheet" href="css/style.css">
+  <meta name="description" content="Guía completa para principiantes en el gimnasio. Aprende qué hacer tu primer día, ejercicios básicos, errores y mitos.">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --white:#ffffff;--off-white:#f7f8fa;--cream:#f0f2f5;--gray-100:#e8ebf0;--gray-200:#d1d5de;--gray-400:#9098a9;--gray-600:#5a6278;--gray-800:#2d3142;--gray-900:#1a1d2e;--black:#0f111a;
+      --green-500:#10b981;--green-600:#059669;--green-400:#34d399;--green-50:#ecfdf5;--green-100:#d1fae5;
+      --coral-500:#f97066;--coral-50:#fef2f2;--amber-500:#f59e0b;--amber-50:#fffbeb;--blue-500:#3b82f6;--blue-50:#eff6ff;--purple-500:#8b5cf6;--purple-50:#f5f3ff;--teal-500:#14b8a6;--teal-50:#f0fdfa;
+      --shadow-sm:0 1px 3px rgba(15,17,26,0.06);--shadow-md:0 4px 16px rgba(15,17,26,0.08);--shadow-lg:0 12px 40px rgba(15,17,26,0.1);--shadow-xl:0 24px 64px rgba(15,17,26,0.12);--shadow-green:0 8px 32px rgba(16,185,129,0.25);
+      --radius-xl:28px;--radius-lg:20px;--radius-md:14px;--radius-sm:10px;
+      --font-display:'Sora',sans-serif;--font-mono:'DM Mono',monospace;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{font-family:var(--font-display);background:var(--off-white);color:var(--gray-800);overflow-x:hidden;min-height:100vh;-webkit-font-smoothing:antialiased}
+    ::selection{background:var(--green-100);color:var(--green-600)}
+    ::-webkit-scrollbar{width:7px}::-webkit-scrollbar-track{background:var(--off-white)}::-webkit-scrollbar-thumb{background:var(--gray-200);border-radius:99px}::-webkit-scrollbar-thumb:hover{background:var(--green-500)}
+    a{color:inherit;text-decoration:none}img{max-width:100%;display:block}
+
+    /* Grid bg */
+    body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,0,0,0.02) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,0.02) 1px,transparent 1px);background-size:60px 60px;pointer-events:none;z-index:0}
+
+    /* ── NAVBAR ── */
+    .navbar{position:fixed;top:0;left:0;right:0;z-index:1000;padding:16px 0;transition:all .35s cubic-bezier(.4,0,.2,1)}
+    .navbar.scrolled{background:rgba(247,248,250,0.88);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--gray-100);padding:10px 0;box-shadow:var(--shadow-sm)}
+    .navbar-inner{max-width:1180px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between}
+    .nav-logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:1.1rem;letter-spacing:-0.04em;color:var(--gray-900)}
+    .nav-logo .dot{width:11px;height:11px;border-radius:50%;background:var(--green-500);box-shadow:0 0 0 3px rgba(16,185,129,0.2);animation:breathe 3s ease-in-out infinite}
+    @keyframes breathe{0%,100%{box-shadow:0 0 0 3px rgba(16,185,129,0.2)}50%{box-shadow:0 0 0 8px rgba(16,185,129,0.1),0 0 20px rgba(16,185,129,0.15)}}
+    .nav-links{display:flex;align-items:center;gap:2px;list-style:none}
+    .nav-links a{font-size:.84rem;font-weight:500;color:var(--gray-600);padding:8px 14px;border-radius:var(--radius-sm);transition:all .2s ease}
+    .nav-links a:hover{color:var(--gray-900);background:var(--cream)}
+    .nav-links a.active{color:var(--green-600);background:var(--green-50)}
+    .nav-cta{background:var(--green-500)!important;color:var(--white)!important;font-weight:600!important;margin-left:8px;padding:8px 18px!important;box-shadow:var(--shadow-green);transition:all .25s ease!important}
+    .nav-cta:hover{background:var(--green-600)!important;transform:translateY(-1px);box-shadow:0 10px 36px rgba(16,185,129,0.3)!important}
+    .nav-toggle{display:none;background:var(--cream);border:1px solid var(--gray-100);color:var(--gray-800);font-size:1.3rem;cursor:pointer;padding:6px 10px;border-radius:var(--radius-sm);transition:all .2s}
+    .nav-toggle:hover{background:var(--gray-100)}
+
+    /* ── HERO ── */
+    .hero{position:relative;z-index:1;min-height:100vh;display:flex;align-items:center;overflow:hidden}
+    .hero-blob{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none;opacity:.6}
+    .hero-blob-1{width:500px;height:500px;background:radial-gradient(circle,rgba(16,185,129,0.18),transparent 70%);top:-100px;right:-80px;animation:blob-float 18s ease-in-out infinite}
+    .hero-blob-2{width:400px;height:400px;background:radial-gradient(circle,rgba(249,112,102,0.12),transparent 70%);bottom:-60px;left:-120px;animation:blob-float 22s ease-in-out infinite reverse}
+    .hero-blob-3{width:300px;height:300px;background:radial-gradient(circle,rgba(59,130,246,0.08),transparent 70%);top:40%;left:50%;animation:blob-float 15s ease-in-out infinite}
+    @keyframes blob-float{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(25px,-35px) scale(1.08)}66%{transform:translate(-15px,20px) scale(.94)}}
+    .hero-content{position:relative;z-index:2;max-width:1180px;margin:0 auto;padding:140px 24px 100px;display:grid;grid-template-columns:1.1fr .9fr;gap:64px;align-items:center}
+    .hero-tag{display:inline-flex;align-items:center;gap:8px;background:var(--green-50);border:1px solid var(--green-100);padding:7px 16px;border-radius:999px;font-size:.73rem;font-weight:700;color:var(--green-600);letter-spacing:.1em;text-transform:uppercase;margin-bottom:24px}
+    .hero-tag i{font-size:.85rem}
+    .hero-title{font-size:clamp(2.6rem,5.5vw,4rem);font-weight:800;line-height:1.06;letter-spacing:-0.045em;color:var(--gray-900);margin-bottom:20px}
+    .hero-title .accent{position:relative;color:var(--green-500);display:inline-block}
+    .hero-title .accent::after{content:'';position:absolute;bottom:2px;left:-2px;right:-2px;height:12px;background:rgba(16,185,129,0.15);border-radius:4px;z-index:-1}
+    .hero-sub{font-size:1.08rem;color:var(--gray-600);line-height:1.75;margin-bottom:36px;max-width:480px}
+    .hero-buttons{display:flex;gap:14px;flex-wrap:wrap}
+    .btn-primary-custom{display:inline-flex;align-items:center;gap:8px;padding:15px 30px;border-radius:var(--radius-md);font-family:var(--font-display);font-weight:700;font-size:.95rem;border:none;cursor:pointer;transition:all .3s cubic-bezier(.4,0,.2,1);background:var(--green-500);color:var(--white);box-shadow:var(--shadow-green)}
+    .btn-primary-custom:hover{background:var(--green-600);transform:translateY(-3px);box-shadow:0 12px 40px rgba(16,185,129,0.35)}
+    .btn-secondary-custom{display:inline-flex;align-items:center;gap:8px;padding:15px 30px;border-radius:var(--radius-md);font-family:var(--font-display);font-weight:600;font-size:.95rem;cursor:pointer;transition:all .3s ease;background:var(--white);color:var(--gray-800);border:1px solid var(--gray-200);box-shadow:var(--shadow-sm)}
+    .btn-secondary-custom:hover{background:var(--cream);border-color:var(--gray-400);transform:translateY(-2px);box-shadow:var(--shadow-md)}
+
+    /* Hero visual */
+    .hero-visual{position:relative;justify-self:center}
+    .hero-image-wrapper{width:380px;height:460px;border-radius:var(--radius-xl);overflow:hidden;box-shadow:var(--shadow-xl);border:4px solid var(--white);position:relative}
+    .hero-image-wrapper img{width:100%;height:100%;object-fit:cover}
+    .hero-image-wrapper::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 50%,rgba(15,17,26,0.25) 100%)}
+    .float-badge{position:absolute;background:var(--white);border-radius:var(--radius-md);padding:14px 18px;box-shadow:var(--shadow-lg);display:flex;align-items:center;gap:10px;animation:float-card 6s ease-in-out infinite;z-index:3}
+    .float-badge .fb-icon{width:40px;height:40px;border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0}
+    .float-badge .fb-text{font-size:.78rem;font-weight:600;color:var(--gray-800);line-height:1.3}
+    .float-badge .fb-sub{font-size:.7rem;color:var(--gray-400);font-weight:400}
+    .float-badge-1{top:-16px;left:-50px;animation-delay:0s}
+    .float-badge-2{bottom:60px;right:-60px;animation-delay:-2s}
+    .float-badge-3{bottom:-20px;left:20px;animation-delay:-4s}
+    @keyframes float-card{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+
+    /* ── TRUSTED BAR ── */
+    .trusted-bar{position:relative;z-index:1;text-align:center;padding:48px 24px;border-top:1px solid var(--gray-100);border-bottom:1px solid var(--gray-100);background:var(--white)}
+    .trusted-bar p{font-size:.78rem;font-weight:600;color:var(--gray-400);letter-spacing:.1em;text-transform:uppercase;margin-bottom:20px;font-family:var(--font-mono)}
+    .trusted-items{display:flex;justify-content:center;align-items:center;gap:48px;flex-wrap:wrap;max-width:800px;margin:0 auto}
+    .trusted-item{display:flex;align-items:center;gap:8px;font-size:.88rem;font-weight:600;color:var(--gray-600)}
+    .trusted-item i{font-size:1.2rem;color:var(--green-500)}
+
+    /* ── FEATURES ── */
+    .features-section{position:relative;z-index:1;padding:120px 24px;max-width:1180px;margin:0 auto}
+    .section-header{text-align:center;max-width:560px;margin:0 auto 64px}
+    .section-tag{display:inline-flex;align-items:center;gap:8px;font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--green-600);font-family:var(--font-mono);margin-bottom:14px;background:var(--green-50);padding:5px 14px;border-radius:999px;border:1px solid var(--green-100)}
+    .section-title{font-size:clamp(1.8rem,3.5vw,2.6rem);font-weight:800;letter-spacing:-0.04em;color:var(--gray-900);margin-bottom:14px;line-height:1.1}
+    .section-desc{font-size:1rem;color:var(--gray-600);line-height:1.7}
+    .features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+    .feature-card{position:relative;background:var(--white);border:1px solid var(--gray-100);border-radius:var(--radius-lg);padding:32px 26px 28px;transition:all .35s cubic-bezier(.4,0,.2,1);overflow:hidden;display:flex;flex-direction:column}
+    .feature-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;border-radius:var(--radius-lg) var(--radius-lg) 0 0;opacity:0;transition:opacity .3s ease}
+    .feature-card:hover{transform:translateY(-8px);box-shadow:var(--shadow-xl);border-color:transparent}
+    .feature-card:hover::before{opacity:1}
+    .feature-card[data-color="green"]::before{background:linear-gradient(90deg,var(--green-500),var(--green-400))}.feature-card[data-color="green"] .feature-icon{background:var(--green-50);color:var(--green-600)}
+    .feature-card[data-color="red"]::before{background:linear-gradient(90deg,#ef4444,var(--coral-500))}.feature-card[data-color="red"] .feature-icon{background:var(--coral-50);color:#ef4444}
+    .feature-card[data-color="amber"]::before{background:linear-gradient(90deg,var(--amber-500),#fbbf24)}.feature-card[data-color="amber"] .feature-icon{background:var(--amber-50);color:var(--amber-500)}
+    .feature-card[data-color="blue"]::before{background:linear-gradient(90deg,var(--blue-500),#60a5fa)}.feature-card[data-color="blue"] .feature-icon{background:var(--blue-50);color:var(--blue-500)}
+    .feature-card[data-color="purple"]::before{background:linear-gradient(90deg,var(--purple-500),#a78bfa)}.feature-card[data-color="purple"] .feature-icon{background:var(--purple-50);color:var(--purple-500)}
+    .feature-card[data-color="teal"]::before{background:linear-gradient(90deg,var(--teal-500),#2dd4bf)}.feature-card[data-color="teal"] .feature-icon{background:var(--teal-50);color:var(--teal-500)}
+    .feature-icon{width:52px;height:52px;border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;font-size:1.3rem;margin-bottom:20px;flex-shrink:0;transition:transform .3s ease}
+    .feature-card:hover .feature-icon{transform:scale(1.1) rotate(-3deg)}
+    .feature-number{position:absolute;top:28px;right:24px;font-family:var(--font-mono);font-size:.72rem;color:var(--gray-200);font-weight:500}
+    .feature-card h3{font-size:1.08rem;font-weight:700;margin-bottom:8px;color:var(--gray-900)}
+    .feature-card p{font-size:.88rem;color:var(--gray-600);line-height:1.65;flex-grow:1}
+    .feature-arrow{display:inline-flex;align-items:center;gap:6px;margin-top:16px;font-size:.82rem;font-weight:600;color:var(--green-500);opacity:0;transform:translateX(-8px);transition:all .3s ease}
+    .feature-card:hover .feature-arrow{opacity:1;transform:translateX(0)}
+
+    /* ── RULES ── */
+    .rules-section{position:relative;z-index:1;padding:100px 24px;background:var(--white);border-top:1px solid var(--gray-100);border-bottom:1px solid var(--gray-100)}
+    .rules-wrapper{max-width:1180px;margin:0 auto}
+    .rules-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+    .rule-card{background:var(--off-white);border:1px solid var(--gray-100);border-radius:var(--radius-lg);padding:28px 22px;text-align:center;transition:all .3s ease;position:relative;overflow:hidden}
+    .rule-card:hover{transform:translateY(-6px);box-shadow:var(--shadow-lg);border-color:var(--green-100)}
+    .rule-card::after{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:40px;height:3px;background:var(--green-500);border-radius:99px;opacity:0;transition:all .3s ease}
+    .rule-card:hover::after{opacity:1;width:60px}
+    .rule-num{font-family:var(--font-mono);font-size:.7rem;font-weight:500;color:var(--gray-400);margin-bottom:12px;letter-spacing:.08em}
+    .rule-emoji{font-size:2.2rem;margin-bottom:14px;display:block}
+    .rule-card h4{font-size:.95rem;font-weight:700;color:var(--gray-900);margin-bottom:8px}
+    .rule-card p{font-size:.82rem;color:var(--gray-600);line-height:1.55}
+
+    /* ── CTA ── */
+    .cta-section{position:relative;z-index:1;padding:100px 24px}
+    .cta-banner{max-width:960px;margin:0 auto;background:linear-gradient(135deg,var(--green-500),var(--green-600));border-radius:var(--radius-xl);padding:64px 48px;text-align:center;position:relative;overflow:hidden;box-shadow:0 24px 64px rgba(16,185,129,0.25)}
+    .cta-banner::before{content:'';position:absolute;top:-50%;right:-20%;width:500px;height:500px;background:radial-gradient(circle,rgba(255,255,255,0.12),transparent 60%);border-radius:50%}
+    .cta-banner::after{content:'';position:absolute;bottom:-30%;left:-10%;width:400px;height:400px;background:radial-gradient(circle,rgba(255,255,255,0.08),transparent 60%);border-radius:50%}
+    .cta-content{position:relative;z-index:1}
+    .cta-banner h2{font-size:clamp(1.6rem,3vw,2.4rem);font-weight:800;letter-spacing:-0.03em;color:var(--white);margin-bottom:14px;line-height:1.15}
+    .cta-banner p{font-size:1rem;color:rgba(255,255,255,0.8);margin-bottom:32px;max-width:440px;margin-left:auto;margin-right:auto;line-height:1.7}
+    .btn-cta-white{display:inline-flex;align-items:center;gap:8px;padding:15px 32px;border-radius:var(--radius-md);font-family:var(--font-display);font-weight:700;font-size:.95rem;border:none;cursor:pointer;background:var(--white);color:var(--green-600);box-shadow:0 8px 32px rgba(0,0,0,0.15);transition:all .3s ease}
+    .btn-cta-white:hover{transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,0,0,0.2)}
+
+    /* ── FOOTER ── */
+    .footer{position:relative;z-index:1;border-top:1px solid var(--gray-100);padding:36px 24px;background:var(--white)}
+    .footer-inner{max-width:1180px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
+    .footer small{color:var(--gray-400);font-size:.82rem}
+    .footer-links{display:flex;gap:24px}
+    .footer-links a{font-size:.82rem;color:var(--gray-400);font-weight:500;transition:color .2s}
+    .footer-links a:hover{color:var(--green-500)}
+
+    /* ── REVEAL ── */
+    .reveal{opacity:0;transform:translateY(28px);transition:all .65s cubic-bezier(.22,1,.36,1)}
+    .reveal.visible{opacity:1;transform:translateY(0)}
+    .reveal-d1{transition-delay:.08s}.reveal-d2{transition-delay:.16s}.reveal-d3{transition-delay:.24s}.reveal-d4{transition-delay:.32s}.reveal-d5{transition-delay:.4s}.reveal-d6{transition-delay:.48s}
+
+    /* ── RESPONSIVE ── */
+    @media(max-width:1024px){.hero-content{grid-template-columns:1fr;gap:48px}.hero-visual{justify-self:center}.features-grid{grid-template-columns:repeat(2,1fr)}.rules-grid{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:768px){.nav-links{display:none}.nav-links.open{display:flex;flex-direction:column;position:absolute;top:100%;left:0;right:0;background:rgba(247,248,250,0.97);backdrop-filter:blur(20px);padding:16px 24px;border-bottom:1px solid var(--gray-100);box-shadow:var(--shadow-md);gap:2px}.nav-links.open a{padding:12px 16px}.nav-toggle{display:flex;align-items:center;justify-content:center}.hero{min-height:auto}.hero-content{padding:120px 24px 60px}.hero-image-wrapper{width:300px;height:360px}.float-badge-1{left:-20px}.float-badge-2{right:-20px}.features-grid{grid-template-columns:1fr}.rules-grid{grid-template-columns:1fr 1fr}.cta-banner{padding:48px 24px}.footer-inner{flex-direction:column;text-align:center}.trusted-items{gap:24px}}
+    @media(max-width:480px){.rules-grid{grid-template-columns:1fr}.hero-buttons{flex-direction:column}.hero-buttons a{text-align:center;justify-content:center}.hero-image-wrapper{width:260px;height:320px}.float-badge{padding:10px 14px}.float-badge .fb-icon{width:34px;height:34px;font-size:.95rem}}
+  </style>
 </head>
 <body>
 
-  <!-- NAVBAR -->
-  <!-- (bloque común) -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top shadow-sm">
-    <div class="container">
-      <a class="navbar-brand fw-bold" href="index.html">
-        <span class="logo-dot"></span> Empieza en el Gym
-      </a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="menu">
-        <ul class="navbar-nav ms-auto">
-          <li class="nav-item"><a class="nav-link" href="primer-dia.html">Primer día</a></li>
-          <li class="nav-item"><a class="nav-link" href="errores.html">Errores típicos</a></li>
-          <li class="nav-item"><a class="nav-link" href="mitos.html">Mitos</a></li>
-          <li class="nav-item"><a class="nav-link" href="ejercicios.html">Ejercicios</a></li>
-          <li class="nav-item"><a class="nav-link" href="test.html">Test</a></li>
-          <li class="nav-item"><a class="nav-link" href="contacto.html">Contacto</a></li>
-          <li class="nav-item"><a class="nav-link" href="login.html">Login</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="register.html">Registro</a></li>
-
-
-        </ul>
-      </div>
+  <nav class="navbar" id="navbar">
+    <div class="navbar-inner">
+      <a href="index.html" class="nav-logo"><span class="dot"></span> Empieza en el Gym</a>
+      <button class="nav-toggle" id="navToggle" aria-label="Menú"><i class="bi bi-list"></i></button>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="primer-dia.html">Primer día</a></li>
+        <li><a href="errores.html">Errores</a></li>
+        <li><a href="mitos.html">Mitos</a></li>
+        <li><a href="ejercicios.html">Ejercicios</a></li>
+        <li><a href="test.html">Test</a></li>
+        <li><a href="contacto.html">Contacto</a></li>
+        <li><a href="login.html" id="loginLink">Login</a></li>
+        <li><a href="register.html" class="nav-cta" id="registerLink"><i class="bi bi-person-plus"></i> Registro</a></li>
+      </ul>
     </div>
   </nav>
 
-  <!-- HERO -->
-  <header class="hero-home d-flex align-items-center">
-    <div class="container text-center text-light">
-      <p class="badge bg-success-subtle text-success-emphasis mb-3">
-        Guía web para tu primer día de gimnasio
-      </p>
-      <h1 class="display-4 fw-bold mb-3">Empieza en el Gym sin vergüenza ni miedo</h1>
-      <p class="lead mb-4">
-        Aprende qué hacer el primer día, qué errores evitar y cómo entrenar seguro paso a paso.
-      </p>
-      <a href="primer-dia.html" class="btn btn-primary btn-lg me-2">
-        <i class="bi bi-play-circle"></i> Empezar ahora
-      </a>
-      <a href="test.html" class="btn btn-outline-light btn-lg">
-        <i class="bi bi-clipboard-check"></i> Hacer el test
-      </a>
-    </div>
-  </header>
-
-  <!-- TARJETAS SECCIONES -->
-  <main class="container sections-grid">
-    <div class="row g-4">
-      <div class="col-md-4">
-        <a href="primer-dia.html" class="card link-card h-100">
-          <div class="card-body">
-            <div class="icon-circle bg-primary-subtle text-primary mb-3">
-              <i class="bi bi-door-open"></i>
-            </div>
-            <h2 class="h4">Primer día</h2>
-            <p>Qué llevar, cómo moverte por la sala y cómo perder la vergüenza desde el minuto uno.</p>
-          </div>
-        </a>
+  <section class="hero">
+    <div class="hero-blob hero-blob-1"></div>
+    <div class="hero-blob hero-blob-2"></div>
+    <div class="hero-blob hero-blob-3"></div>
+    <div class="hero-content">
+      <div class="hero-text">
+        <div class="hero-tag"><i class="bi bi-lightning-charge-fill"></i> Guía para principiantes 2026</div>
+        <h1 class="hero-title">Entra al gym<br><span class="accent">sin miedo.</span></h1>
+        <p class="hero-sub">Todo lo que necesitas para tu primer día: técnica, rutinas, errores que evitar y mitos que olvidar. Claro, directo y sin rodeos.</p>
+        <div class="hero-buttons">
+          <a href="primer-dia.html" class="btn-primary-custom"><i class="bi bi-play-fill"></i> Empezar ahora</a>
+          <a href="test.html" class="btn-secondary-custom"><i class="bi bi-clipboard-check"></i> Hacer el test</a>
+        </div>
       </div>
-
-      <div class="col-md-4">
-        <a href="errores.html" class="card link-card h-100">
-          <div class="card-body">
-            <div class="icon-circle bg-danger-subtle text-danger mb-3">
-              <i class="bi bi-exclamation-triangle"></i>
-            </div>
-            <h2 class="h4">Errores típicos</h2>
-            <p>Evita las cagadas más comunes de principiantes y entrena de forma inteligente.</p>
-          </div>
-        </a>
-      </div>
-
-      <div class="col-md-4">
-        <a href="mitos.html" class="card link-card h-100">
-          <div class="card-body">
-            <div class="icon-circle bg-warning-subtle text-warning mb-3">
-              <i class="bi bi-lightbulb"></i>
-            </div>
-            <h2 class="h4">Mitos del gym</h2>
-            <p>Desmontamos las frases típicas que escuchas en redes y en el vestuario.</p>
-          </div>
-        </a>
+      <div class="hero-visual">
+        <div class="hero-image-wrapper">
+          <img src="https://images.pexels.com/photos/1552103/pexels-photo-1552103.jpeg" alt="Persona entrenando en el gimnasio" loading="eager">
+        </div>
+        <div class="float-badge float-badge-1">
+          <div class="fb-icon" style="background:var(--green-50);color:var(--green-600);"><i class="bi bi-journal-check"></i></div>
+          <div><div class="fb-text">6 secciones</div><div class="fb-sub">Guía completa</div></div>
+        </div>
+        <div class="float-badge float-badge-2">
+          <div class="fb-icon" style="background:var(--blue-50);color:var(--blue-500);"><i class="bi bi-stopwatch"></i></div>
+          <div><div class="fb-text">10 min de lectura</div><div class="fb-sub">Rápido y claro</div></div>
+        </div>
+        <div class="float-badge float-badge-3">
+          <div class="fb-icon" style="background:var(--amber-50);color:var(--amber-500);"><i class="bi bi-trophy"></i></div>
+          <div><div class="fb-text">Test incluido</div><div class="fb-sub">Ponte a prueba</div></div>
+        </div>
       </div>
     </div>
+  </section>
 
-    <div class="row g-4 mt-1">
-      <div class="col-md-4">
-        <a href="ejercicios.html" class="card link-card h-100">
-          <div class="card-body">
-            <div class="icon-circle bg-success-subtle text-success mb-3">
-              <i class="bi bi-bar-chart"></i>
-            </div>
-            <h2 class="h4">Ejercicios básicos</h2>
-            <p>Fichas claras por grupo muscular, con errores comunes y consejos de seguridad.</p>
-          </div>
-        </a>
+  <div class="trusted-bar reveal">
+    <p>Lo que encontrarás aquí</p>
+    <div class="trusted-items">
+      <div class="trusted-item"><i class="bi bi-check-circle-fill"></i> Técnica correcta</div>
+      <div class="trusted-item"><i class="bi bi-check-circle-fill"></i> Errores comunes</div>
+      <div class="trusted-item"><i class="bi bi-check-circle-fill"></i> Mitos desmontados</div>
+      <div class="trusted-item"><i class="bi bi-check-circle-fill"></i> Test interactivo</div>
+    </div>
+  </div>
+
+  <section class="features-section">
+    <div class="section-header reveal">
+      <div class="section-tag"><i class="bi bi-grid-fill"></i> Explora la guía</div>
+      <h2 class="section-title">Todo lo que necesitas,<br>nada que te sobre</h2>
+      <p class="section-desc">Seis secciones pensadas para que vayas al gym con confianza desde el primer minuto.</p>
+    </div>
+    <div class="features-grid">
+      <a href="primer-dia.html" class="feature-card reveal reveal-d1" data-color="green"><span class="feature-number">01</span><div class="feature-icon"><i class="bi bi-door-open-fill"></i></div><h3>Tu primer día</h3><p>Qué meter en la bolsa, cómo moverte por la sala y perder la vergüenza desde el minuto cero.</p><span class="feature-arrow">Leer guía <i class="bi bi-arrow-right"></i></span></a>
+      <a href="errores.html" class="feature-card reveal reveal-d2" data-color="red"><span class="feature-number">02</span><div class="feature-icon"><i class="bi bi-exclamation-triangle-fill"></i></div><h3>Errores típicos</h3><p>Las 4 cagadas que comete casi todo el mundo y cómo esquivarlas para no lesionarte.</p><span class="feature-arrow">Ver errores <i class="bi bi-arrow-right"></i></span></a>
+      <a href="mitos.html" class="feature-card reveal reveal-d3" data-color="amber"><span class="feature-number">03</span><div class="feature-icon"><i class="bi bi-lightbulb-fill"></i></div><h3>Mitos del gym</h3><p>Desmontamos las frases de redes y vestuarios. Entrena con ciencia, no con bulos.</p><span class="feature-arrow">Desmontar mitos <i class="bi bi-arrow-right"></i></span></a>
+      <a href="ejercicios.html" class="feature-card reveal reveal-d4" data-color="blue"><span class="feature-number">04</span><div class="feature-icon"><i class="bi bi-bar-chart-fill"></i></div><h3>Ejercicios básicos</h3><p>Fichas claras por grupo muscular con técnica, errores comunes y tips de seguridad.</p><span class="feature-arrow">Ver ejercicios <i class="bi bi-arrow-right"></i></span></a>
+      <a href="test.html" class="feature-card reveal reveal-d5" data-color="purple"><span class="feature-number">05</span><div class="feature-icon"><i class="bi bi-clipboard2-check-fill"></i></div><h3>Test interactivo</h3><p>Comprueba si controlas lo básico antes de pisar el gimnasio. Responde y descúbrelo.</p><span class="feature-arrow">Hacer test <i class="bi bi-arrow-right"></i></span></a>
+      <a href="contacto.html" class="feature-card reveal reveal-d6" data-color="teal"><span class="feature-number">06</span><div class="feature-icon"><i class="bi bi-chat-dots-fill"></i></div><h3>Contacto</h3><p>¿Dudas, sugerencias o ideas para mejorar la guía? Escríbenos y te respondemos.</p><span class="feature-arrow">Contactar <i class="bi bi-arrow-right"></i></span></a>
+    </div>
+  </section>
+
+  <section class="rules-section">
+    <div class="rules-wrapper">
+      <div class="section-header reveal">
+        <div class="section-tag"><i class="bi bi-bookmark-star-fill"></i> Antes de ir</div>
+        <h2 class="section-title">4 reglas que no fallan</h2>
+        <p class="section-desc">Grábatelas. Son simples, pero marcan la diferencia entre avanzar y estancarte.</p>
       </div>
-
-      <div class="col-md-4">
-        <a href="test.html" class="card link-card h-100">
-          <div class="card-body">
-            <div class="icon-circle bg-info-subtle text-info mb-3">
-              <i class="bi bi-clipboard-check"></i>
-            </div>
-            <h2 class="h4">Test interactivo</h2>
-            <p>Comprueba si ya controlas lo básico antes de pisar el gimnasio.</p>
-          </div>
-        </a>
-      </div>
-
-      <div class="col-md-4">
-        <a href="contacto.html" class="card link-card h-100">
-          <div class="card-body">
-            <div class="icon-circle bg-secondary-subtle text-secondary mb-3">
-              <i class="bi bi-chat-dots"></i>
-            </div>
-            <h2 class="h4">Contacto</h2>
-            <p>Manda dudas, sugerencias o ideas para mejorar la guía.</p>
-          </div>
-        </a>
+      <div class="rules-grid">
+        <div class="rule-card reveal reveal-d1"><div class="rule-num">01</div><span class="rule-emoji">🎯</span><h4>Técnica primero</h4><p>Domina el movimiento antes de subir peso. Sin prisa, sin ego.</p></div>
+        <div class="rule-card reveal reveal-d2"><div class="rule-num">02</div><span class="rule-emoji">💧</span><h4>Hidrátate</h4><p>Bebe agua antes, durante y después. Tu rendimiento lo agradece.</p></div>
+        <div class="rule-card reveal reveal-d3"><div class="rule-num">03</div><span class="rule-emoji">😴</span><h4>Descansa bien</h4><p>Los músculos crecen durmiendo. 7-8 horas mínimo cada noche.</p></div>
+        <div class="rule-card reveal reveal-d4"><div class="rule-num">04</div><span class="rule-emoji">📝</span><h4>Apunta todo</h4><p>Registra pesos y sensaciones. El progreso vive en los datos.</p></div>
       </div>
     </div>
-  </main>
+  </section>
 
-  <footer class="main-footer">
-    <div class="container text-center">
-      <small>© 2026 Empieza en el Gym – Proyecto 2º DAW</small>
+  <section class="cta-section">
+    <div class="cta-banner reveal">
+      <div class="cta-content">
+        <h2>El mejor momento para empezar<br>fue ayer. El segundo es ahora.</h2>
+        <p>No necesitas ser perfecto. Solo dar el primer paso. Esta guía te acompaña en cada uno.</p>
+        <a href="primer-dia.html" class="btn-cta-white"><i class="bi bi-rocket-takeoff"></i> Empezar la guía</a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <small>&copy; 2026 Empieza en el Gym — Proyecto 2.º DAW</small>
+      <div class="footer-links">
+        <a href="primer-dia.html">Primer día</a>
+        <a href="ejercicios.html">Ejercicios</a>
+        <a href="test.html">Test</a>
+        <a href="contacto.html">Contacto</a>
+      </div>
     </div>
   </footer>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="js/auth.js"></script>
   <script>
-  // Ejecutar cuando cargue la página
-  document.addEventListener("DOMContentLoaded", function() {
-    // Comprobar si hay un usuario logueado
-    const isLogged = localStorage.getItem('isLogged') === 'true';
-    const currentUser = JSON.parse(localStorage.getItem('gymCurrentUser'));
-    
-    if (isLogged && currentUser) {
-      // 1. Ocultar los enlaces de Login y Registro en el menú
-      const loginLink = document.querySelector('a[href="login.html"]');
-      const registerLink = document.querySelector('a[href="register.html"]');
-      if (loginLink) loginLink.parentElement.style.display = 'none';
-      if (registerLink) registerLink.parentElement.style.display = 'none';
-      
-      // 2. Añadir botón de perfil y cerrar sesión
-      const menu = document.querySelector('.navbar-nav');
-      
-      // Crear el nombre del usuario
-      const userItem = document.createElement('li');
-      userItem.className = 'nav-item d-flex align-items-center ms-lg-3';
-      userItem.innerHTML = `
-        <span class="text-success fw-bold me-3">
-          <i class="bi bi-person-circle"></i> Hola, ${currentUser.nombre}
-        </span>
-      `;
-      
-      // Crear el botón de cerrar sesión
-      const logoutItem = document.createElement('li');
-      logoutItem.className = 'nav-item';
-      logoutItem.innerHTML = `
-        <button onclick="cerrarSesion()" class="btn btn-outline-danger btn-sm mt-2 mt-lg-0">
-          <i class="bi bi-box-arrow-right"></i> Salir
-        </button>
-      `;
-      
-      menu.appendChild(userItem);
-      menu.appendChild(logoutItem);
-    }
-  });
-
-  // Función para cerrar sesión
-  function cerrarSesion() {
-    localStorage.removeItem('isLogged');
-    localStorage.removeItem('gymCurrentUser');
-    alert('Has cerrado sesión correctamente.');
-    window.location.reload(); // Recarga la página para restaurar el menú
-  }
-</script>
-
-
+    const navbar=document.getElementById('navbar');
+    window.addEventListener('scroll',()=>{navbar.classList.toggle('scrolled',window.scrollY>30)});
+    const navToggle=document.getElementById('navToggle'),navLinks=document.getElementById('navLinks');
+    navToggle.addEventListener('click',()=>{navLinks.classList.toggle('open');const i=navToggle.querySelector('i');i.classList.toggle('bi-list');i.classList.toggle('bi-x-lg')});
+    const reveals=document.querySelectorAll('.reveal');
+    const observer=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');observer.unobserve(e.target)}})},{threshold:0.1});
+    reveals.forEach(el=>observer.observe(el));
+    document.addEventListener("DOMContentLoaded",function(){
+      const isLogged=localStorage.getItem('isLogged')==='true';
+      let currentUser=null;try{currentUser=JSON.parse(localStorage.getItem('gymCurrentUser'))}catch(e){}
+      if(isLogged&&currentUser){
+        const loginLink=document.getElementById('loginLink'),registerLink=document.getElementById('registerLink');
+        if(loginLink)loginLink.parentElement.style.display='none';
+        if(registerLink)registerLink.parentElement.style.display='none';
+        const navList=document.getElementById('navLinks');
+        const userLi=document.createElement('li');
+        userLi.innerHTML=`<span style="color:var(--green-600);font-weight:700;font-size:.84rem;padding:8px 14px;display:inline-flex;align-items:center;gap:6px;"><i class="bi bi-person-circle"></i> ${currentUser.nombre}</span>`;
+        navList.appendChild(userLi);
+        const logoutLi=document.createElement('li');
+        logoutLi.innerHTML=`<a href="#" onclick="cerrarSesion();return false;" style="color:#ef4444;font-weight:600;font-size:.84rem;padding:8px 14px;display:inline-flex;align-items:center;gap:6px;"><i class="bi bi-box-arrow-right"></i> Salir</a>`;
+        navList.appendChild(logoutLi);
+      }
+    });
+    function cerrarSesion(){localStorage.removeItem('isLogged');localStorage.removeItem('gymCurrentUser');window.location.reload()}
+  </script>
 </body>
 </html>

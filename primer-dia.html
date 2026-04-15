@@ -2,149 +2,111 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Primer día en el gimnasio | Empieza en el Gym</title>
+  <title>Primer día | Empieza en el Gym</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
-  <link rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap');
+    :root{--white:#fff;--off-white:#f7f8fa;--cream:#f0f2f5;--gray-100:#e8ebf0;--gray-200:#d1d5de;--gray-400:#9098a9;--gray-600:#5a6278;--gray-800:#2d3142;--gray-900:#1a1d2e;--green-500:#10b981;--green-600:#059669;--green-400:#34d399;--green-50:#ecfdf5;--green-100:#d1fae5;--coral-500:#f97066;--coral-50:#fef2f2;--amber-500:#f59e0b;--amber-50:#fffbeb;--blue-500:#3b82f6;--blue-50:#eff6ff;--purple-500:#8b5cf6;--purple-50:#f5f3ff;--teal-500:#14b8a6;--teal-50:#f0fdfa;--shadow-sm:0 1px 3px rgba(15,17,26,.06);--shadow-md:0 4px 16px rgba(15,17,26,.08);--shadow-lg:0 12px 40px rgba(15,17,26,.1);--shadow-xl:0 24px 64px rgba(15,17,26,.12);--shadow-green:0 8px 32px rgba(16,185,129,.25);--radius-xl:28px;--radius-lg:20px;--radius-md:14px;--radius-sm:10px;--font-display:'Sora',sans-serif;--font-mono:'DM Mono',monospace}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}
+    body{font-family:var(--font-display);background:var(--off-white);color:var(--gray-800);overflow-x:hidden;min-height:100vh;-webkit-font-smoothing:antialiased}
+    ::selection{background:var(--green-100);color:var(--green-600)}
+    ::-webkit-scrollbar{width:7px}::-webkit-scrollbar-track{background:var(--off-white)}::-webkit-scrollbar-thumb{background:var(--gray-200);border-radius:99px}::-webkit-scrollbar-thumb:hover{background:var(--green-500)}
+    a{color:inherit;text-decoration:none}
+    body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,0,0,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,.02) 1px,transparent 1px);background-size:60px 60px;pointer-events:none;z-index:0}
+
+    .navbar{position:fixed;top:0;left:0;right:0;z-index:1000;padding:16px 0;transition:all .35s cubic-bezier(.4,0,.2,1)}
+    .navbar.scrolled{background:rgba(247,248,250,.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--gray-100);padding:10px 0;box-shadow:var(--shadow-sm)}
+    .navbar-inner{max-width:1180px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between}
+    .nav-logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:1.1rem;letter-spacing:-.04em;color:var(--gray-900)}
+    .nav-logo .dot{width:11px;height:11px;border-radius:50%;background:var(--green-500);box-shadow:0 0 0 3px rgba(16,185,129,.2);animation:breathe 3s ease-in-out infinite}
+    @keyframes breathe{0%,100%{box-shadow:0 0 0 3px rgba(16,185,129,.2)}50%{box-shadow:0 0 0 8px rgba(16,185,129,.1),0 0 20px rgba(16,185,129,.15)}}
+    .nav-links{display:flex;align-items:center;gap:2px;list-style:none}
+    .nav-links a{font-size:.84rem;font-weight:500;color:var(--gray-600);padding:8px 14px;border-radius:var(--radius-sm);transition:all .2s}
+    .nav-links a:hover{color:var(--gray-900);background:var(--cream)}
+    .nav-links a.active{color:var(--green-600);background:var(--green-50)}
+    .nav-cta{background:var(--green-500)!important;color:var(--white)!important;font-weight:600!important;margin-left:8px;padding:8px 18px!important;box-shadow:var(--shadow-green);border-radius:var(--radius-sm)!important;transition:all .25s!important}
+    .nav-cta:hover{background:var(--green-600)!important;transform:translateY(-1px);box-shadow:0 10px 36px rgba(16,185,129,.3)!important}
+    .nav-toggle{display:none;background:var(--cream);border:1px solid var(--gray-100);color:var(--gray-800);font-size:1.3rem;cursor:pointer;padding:6px 10px;border-radius:var(--radius-sm)}
+
+    .page-hero{padding:130px 24px 60px;text-align:center;position:relative;z-index:1;overflow:hidden}
+    .page-hero .hero-blob{position:absolute;border-radius:50%;filter:blur(90px);pointer-events:none;opacity:.5}
+    .page-hero-inner{max-width:640px;margin:0 auto;position:relative;z-index:2}
+    .page-hero .hero-tag{display:inline-flex;align-items:center;gap:8px;padding:6px 16px;border-radius:999px;font-size:.73rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:20px}
+    .page-hero h1{font-size:clamp(2rem,4.5vw,3rem);font-weight:800;letter-spacing:-.04em;color:var(--gray-900);margin-bottom:14px;line-height:1.08}
+    .page-hero p{font-size:1rem;color:var(--gray-600);line-height:1.7;max-width:520px;margin:0 auto}
+
+    .tip-box{max-width:640px;margin:48px auto 0;background:var(--green-50);border:1px solid var(--green-100);border-radius:var(--radius-lg);padding:24px 28px;display:flex;align-items:flex-start;gap:14px}
+    .tip-box i{font-size:1.4rem;color:var(--green-500);flex-shrink:0;margin-top:2px}
+    .tip-box p{font-size:.9rem;color:var(--gray-600);line-height:1.65;margin:0}
+    .tip-box strong{color:var(--gray-900)}
+
+    .footer{position:relative;z-index:1;border-top:1px solid var(--gray-100);padding:36px 24px;background:var(--white)}
+    .footer-inner{max-width:1180px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
+    .footer small{color:var(--gray-400);font-size:.82rem}
+    .footer-links{display:flex;gap:24px}
+    .footer-links a{font-size:.82rem;color:var(--gray-400);font-weight:500;transition:color .2s}
+    .footer-links a:hover{color:var(--green-500)}
+
+    .reveal{opacity:0;transform:translateY(28px);transition:all .65s cubic-bezier(.22,1,.36,1)}
+    .reveal.visible{opacity:1;transform:translateY(0)}
+    .reveal-d1{transition-delay:.08s}.reveal-d2{transition-delay:.16s}.reveal-d3{transition-delay:.24s}.reveal-d4{transition-delay:.32s}
+
+    /* PAGE-SPECIFIC */
+    .steps-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;max-width:1000px;margin:0 auto;padding:0 24px 80px}
+    .step-card{background:var(--white);border:1px solid var(--gray-100);border-radius:var(--radius-lg);padding:32px 28px;position:relative;overflow:hidden;transition:all .35s cubic-bezier(.4,0,.2,1)}
+    .step-card:hover{transform:translateY(-6px);box-shadow:var(--shadow-xl);border-color:transparent}
+    .step-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;border-radius:var(--radius-lg) var(--radius-lg) 0 0;opacity:0;transition:opacity .3s}
+    .step-card:hover::before{opacity:1}
+    .step-card[data-color="blue"]::before{background:linear-gradient(90deg,var(--blue-500),#60a5fa)}
+    .step-card[data-color="amber"]::before{background:linear-gradient(90deg,var(--amber-500),#fbbf24)}
+    .step-card[data-color="coral"]::before{background:linear-gradient(90deg,#ef4444,var(--coral-500))}
+    .step-card[data-color="green"]::before{background:linear-gradient(90deg,var(--green-500),var(--green-400))}
+    .step-number{position:absolute;top:24px;right:24px;font-family:var(--font-mono);font-size:2.5rem;font-weight:700;color:var(--gray-100);line-height:1}
+    .step-icon{width:52px;height:52px;border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;font-size:1.3rem;margin-bottom:18px;transition:transform .3s}
+    .step-card:hover .step-icon{transform:scale(1.1) rotate(-3deg)}
+    .step-badge{font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:5px 14px;border-radius:999px;margin-bottom:14px;display:inline-block;font-family:var(--font-mono)}
+    .step-title{font-size:1.12rem;font-weight:700;color:var(--gray-900);margin-bottom:16px}
+    .step-item{display:flex;align-items:flex-start;gap:10px;padding:7px 0;font-size:.88rem;color:var(--gray-600);line-height:1.6}
+    .step-dot{width:7px;height:7px;border-radius:50%;margin-top:7px;flex-shrink:0}
+
+    @media(max-width:768px){
+      .nav-links{display:none}.nav-links.open{display:flex;flex-direction:column;position:absolute;top:100%;left:0;right:0;background:rgba(247,248,250,.97);backdrop-filter:blur(20px);padding:16px 24px;border-bottom:1px solid var(--gray-100);box-shadow:var(--shadow-md);gap:2px}.nav-links.open a{padding:12px 16px}.nav-toggle{display:flex;align-items:center;justify-content:center}
+      .page-hero{padding:110px 24px 48px}.steps-grid{grid-template-columns:1fr}.tip-box{flex-direction:column;text-align:center}.footer-inner{flex-direction:column;text-align:center}
+    }
+  </style>
 </head>
 <body>
+  <nav class="navbar" id="navbar"><div class="navbar-inner"><a href="index.html" class="nav-logo"><span class="dot"></span> Empieza en el Gym</a><button class="nav-toggle" id="navToggle" aria-label="Menú"><i class="bi bi-list"></i></button><ul class="nav-links" id="navLinks"><li><a href="primer-dia.html" class="active">Primer día</a></li><li><a href="errores.html">Errores</a></li><li><a href="mitos.html">Mitos</a></li><li><a href="ejercicios.html">Ejercicios</a></li><li><a href="test.html">Test</a></li><li><a href="contacto.html">Contacto</a></li><li><a href="login.html" id="loginLink">Login</a></li><li><a href="register.html" class="nav-cta" id="registerLink"><i class="bi bi-person-plus"></i> Registro</a></li></ul></div></nav>
 
-  <!-- NAVBAR -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top shadow-sm">
-    <div class="container">
-      <a class="navbar-brand fw-bold" href="index.html">
-        <span class="logo-dot"></span> Empieza en el Gym
-      </a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="menu">
-        <ul class="navbar-nav ms-auto">
-          <li class="nav-item"><a class="nav-link active" href="primer-dia.html">Primer día</a></li>
-          <li class="nav-item"><a class="nav-link" href="errores.html">Errores típicos</a></li>
-          <li class="nav-item"><a class="nav-link" href="mitos.html">Mitos</a></li>
-          <li class="nav-item"><a class="nav-link" href="ejercicios.html">Ejercicios</a></li>
-          <li class="nav-item"><a class="nav-link" href="test.html">Test</a></li>
-          <li class="nav-item"><a class="nav-link" href="contacto.html">Contacto</a></li>
-          <li class="nav-item"><a class="nav-link" href="login.html">Login</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="register.html">Registro</a></li>
-
-
-        </ul>
-      </div>
+  <section class="page-hero">
+    <div class="hero-blob" style="width:400px;height:400px;background:radial-gradient(circle,rgba(16,185,129,.15),transparent 70%);top:-80px;right:-60px;position:absolute"></div>
+    <div class="page-hero-inner">
+      <div class="hero-tag" style="background:var(--green-50);border:1px solid var(--green-100);color:var(--green-600);"><i class="bi bi-rocket-takeoff-fill"></i> Guía básica</div>
+      <h1>Tu primer día en el gimnasio</h1>
+      <p>Sigue estos 4 pasos y tu primer día será pan comido. Sin estrés, sin vergüenza.</p>
     </div>
-  </nav>
+  </section>
 
-  <main class="page-content container py-5">
-    <header class="page-header">
-      <span class="badge bg-success-subtle text-success-emphasis mb-2">Guía básica</span>
-      <h1 class="h2 fw-bold">Tu primer día en el gimnasio</h1>
-      <p>Paso a paso desde que sales de casa hasta que terminas tu primer entrenamiento.</p>
-    </header>
-
-    <div class="row g-4">
-      <div class="col-lg-6">
-        <section class="content-card">
-          <h2 class="h4">Antes de salir de casa</h2>
-          <ul>
-            <li>Ropa cómoda y limpia, toalla pequeña y botella de agua.</li>
-            <li>Desayuna algo ligero si vas por la mañana; evita ir totalmente en ayunas.</li>
-            <li>Lleva una rutina sencilla apuntada en el móvil para no improvisar.</li>
-          </ul>
-        </section>
-
-        <section class="content-card mt-4">
-          <h2 class="h4">Al llegar al gym</h2>
-          <ul>
-            <li>Pregunta en recepción por taquillas, normas básicas y recorrido de la sala.</li>
-            <li>Haz 5–10 minutos de calentamiento suave en cinta, elíptica o bici.</li>
-            <li>Identifica zonas: máquinas guiadas, pesas libres, estiramientos y vestuarios.</li>
-          </ul>
-        </section>
-      </div>
-
-      <div class="col-lg-6">
-        <section class="content-card">
-          <h2 class="h4">Durante el entrenamiento</h2>
-          <ul>
-            <li>Empieza con máquinas guiadas para aprender el movimiento básico.</li>
-            <li>Respeta tiempos de descanso sin bloquear máquinas ni bancos.</li>
-            <li>Usa siempre toalla y limpia el material si sudas mucho.</li>
-          </ul>
-        </section>
-
-        <section class="content-card mt-4">
-          <h2 class="h4">Al terminar</h2>
-          <ul>
-            <li>Haz 5 minutos de vuelta a la calma y estiramientos suaves.</li>
-            <li>Anota cómo te has sentido (peso, dificultad, agujetas) para ajustar la próxima vez.</li>
-            <li>Bebe agua y toma algo de proteína + carbohidratos ligero.</li>
-          </ul>
-        </section>
-      </div>
-    </div>
+  <main class="steps-grid">
+    <div class="step-card reveal reveal-d1" data-color="blue"><span class="step-number">1</span><div class="step-icon" style="background:var(--blue-50);color:var(--blue-500);"><i class="bi bi-house-door-fill"></i></div><span class="step-badge" style="background:var(--blue-50);color:var(--blue-500);border:1px solid rgba(59,130,246,.15);">Antes de salir</span><div class="step-title">Prepara tu bolsa</div><div class="step-item"><span class="step-dot" style="background:var(--blue-500)"></span>Ropa cómoda y toalla limpia</div><div class="step-item"><span class="step-dot" style="background:var(--blue-500)"></span>Botella de agua llena</div><div class="step-item"><span class="step-dot" style="background:var(--blue-500)"></span>Rutina apuntada en el móvil</div></div>
+    <div class="step-card reveal reveal-d2" data-color="amber"><span class="step-number">2</span><div class="step-icon" style="background:var(--amber-50);color:var(--amber-500);"><i class="bi bi-door-open-fill"></i></div><span class="step-badge" style="background:var(--amber-50);color:var(--amber-500);border:1px solid rgba(245,158,11,.15);">Al llegar</span><div class="step-title">Familiarízate con el espacio</div><div class="step-item"><span class="step-dot" style="background:var(--amber-500)"></span>Saluda en recepción y pregunta dudas</div><div class="step-item"><span class="step-dot" style="background:var(--amber-500)"></span>Calienta 5–10 min en cinta o bici</div><div class="step-item"><span class="step-dot" style="background:var(--amber-500)"></span>Identifica zonas de máquinas y pesas</div></div>
+    <div class="step-card reveal reveal-d3" data-color="coral"><span class="step-number">3</span><div class="step-icon" style="background:var(--coral-50);color:#ef4444;"><i class="bi bi-lightning-charge-fill"></i></div><span class="step-badge" style="background:var(--coral-50);color:#ef4444;border:1px solid rgba(239,68,68,.15);">Durante</span><div class="step-title">Entrena con cabeza</div><div class="step-item"><span class="step-dot" style="background:#ef4444"></span>Empieza con máquinas guiadas (más seguro)</div><div class="step-item"><span class="step-dot" style="background:#ef4444"></span>Descansa 60–90 seg entre series</div><div class="step-item"><span class="step-dot" style="background:#ef4444"></span>Limpia el material cuando termines</div></div>
+    <div class="step-card reveal reveal-d4" data-color="green"><span class="step-number">4</span><div class="step-icon" style="background:var(--green-50);color:var(--green-600);"><i class="bi bi-check-circle-fill"></i></div><span class="step-badge" style="background:var(--green-50);color:var(--green-600);border:1px solid var(--green-100);">Al terminar</span><div class="step-title">Cierra bien la sesión</div><div class="step-item"><span class="step-dot" style="background:var(--green-500)"></span>5 minutos de estiramientos suaves</div><div class="step-item"><span class="step-dot" style="background:var(--green-500)"></span>Apunta cómo te ha ido (peso, sensaciones)</div><div class="step-item"><span class="step-dot" style="background:var(--green-500)"></span>Bebe agua e hidrátate bien</div></div>
   </main>
 
-  <footer class="main-footer">
-    <div class="container text-center">
-      <small>© 2026 Empieza en el Gym</small>
-    </div>
-  </footer>
+  <div style="max-width:1000px;margin:0 auto;padding:0 24px 80px"><div class="tip-box reveal"><i class="bi bi-lightbulb-fill"></i><p><strong>Tranquilo:</strong> El primer día NO tienes que ser perfecto. Ve con calma, observa y pregunta sin miedo.</p></div></div>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="js/auth.js"></script>
+  <footer class="footer"><div class="footer-inner"><small>&copy; 2026 Empieza en el Gym</small><div class="footer-links"><a href="index.html">Inicio</a><a href="ejercicios.html">Ejercicios</a><a href="test.html">Test</a><a href="contacto.html">Contacto</a></div></div></footer>
+
   <script>
-  // Ejecutar cuando cargue la página
-  document.addEventListener("DOMContentLoaded", function() {
-    // Comprobar si hay un usuario logueado
-    const isLogged = localStorage.getItem('isLogged') === 'true';
-    const currentUser = JSON.parse(localStorage.getItem('gymCurrentUser'));
-    
-    if (isLogged && currentUser) {
-      // 1. Ocultar los enlaces de Login y Registro en el menú
-      const loginLink = document.querySelector('a[href="login.html"]');
-      const registerLink = document.querySelector('a[href="register.html"]');
-      if (loginLink) loginLink.parentElement.style.display = 'none';
-      if (registerLink) registerLink.parentElement.style.display = 'none';
-      
-      // 2. Añadir botón de perfil y cerrar sesión
-      const menu = document.querySelector('.navbar-nav');
-      
-      // Crear el nombre del usuario
-      const userItem = document.createElement('li');
-      userItem.className = 'nav-item d-flex align-items-center ms-lg-3';
-      userItem.innerHTML = `
-        <span class="text-success fw-bold me-3">
-          <i class="bi bi-person-circle"></i> Hola, ${currentUser.nombre}
-        </span>
-      `;
-      
-      // Crear el botón de cerrar sesión
-      const logoutItem = document.createElement('li');
-      logoutItem.className = 'nav-item';
-      logoutItem.innerHTML = `
-        <button onclick="cerrarSesion()" class="btn btn-outline-danger btn-sm mt-2 mt-lg-0">
-          <i class="bi bi-box-arrow-right"></i> Salir
-        </button>
-      `;
-      
-      menu.appendChild(userItem);
-      menu.appendChild(logoutItem);
-    }
-  });
-
-  // Función para cerrar sesión
-  function cerrarSesion() {
-    localStorage.removeItem('isLogged');
-    localStorage.removeItem('gymCurrentUser');
-    alert('Has cerrado sesión correctamente.');
-    window.location.reload(); // Recarga la página para restaurar el menú
-  }
-</script>
-
-
+    const navbar=document.getElementById('navbar');if(navbar){window.addEventListener('scroll',()=>{navbar.classList.toggle('scrolled',window.scrollY>30)});if(window.scrollY>30)navbar.classList.add('scrolled')}
+    const navToggle=document.getElementById('navToggle'),navLinks=document.getElementById('navLinks');if(navToggle&&navLinks){navToggle.addEventListener('click',()=>{navLinks.classList.toggle('open');const i=navToggle.querySelector('i');i.classList.toggle('bi-list');i.classList.toggle('bi-x-lg')})}
+    const reveals=document.querySelectorAll('.reveal');if(reveals.length){const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target)}})},{threshold:.1});reveals.forEach(el=>obs.observe(el))}
+    document.addEventListener('DOMContentLoaded',function(){const isLogged=localStorage.getItem('isLogged')==='true';let cu=null;try{cu=JSON.parse(localStorage.getItem('gymCurrentUser'))}catch(e){}if(isLogged&&cu){const ll=document.getElementById('loginLink'),rl=document.getElementById('registerLink');if(ll)ll.parentElement.style.display='none';if(rl)rl.parentElement.style.display='none';const nl=document.getElementById('navLinks');if(nl){const u=document.createElement('li');u.innerHTML='<span style="color:var(--green-600);font-weight:700;font-size:.84rem;padding:8px 14px;display:inline-flex;align-items:center;gap:6px;"><i class="bi bi-person-circle"></i> '+cu.nombre+'</span>';nl.appendChild(u);const l=document.createElement('li');l.innerHTML='<a href="#" onclick="cerrarSesion();return false;" style="color:#ef4444;font-weight:600;font-size:.84rem;padding:8px 14px;display:inline-flex;align-items:center;gap:6px;"><i class="bi bi-box-arrow-right"></i> Salir</a>';nl.appendChild(l)}}});
+    function cerrarSesion(){localStorage.removeItem('isLogged');localStorage.removeItem('gymCurrentUser');window.location.reload()}
+  </script>
 </body>
 </html>
