@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Mi Perfil | Empieza en el Gym</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root{--white:#fff;--off-white:#f7f8fa;--cream:#f0f2f5;--gray-100:#e8ebf0;--gray-200:#d1d5de;--gray-400:#9098a9;--gray-600:#5a6278;--gray-800:#2d3142;--gray-900:#1a1d2e;--green-500:#10b981;--green-600:#059669;--green-400:#34d399;--green-50:#ecfdf5;--green-100:#d1fae5;--amber-500:#f59e0b;--amber-50:#fffbeb;--purple-500:#8b5cf6;--purple-50:#f5f3ff;--shadow-sm:0 1px 3px rgba(15,17,26,.06);--shadow-md:0 4px 16px rgba(15,17,26,.08);--shadow-lg:0 12px 40px rgba(15,17,26,.1);--shadow-xl:0 24px 64px rgba(15,17,26,.12);--shadow-green:0 8px 32px rgba(16,185,129,.25);--radius-xl:28px;--radius-lg:20px;--radius-md:14px;--radius-sm:10px;--font-display:'Sora',sans-serif;--font-mono:'DM Mono',monospace}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{font-family:var(--font-display);background:var(--off-white);color:var(--gray-800);overflow-x:hidden;min-height:100vh;-webkit-font-smoothing:antialiased}
+    ::selection{background:var(--green-100);color:var(--green-600)}
+    ::-webkit-scrollbar{width:7px}::-webkit-scrollbar-track{background:var(--off-white)}::-webkit-scrollbar-thumb{background:var(--gray-200);border-radius:99px}::-webkit-scrollbar-thumb:hover{background:var(--green-500)}
+    a{color:inherit;text-decoration:none}
+    body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,0,0,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,.02) 1px,transparent 1px);background-size:60px 60px;pointer-events:none;z-index:0}
+
+    /* NAVBAR */
+    .navbar{position:fixed;top:0;left:0;right:0;z-index:1000;padding:16px 0;transition:all .35s cubic-bezier(.4,0,.2,1)}
+    .navbar.scrolled{background:rgba(247,248,250,.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--gray-100);padding:10px 0;box-shadow:var(--shadow-sm)}
+    .navbar-inner{max-width:1180px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between}
+    .nav-logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:1.1rem;letter-spacing:-.04em;color:var(--gray-900)}
+    .nav-logo .dot{width:11px;height:11px;border-radius:50%;background:var(--green-500);box-shadow:0 0 0 3px rgba(16,185,129,.2);animation:breathe 3s ease-in-out infinite}
+    @keyframes breathe{0%,100%{box-shadow:0 0 0 3px rgba(16,185,129,.2)}50%{box-shadow:0 0 0 8px rgba(16,185,129,.1),0 0 20px rgba(16,185,129,.15)}}
+    .nav-links{display:flex;align-items:center;gap:2px;list-style:none}
+    .nav-links a{font-size:.84rem;font-weight:500;color:var(--gray-600);padding:8px 14px;border-radius:var(--radius-sm);transition:all .2s}
+    .nav-links a:hover{color:var(--gray-900);background:var(--cream)}
+    .nav-links a.active{color:var(--green-600);background:var(--green-50)}
+    .nav-cta{background:var(--green-500)!important;color:var(--white)!important;font-weight:600!important;margin-left:8px;padding:8px 18px!important;box-shadow:var(--shadow-green);border-radius:var(--radius-sm)!important;transition:all .25s ease!important}
+    .nav-cta:hover{background:var(--green-600)!important;transform:translateY(-1px);box-shadow:0 10px 36px rgba(16,185,129,.3)!important}
+    .nav-toggle{display:none;background:var(--cream);border:1px solid var(--gray-100);color:var(--gray-800);font-size:1.3rem;cursor:pointer;padding:6px 10px;border-radius:var(--radius-sm);transition:all .2s}
+    .nav-toggle:hover{background:var(--gray-100)}
+
+    /* PAGE HERO */
+    .page-hero{padding:120px 24px 40px;text-align:center;position:relative;z-index:1;overflow:hidden}
+    .page-hero-inner{max-width:560px;margin:0 auto;position:relative;z-index:2}
+    .hero-tag{display:inline-flex;align-items:center;gap:8px;padding:6px 16px;border-radius:999px;font-size:.73rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:16px}
+    .page-hero h1{font-size:clamp(1.8rem,3.5vw,2.5rem);font-weight:800;letter-spacing:-.04em;color:var(--gray-900);margin-bottom:8px;line-height:1.1}
+    .page-hero p{font-size:.95rem;color:var(--gray-600);line-height:1.7}
+
+    /* MAIN WRAP */
+    .profile-wrap{max-width:1000px;margin:0 auto;padding:0 24px 80px;position:relative;z-index:1}
+
+    /* TOP GRID: account + streak */
+    .profile-top-grid{display:grid;grid-template-columns:1.3fr .7fr;gap:20px;margin-bottom:20px}
+
+    /* ACCOUNT CARD */
+    .account-card{background:var(--white);border:1px solid var(--gray-100);border-radius:var(--radius-lg);padding:28px;display:flex;gap:20px;align-items:flex-start;box-shadow:var(--shadow-md)}
+    .account-avatar{width:70px;height:70px;border-radius:var(--radius-md);background:linear-gradient(135deg,var(--green-500),var(--green-600));color:var(--white);font-size:1.5rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;letter-spacing:-.02em}
+    .account-details h2{font-size:1.15rem;font-weight:800;color:var(--gray-900);margin-bottom:10px}
+    .account-meta{display:flex;flex-direction:column;gap:7px;margin-bottom:14px}
+    .account-meta span{font-size:.84rem;color:var(--gray-600);display:flex;align-items:center;gap:8px}
+    .account-meta i{color:var(--green-500);font-size:.9rem;flex-shrink:0}
+    .test-badge{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:999px;font-size:.75rem;font-weight:700;font-family:var(--font-mono)}
+    .test-badge.done{background:var(--green-50);border:1px solid var(--green-100);color:var(--green-600)}
+    .test-badge.pending{background:var(--amber-50);border:1px solid rgba(245,158,11,.2);color:var(--amber-500)}
+
+    /* STREAK CARD */
+    .streak-card{background:var(--white);border:1px solid var(--gray-100);border-radius:var(--radius-lg);padding:24px 20px;box-shadow:var(--shadow-md);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;text-align:center}
+    .streak-fire{font-size:2.6rem;line-height:1;filter:drop-shadow(0 4px 8px rgba(251,146,60,.4));transition:filter .3s}
+    .streak-fire.off{filter:grayscale(1);opacity:.35}
+    .streak-big-num{font-family:var(--font-mono);font-size:2.8rem;font-weight:700;color:var(--gray-900);line-height:1.1}
+    .streak-sub{font-size:.78rem;color:var(--gray-400);margin-bottom:10px;font-weight:500}
+    .week-dots{display:flex;gap:6px;align-items:flex-end;justify-content:center;margin-top:2px}
+    .day-dot{display:flex;flex-direction:column;align-items:center;gap:5px}
+    .day-dot .dot-circle{width:28px;height:28px;border-radius:50%;background:var(--gray-100);transition:all .3s ease;display:flex;align-items:center;justify-content:center}
+    .day-dot .dot-circle.active{background:var(--green-500);box-shadow:0 3px 10px rgba(16,185,129,.35)}
+    .day-dot .dot-circle.active::after{content:'✓';color:white;font-size:.65rem;font-weight:700}
+    .day-dot .dot-circle.today-ring{border:2px solid var(--green-500)}
+    .day-dot .dot-label{font-size:.62rem;font-weight:600;color:var(--gray-400);font-family:var(--font-mono);text-transform:uppercase}
+    .day-dot .dot-label.today{color:var(--green-600)}
+
+    /* EXERCISES SECTION */
+    .exercises-section,.no-test-section{margin-top:4px}
+    .section-divider{text-align:center;padding:24px 0 20px}
+    .section-divider .stag{display:inline-flex;align-items:center;gap:8px;font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;font-family:var(--font-mono);padding:5px 14px;border-radius:999px;margin-bottom:12px}
+    .section-divider h2{font-size:clamp(1.3rem,2.5vw,1.8rem);font-weight:800;letter-spacing:-.03em;color:var(--gray-900);margin-bottom:6px}
+    .section-divider p{font-size:.88rem;color:var(--gray-600)}
+
+    /* PROGRESS BAR */
+    .day-progress{padding:14px 18px;background:var(--white);border:1px solid var(--gray-100);border-radius:var(--radius-md);margin-bottom:12px;box-shadow:var(--shadow-sm)}
+    .day-progress-top{display:flex;justify-content:space-between;font-size:.78rem;font-weight:600;color:var(--gray-600);margin-bottom:8px;font-family:var(--font-mono)}
+    .day-progress-track{height:7px;background:var(--gray-100);border-radius:99px;overflow:hidden}
+    .day-progress-fill{height:100%;background:linear-gradient(90deg,var(--green-500),var(--green-400));border-radius:99px;transition:width .5s cubic-bezier(.4,0,.2,1);width:0%}
+
+    /* ROUTINE LIST */
+    .routine-list{display:flex;flex-direction:column;gap:10px}
+    .routine-item{background:var(--white);border:1px solid var(--gray-100);border-radius:var(--radius-md);padding:18px 20px;display:flex;align-items:center;gap:14px;transition:all .3s;cursor:pointer;user-select:none}
+    .routine-item:hover:not(.done){box-shadow:var(--shadow-md);border-color:var(--green-100);transform:translateX(3px)}
+    .routine-item.done{background:var(--green-50);border-color:var(--green-100);cursor:default}
+    .r-check{width:28px;height:28px;border-radius:8px;border:2px solid var(--gray-200);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .25s;font-size:.85rem;color:transparent}
+    .routine-item.done .r-check{background:var(--green-500);border-color:var(--green-500);color:var(--white)}
+    .r-info{flex:1}
+    .r-name{font-size:.92rem;font-weight:600;color:var(--gray-900);margin-bottom:2px;transition:all .3s}
+    .routine-item.done .r-name{text-decoration:line-through;color:var(--gray-400)}
+    .r-desc{font-size:.78rem;color:var(--gray-400)}
+    .r-sets{font-size:.76rem;font-weight:700;color:var(--green-600);font-family:var(--font-mono);white-space:nowrap}
+
+    /* ALL DONE MESSAGE */
+    .all-done-msg{margin-top:16px;padding:18px 22px;background:var(--green-50);border:1px solid var(--green-100);border-radius:var(--radius-md);display:flex;align-items:center;gap:12px;font-size:.92rem;color:var(--green-600);font-weight:600}
+    .all-done-msg i{font-size:1.4rem;flex-shrink:0}
+
+    /* NO TEST PROMPT */
+    .no-test-section{text-align:center;padding:0 0 20px}
+    .test-prompt-card{background:var(--white);border:1px solid var(--gray-100);border-radius:var(--radius-xl);padding:48px 36px;box-shadow:var(--shadow-md);max-width:480px;margin:0 auto}
+    .test-prompt-card .big-icon{font-size:2.5rem;color:var(--purple-500);margin-bottom:16px;display:block}
+    .test-prompt-card h2{font-size:1.2rem;font-weight:800;color:var(--gray-900);margin-bottom:8px}
+    .test-prompt-card p{font-size:.9rem;color:var(--gray-600);line-height:1.6;margin-bottom:24px}
+    .btn-cta{display:inline-flex;align-items:center;gap:8px;padding:14px 28px;border-radius:var(--radius-md);font-family:var(--font-display);font-weight:700;font-size:.92rem;border:none;cursor:pointer;background:var(--green-500);color:var(--white);box-shadow:var(--shadow-green);transition:all .3s}
+    .btn-cta:hover{background:var(--green-600);transform:translateY(-3px);box-shadow:0 12px 40px rgba(16,185,129,.35)}
+
+    /* FOOTER */
+    .footer{position:relative;z-index:1;border-top:1px solid var(--gray-100);padding:36px 24px;background:var(--white)}
+    .footer-inner{max-width:1180px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
+    .footer small{color:var(--gray-400);font-size:.82rem}
+    .footer-links{display:flex;gap:24px}
+    .footer-links a{font-size:.82rem;color:var(--gray-400);font-weight:500;transition:color .2s}
+    .footer-links a:hover{color:var(--green-500)}
+
+    /* REVEAL */
+    .reveal{opacity:0;transform:translateY(24px);transition:all .6s cubic-bezier(.22,1,.36,1)}
+    .reveal.visible{opacity:1;transform:translateY(0)}
+    .reveal-d1{transition-delay:.08s}.reveal-d2{transition-delay:.16s}
+
+    /* RESPONSIVE */
+    @media(max-width:768px){
+      .nav-links{display:none}
+      .nav-links.open{display:flex;flex-direction:column;position:absolute;top:100%;left:0;right:0;background:rgba(247,248,250,.97);backdrop-filter:blur(20px);padding:16px 24px;border-bottom:1px solid var(--gray-100);box-shadow:var(--shadow-md);gap:2px}
+      .nav-links.open a{padding:12px 16px}
+      .nav-toggle{display:flex;align-items:center;justify-content:center}
+      .page-hero{padding:100px 24px 32px}
+      .profile-top-grid{grid-template-columns:1fr}
+      .footer-inner{flex-direction:column;text-align:center}
+    }
+    @media(max-width:480px){
+      .account-card{flex-direction:column}
+      .week-dots{gap:4px}
+      .day-dot .dot-circle{width:24px;height:24px}
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar" id="navbar">
+    <div class="navbar-inner">
+      <a href="index.html" class="nav-logo"><span class="dot"></span> Empieza en el Gym</a>
+      <button class="nav-toggle" id="navToggle" aria-label="Menú"><i class="bi bi-list"></i></button>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="mitos-errores.html">Mitos y Errores</a></li>
+        <li><a href="ejercicios.html">Ejercicios</a></li>
+        <li><a href="test.html">Test</a></li>
+        <li><a href="calculadora.html">Calculadora</a></li>
+        <li><a href="contacto.html">Contacto</a></li>
+        <li><a href="login.html" id="loginLink">Login</a></li>
+        <li><a href="register.html" class="nav-cta" id="registerLink"><i class="bi bi-person-plus"></i> Registro</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <section class="page-hero">
+    <div style="width:350px;height:350px;background:radial-gradient(circle,rgba(16,185,129,.12),transparent 70%);top:-60px;right:-40px;position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none;opacity:.6"></div>
+    <div class="page-hero-inner">
+      <div class="hero-tag" style="background:var(--green-50);border:1px solid var(--green-100);color:var(--green-600);"><i class="bi bi-person-circle"></i> Mi cuenta</div>
+      <h1 id="heroTitle">Mi Perfil</h1>
+      <p>Tu información, tu racha y los ejercicios de hoy.</p>
+    </div>
+  </section>
+
+  <div class="profile-wrap">
+
+    <!-- Account info + Streak -->
+    <div class="profile-top-grid reveal">
+
+      <div class="account-card">
+        <div class="account-avatar" id="accountAvatar">?</div>
+        <div class="account-details">
+          <h2 id="accountName">Cargando...</h2>
+          <div class="account-meta">
+            <span><i class="bi bi-envelope-fill"></i><span id="accountEmail">—</span></span>
+            <span><i class="bi bi-calendar3"></i>Miembro desde <span id="accountFecha">—</span></span>
+          </div>
+          <span class="test-badge pending" id="testBadge"><i class="bi bi-clipboard2-x-fill"></i> Test pendiente</span>
+        </div>
+      </div>
+
+      <div class="streak-card">
+        <div class="streak-fire off" id="streakFire">🔥</div>
+        <div class="streak-big-num" id="streakNum">0</div>
+        <div class="streak-sub">días de racha</div>
+        <div class="week-dots" id="weekDots"></div>
+      </div>
+
+    </div>
+
+    <!-- No test yet -->
+    <div class="no-test-section reveal reveal-d1" id="noTestSection" style="display:none">
+      <div class="section-divider">
+        <span class="stag" style="background:var(--purple-50);color:var(--purple-500);border:1px solid rgba(139,92,246,.15);"><i class="bi bi-clipboard2-check-fill"></i> Test</span>
+        <h2>Haz el test primero</h2>
+        <p>Necesitas completar el test para desbloquear tu rutina y poder llevar la racha.</p>
+      </div>
+      <div class="test-prompt-card">
+        <i class="bi bi-clipboard2-check-fill big-icon"></i>
+        <h2>Test sin completar</h2>
+        <p>Completa el test y desbloquea tu rutina personalizada. Después podrás marcar ejercicios como hechos para mantener tu racha diaria.</p>
+        <a href="test.html" class="btn-cta"><i class="bi bi-clipboard2-check-fill"></i> Hacer el test ahora</a>
+      </div>
+    </div>
+
+    <!-- Exercises (test done) -->
+    <div class="exercises-section reveal reveal-d1" id="exercisesSection" style="display:none">
+      <div class="section-divider">
+        <span class="stag" style="background:var(--green-50);color:var(--green-600);border:1px solid var(--green-100);"><i class="bi bi-calendar-check-fill"></i> Hoy</span>
+        <h2>Ejercicios de hoy</h2>
+        <p>Marca cada ejercicio como completado para mantener tu racha activa.</p>
+      </div>
+
+      <div class="day-progress">
+        <div class="day-progress-top">
+          <span>Progreso del día</span>
+          <span id="progressText">0 / 6</span>
+        </div>
+        <div class="day-progress-track">
+          <div class="day-progress-fill" id="progressFill"></div>
+        </div>
+      </div>
+
+      <div class="routine-list" id="routineList"></div>
+
+      <div class="all-done-msg" id="allDoneMsg" style="display:none">
+        <i class="bi bi-trophy-fill"></i>
+        <span>¡Todos los ejercicios completados! Racha actualizada. Vuelve mañana para seguir.</span>
+      </div>
+    </div>
+
+  </div>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <small>&copy; 2026 Empieza en el Gym — Proyecto 2.º DAW</small>
+      <div class="footer-links">
+        <a href="mitos-errores.html">Mitos y Errores</a>
+        <a href="ejercicios.html">Ejercicios</a>
+        <a href="test.html">Test</a>
+        <a href="contacto.html">Contacto</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const API = 'http://localhost:5000';
+
+    // Navbar
+    const navbar = document.getElementById('navbar');
+    if (navbar) {
+      window.addEventListener('scroll', () => { navbar.classList.toggle('scrolled', window.scrollY > 30); });
+      if (window.scrollY > 30) navbar.classList.add('scrolled');
+    }
+    const navToggle = document.getElementById('navToggle'), navLinksEl = document.getElementById('navLinks');
+    if (navToggle && navLinksEl) {
+      navToggle.addEventListener('click', () => {
+        navLinksEl.classList.toggle('open');
+        const i = navToggle.querySelector('i');
+        i.classList.toggle('bi-list'); i.classList.toggle('bi-x-lg');
+      });
+    }
+    const reveals = document.querySelectorAll('.reveal');
+    if (reveals.length) {
+      const obs = new IntersectionObserver(entries => {
+        entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+      }, { threshold: .1 });
+      reveals.forEach(el => obs.observe(el));
+    }
+
+    // Auth check — redirect if not logged in
+    const isLogged = localStorage.getItem('isLogged') === 'true';
+    let cu = null;
+    try { cu = JSON.parse(localStorage.getItem('gymCurrentUser')); } catch(e) {}
+    if (!isLogged || !cu) { window.location.href = 'login.html'; }
+
+    // ─── STREAK HELPERS ───────────────────────────────────────
+    function todayStr() { return new Date().toISOString().split('T')[0]; }
+    function yesterdayStr() { const d = new Date(); d.setDate(d.getDate() - 1); return d.toISOString().split('T')[0]; }
+
+    function getStreak() {
+      try { return JSON.parse(localStorage.getItem('gymStreak') || '{"count":0,"lastActive":null,"history":[]}'); }
+      catch(e) { return { count: 0, lastActive: null, history: [] }; }
+    }
+
+    function recordDayComplete() {
+      const today = todayStr(), yesterday = yesterdayStr();
+      let s = getStreak();
+      if (s.lastActive === today) return s.count;
+      s.count = (s.lastActive === yesterday) ? s.count + 1 : 1;
+      s.lastActive = today;
+      if (!s.history.includes(today)) s.history.push(today);
+      if (s.history.length > 90) s.history = s.history.slice(-90);
+      localStorage.setItem('gymStreak', JSON.stringify(s));
+      return s.count;
+    }
+
+    function updateStreakDisplay(count) {
+      document.getElementById('streakNum').textContent = count;
+      const fire = document.getElementById('streakFire');
+      if (count > 0) fire.classList.remove('off'); else fire.classList.add('off');
+    }
+
+    function renderWeekDots(history) {
+      const container = document.getElementById('weekDots');
+      container.innerHTML = '';
+      const today = new Date();
+      const todayS = todayStr();
+      const dayNames = ['D', 'L', 'M', 'X', 'J', 'V', 'S'];
+      for (let i = 6; i >= 0; i--) {
+        const d = new Date(today);
+        d.setDate(d.getDate() - i);
+        const ds = d.toISOString().split('T')[0];
+        const isToday = ds === todayS;
+        const isActive = history.includes(ds);
+        const dot = document.createElement('div');
+        dot.className = 'day-dot';
+        const circle = document.createElement('div');
+        circle.className = 'dot-circle' + (isActive ? ' active' : '') + (isToday && !isActive ? ' today-ring' : '');
+        const label = document.createElement('div');
+        label.className = 'dot-label' + (isToday ? ' today' : '');
+        label.textContent = isToday ? 'Hoy' : dayNames[d.getDay()];
+        dot.appendChild(circle);
+        dot.appendChild(label);
+        container.appendChild(dot);
+      }
+    }
+
+    // ─── DAILY PROGRESS ───────────────────────────────────────
+    const _savedRoutine = (() => { try { return JSON.parse(localStorage.getItem('gymRoutine')); } catch(e) { return null; } })();
+    const _dayIndex = _savedRoutine ? (new Date().getDay() % _savedRoutine.days.length) : 0;
+    const _todayDay = _savedRoutine ? _savedRoutine.days[_dayIndex] : null;
+    const EXERCISES = _todayDay
+      ? _todayDay.exercises.map(ex => ({
+          id: ex.key,
+          name: ex.name,
+          desc: ex.desc,
+          sets: `${_savedRoutine.scheme.sets}×${_savedRoutine.scheme.reps}`
+        }))
+      : [
+          { id: 'warmup', name: 'Calentamiento', desc: '5–10 min cardio suave (cinta/bici)', sets: '5-10 min' },
+          { id: 'press',  name: 'Press de pecho en máquina', desc: 'Pecho — espalda apoyada, codos controlados', sets: '3×12' },
+          { id: 'remo',   name: 'Remo en polea sentado', desc: 'Espalda — tira hacia abdomen, pecho alto', sets: '3×12' },
+          { id: 'prensa', name: 'Prensa de piernas', desc: 'Piernas — pies a anchura de hombros', sets: '3×15' },
+          { id: 'curl',   name: 'Curl de bíceps con mancuernas', desc: 'Brazos — codos fijos al costado', sets: '3×12' },
+          { id: 'stretch',name: 'Estiramientos', desc: '5 min de estiramientos suaves al acabar', sets: '5 min' }
+        ];
+
+    function getTodayProgress() {
+      try { const p = JSON.parse(localStorage.getItem('gymDailyProgress') || '{}'); return p[todayStr()] || []; }
+      catch(e) { return []; }
+    }
+
+    function saveTodayProgress(arr) {
+      try {
+        const p = JSON.parse(localStorage.getItem('gymDailyProgress') || '{}');
+        p[todayStr()] = arr;
+        localStorage.setItem('gymDailyProgress', JSON.stringify(p));
+      } catch(e) {}
+    }
+
+    function updateDayProgress(done) {
+      const total = EXERCISES.length;
+      document.getElementById('progressText').textContent = done + ' / ' + total;
+      document.getElementById('progressFill').style.width = Math.round((done / total) * 100) + '%';
+    }
+
+    function renderExercises() {
+      const list = document.getElementById('routineList');
+      const completed = getTodayProgress();
+      list.innerHTML = '';
+      EXERCISES.forEach(ex => {
+        const isDone = completed.includes(ex.id);
+        const item = document.createElement('div');
+        item.className = 'routine-item' + (isDone ? ' done' : '');
+        item.dataset.id = ex.id;
+        item.innerHTML = `<div class="r-check"><i class="bi bi-check-lg"></i></div><div class="r-info"><div class="r-name">${ex.name}</div><div class="r-desc">${ex.desc}</div></div><div class="r-sets">${ex.sets}</div>`;
+        if (!isDone) item.addEventListener('click', () => markExerciseDone(ex.id, item));
+        list.appendChild(item);
+      });
+      updateDayProgress(completed.length);
+      if (completed.length >= EXERCISES.length) {
+        document.getElementById('allDoneMsg').style.display = 'flex';
+      }
+    }
+
+    function markExerciseDone(exerciseId, el) {
+      el.classList.add('done');
+      el.style.pointerEvents = 'none';
+      const completed = getTodayProgress();
+      if (!completed.includes(exerciseId)) completed.push(exerciseId);
+      saveTodayProgress(completed);
+      updateDayProgress(completed.length);
+      // All done → update streak
+      if (completed.length >= EXERCISES.length) {
+        const newCount = recordDayComplete();
+        updateStreakDisplay(newCount);
+        renderWeekDots(getStreak().history);
+        document.getElementById('allDoneMsg').style.display = 'flex';
+      }
+      // Try API
+      if (cu && cu.id) {
+        fetch(API + '/api/complete-exercise/' + cu.id, {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ exerciseId })
+        }).then(r => r.json()).then(data => { if (data.ok) updateStreakDisplay(data.racha); }).catch(() => {});
+      }
+    }
+
+    // ─── INIT ─────────────────────────────────────────────────
+    document.addEventListener('DOMContentLoaded', function() {
+      if (!isLogged || !cu) return;
+
+      // Navbar: hide login/register, add profile link + logout
+      const ll = document.getElementById('loginLink'), rl = document.getElementById('registerLink');
+      if (ll) ll.parentElement.style.display = 'none';
+      if (rl) rl.parentElement.style.display = 'none';
+      const nl = document.getElementById('navLinks');
+      if (nl) {
+        const u = document.createElement('li');
+        u.innerHTML = '<a href="perfil.html" class="active" style="color:var(--green-600);font-weight:700;font-size:.84rem;padding:8px 14px;display:inline-flex;align-items:center;gap:6px;"><i class="bi bi-person-circle"></i> ' + cu.nombre + '</a>';
+        nl.appendChild(u);
+        const l = document.createElement('li');
+        l.innerHTML = '<a href="#" onclick="cerrarSesion();return false;" style="color:#ef4444;font-weight:600;font-size:.84rem;padding:8px 14px;display:inline-flex;align-items:center;gap:6px;"><i class="bi bi-box-arrow-right"></i> Salir</a>';
+        nl.appendChild(l);
+      }
+
+      // Hero title
+      const firstName = cu.nombre ? cu.nombre.split(' ')[0] : 'Usuario';
+      document.getElementById('heroTitle').textContent = 'Hola, ' + firstName;
+
+      // Avatar (initials)
+      const initials = cu.nombre ? cu.nombre.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase() : '?';
+      document.getElementById('accountAvatar').textContent = initials;
+
+      // Account details
+      document.getElementById('accountName').textContent = cu.nombre || '—';
+      document.getElementById('accountEmail').textContent = cu.email || '—';
+
+      // Member since
+      if (cu.fecha) {
+        try {
+          const d = new Date(cu.fecha);
+          document.getElementById('accountFecha').textContent = d.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
+        } catch(e) { document.getElementById('accountFecha').textContent = '—'; }
+      }
+
+      // Test badge
+      if (cu.testDone) {
+        const tb = document.getElementById('testBadge');
+        tb.className = 'test-badge done';
+        tb.innerHTML = '<i class="bi bi-clipboard2-check-fill"></i> Test completado' + (cu.testScore !== undefined ? ' (' + cu.testScore + '/10)' : '');
+      }
+
+      // Streak display
+      const s = getStreak();
+      updateStreakDisplay(s.count);
+      renderWeekDots(s.history);
+
+      // Show correct section
+      if (cu.testDone) {
+        document.getElementById('exercisesSection').style.display = 'block';
+        renderExercises();
+        // Try API streak
+        if (cu.id) {
+          fetch(API + '/api/streak/' + cu.id).then(r => r.json()).then(data => {
+            if (data.ok) updateStreakDisplay(data.racha);
+          }).catch(() => {});
+        }
+      } else {
+        document.getElementById('noTestSection').style.display = 'block';
+      }
+
+      // Try API for profile (may update testDone)
+      if (cu.id) {
+        fetch(API + '/api/profile/' + cu.id).then(r => r.json()).then(data => {
+          if (data.ok && data.user.testDone && !cu.testDone) {
+            cu.testDone = true;
+            localStorage.setItem('gymCurrentUser', JSON.stringify(cu));
+            document.getElementById('noTestSection').style.display = 'none';
+            document.getElementById('exercisesSection').style.display = 'block';
+            renderExercises();
+          }
+        }).catch(() => {});
+      }
+    });
+
+    function cerrarSesion() {
+      localStorage.removeItem('isLogged');
+      localStorage.removeItem('gymCurrentUser');
+      window.location.href = 'index.html';
+    }
+  </script>
+</body>
+</html>

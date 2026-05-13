@@ -52,7 +52,7 @@ app.post('/api/login', async (req, res) => {
     if (!user)
       return res.status(401).json({ ok: false, msg: 'Email o contraseña incorrectos' });
 
-    res.json({ ok: true, msg: 'Login correcto', user: { nombre: user.nombre, email: user.email } });
+    res.json({ ok: true, msg: 'Login correcto', user: { nombre: user.nombre, email: user.email, fecha: user.fecha } });
   } catch (e) {
     res.status(500).json({ ok: false, msg: 'Error del servidor' });
   }

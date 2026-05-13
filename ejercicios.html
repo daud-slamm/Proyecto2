@@ -2,385 +2,241 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Ejercicios básicos | Empieza en el Gym</title>
+  <title>Ejercicios | Empieza en el Gym</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
-  
   <style>
-/* ════════════════════════════════════════════════════════
-   EMPIEZA EN EL GYM — LIGHT THEME
-   Sora + DM Mono | Green emerald palette
-   ════════════════════════════════════════════════════════ */
+    @import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap');
+    :root{--white:#fff;--off-white:#f7f8fa;--cream:#f0f2f5;--gray-100:#e8ebf0;--gray-200:#d1d5de;--gray-400:#9098a9;--gray-600:#5a6278;--gray-800:#2d3142;--gray-900:#1a1d2e;--green-500:#10b981;--green-600:#059669;--green-400:#34d399;--green-50:#ecfdf5;--green-100:#d1fae5;--coral-500:#f97066;--coral-50:#fef2f2;--amber-500:#f59e0b;--amber-50:#fffbeb;--blue-500:#3b82f6;--blue-50:#eff6ff;--purple-500:#8b5cf6;--purple-50:#f5f3ff;--teal-500:#14b8a6;--teal-50:#f0fdfa;--shadow-sm:0 1px 3px rgba(15,17,26,.06);--shadow-md:0 4px 16px rgba(15,17,26,.08);--shadow-lg:0 12px 40px rgba(15,17,26,.1);--shadow-xl:0 24px 64px rgba(15,17,26,.12);--shadow-green:0 8px 32px rgba(16,185,129,.25);--radius-xl:28px;--radius-lg:20px;--radius-md:14px;--radius-sm:10px;--font-display:'Sora',sans-serif;--font-mono:'DM Mono',monospace}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}body{font-family:var(--font-display);background:var(--off-white);color:var(--gray-800);overflow-x:hidden;min-height:100vh;-webkit-font-smoothing:antialiased}::selection{background:var(--green-100);color:var(--green-600)}::-webkit-scrollbar{width:7px}::-webkit-scrollbar-track{background:var(--off-white)}::-webkit-scrollbar-thumb{background:var(--gray-200);border-radius:99px}a{color:inherit;text-decoration:none}
+    body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,0,0,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,.02) 1px,transparent 1px);background-size:60px 60px;pointer-events:none;z-index:0}
+    .navbar{position:fixed;top:0;left:0;right:0;z-index:1000;padding:16px 0;transition:all .35s cubic-bezier(.4,0,.2,1)}.navbar.scrolled{background:rgba(247,248,250,.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--gray-100);padding:10px 0;box-shadow:var(--shadow-sm)}.navbar-inner{max-width:1180px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between}.nav-logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:1.1rem;letter-spacing:-.04em;color:var(--gray-900)}.nav-logo .dot{width:11px;height:11px;border-radius:50%;background:var(--green-500);box-shadow:0 0 0 3px rgba(16,185,129,.2);animation:breathe 3s ease-in-out infinite}@keyframes breathe{0%,100%{box-shadow:0 0 0 3px rgba(16,185,129,.2)}50%{box-shadow:0 0 0 8px rgba(16,185,129,.1),0 0 20px rgba(16,185,129,.15)}}.nav-links{display:flex;align-items:center;gap:2px;list-style:none}.nav-links a{font-size:.84rem;font-weight:500;color:var(--gray-600);padding:8px 14px;border-radius:var(--radius-sm);transition:all .2s}.nav-links a:hover{color:var(--gray-900);background:var(--cream)}.nav-links a.active{color:var(--green-600);background:var(--green-50)}.nav-cta{background:var(--green-500)!important;color:var(--white)!important;font-weight:600!important;margin-left:8px;padding:8px 18px!important;box-shadow:var(--shadow-green);border-radius:var(--radius-sm)!important}.nav-toggle{display:none;background:var(--cream);border:1px solid var(--gray-100);color:var(--gray-800);font-size:1.3rem;cursor:pointer;padding:6px 10px;border-radius:var(--radius-sm)}
+    .page-hero{padding:130px 24px 60px;text-align:center;position:relative;z-index:1;overflow:hidden}.page-hero-inner{max-width:680px;margin:0 auto;position:relative;z-index:2}.page-hero .hero-tag{display:inline-flex;align-items:center;gap:8px;padding:6px 16px;border-radius:999px;font-size:.73rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:20px}.page-hero h1{font-size:clamp(2rem,4.5vw,3rem);font-weight:800;letter-spacing:-.04em;color:var(--gray-900);margin-bottom:14px;line-height:1.08}.page-hero p{font-size:1rem;color:var(--gray-600);line-height:1.7;max-width:540px;margin:0 auto}
+    .footer{position:relative;z-index:1;border-top:1px solid var(--gray-100);padding:36px 24px;background:var(--white)}.footer-inner{max-width:1180px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}.footer small{color:var(--gray-400);font-size:.82rem}.footer-links{display:flex;gap:24px}.footer-links a{font-size:.82rem;color:var(--gray-400);font-weight:500;transition:color .2s}.footer-links a:hover{color:var(--green-500)}
+    .reveal{opacity:0;transform:translateY(28px);transition:all .65s cubic-bezier(.22,1,.36,1)}.reveal.visible{opacity:1;transform:translateY(0)}.reveal-d1{transition-delay:.08s}.reveal-d2{transition-delay:.16s}.reveal-d3{transition-delay:.24s}.reveal-d4{transition-delay:.32s}
 
-@import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap');
-
-:root {
-  --white:#ffffff; --off-white:#f7f8fa; --cream:#f0f2f5;
-  --gray-100:#e8ebf0; --gray-200:#d1d5de; --gray-400:#9098a9;
-  --gray-600:#5a6278; --gray-800:#2d3142; --gray-900:#1a1d2e;
-  --green-500:#10b981; --green-600:#059669; --green-400:#34d399;
-  --green-50:#ecfdf5; --green-100:#d1fae5;
-  --coral-500:#f97066; --coral-50:#fef2f2;
-  --amber-500:#f59e0b; --amber-50:#fffbeb;
-  --blue-500:#3b82f6; --blue-50:#eff6ff;
-  --purple-500:#8b5cf6; --purple-50:#f5f3ff;
-  --teal-500:#14b8a6; --teal-50:#f0fdfa;
-  --shadow-sm:0 1px 3px rgba(15,17,26,0.06);
-  --shadow-md:0 4px 16px rgba(15,17,26,0.08);
-  --shadow-lg:0 12px 40px rgba(15,17,26,0.1);
-  --shadow-xl:0 24px 64px rgba(15,17,26,0.12);
-  --shadow-green:0 8px 32px rgba(16,185,129,0.25);
-  --radius-xl:28px; --radius-lg:20px; --radius-md:14px; --radius-sm:10px;
-  --font-display:'Sora',sans-serif; --font-mono:'DM Mono',monospace;
-}
-
-*, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
-html { scroll-behavior:smooth; }
-body {
-  font-family:var(--font-display);
-  background:var(--off-white);
-  color:var(--gray-800);
-  overflow-x:hidden;
-  min-height:100vh;
-  -webkit-font-smoothing:antialiased;
-  padding-top:0;
-}
-::selection { background:var(--green-100); color:var(--green-600); }
-::-webkit-scrollbar { width:7px; }
-::-webkit-scrollbar-track { background:var(--off-white); }
-::-webkit-scrollbar-thumb { background:var(--gray-200); border-radius:99px; }
-::-webkit-scrollbar-thumb:hover { background:var(--green-500); }
-a { color:inherit; text-decoration:none; }
-img { max-width:100%; display:block; }
-
-/* Grid texture */
-body::before {
-  content:''; position:fixed; inset:0;
-  background-image:
-    linear-gradient(rgba(0,0,0,0.02) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0,0,0,0.02) 1px, transparent 1px);
-  background-size:60px 60px;
-  pointer-events:none; z-index:0;
-}
-
-/* ── NAVBAR ── */
-.navbar {
-  position:fixed; top:0; left:0; right:0; z-index:1000;
-  padding:16px 0;
-  transition:all .35s cubic-bezier(.4,0,.2,1);
-  background:transparent;
-}
-.navbar.scrolled {
-  background:rgba(247,248,250,0.92);
-  backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);
-  border-bottom:1px solid var(--gray-100);
-  padding:10px 0;
-  box-shadow:var(--shadow-sm);
-}
-.navbar-inner {
-  max-width:1180px; margin:0 auto; padding:0 24px;
-  display:flex; align-items:center; justify-content:space-between;
-}
-.nav-logo {
-  display:flex; align-items:center; gap:10px;
-  font-weight:800; font-size:1.1rem;
-  letter-spacing:-0.04em; color:var(--gray-900);
-}
-.nav-logo .dot {
-  width:11px; height:11px; border-radius:50%;
-  background:var(--green-500);
-  box-shadow:0 0 0 3px rgba(16,185,129,0.2);
-  animation:breathe 3s ease-in-out infinite;
-}
-@keyframes breathe {
-  0%,100% { box-shadow:0 0 0 3px rgba(16,185,129,0.2); }
-  50% { box-shadow:0 0 0 8px rgba(16,185,129,0.1), 0 0 20px rgba(16,185,129,0.15); }
-}
-.nav-links {
-  display:flex; align-items:center; gap:2px; list-style:none;
-}
-.nav-links a {
-  font-size:.84rem; font-weight:500; color:var(--gray-600);
-  padding:8px 14px; border-radius:var(--radius-sm);
-  transition:all .2s ease;
-}
-.nav-links a:hover { color:var(--gray-900); background:var(--cream); }
-.nav-links a.active { color:var(--green-600); background:var(--green-50); }
-.nav-cta {
-  background:var(--green-500)!important; color:var(--white)!important;
-  font-weight:600!important; margin-left:8px; padding:8px 18px!important;
-  box-shadow:var(--shadow-green); border-radius:var(--radius-sm)!important;
-  transition:all .25s ease!important;
-}
-.nav-cta:hover {
-  background:var(--green-600)!important; transform:translateY(-1px);
-  box-shadow:0 10px 36px rgba(16,185,129,0.3)!important;
-}
-.nav-toggle {
-  display:none; background:var(--cream); border:1px solid var(--gray-100);
-  color:var(--gray-800); font-size:1.3rem; cursor:pointer;
-  padding:6px 10px; border-radius:var(--radius-sm); transition:all .2s;
-}
-.nav-toggle:hover { background:var(--gray-100); }
-
-/* ── PAGE HERO ── */
-.page-hero {
-  padding:130px 24px 60px; text-align:center;
-  position:relative; z-index:1; overflow:hidden;
-}
-.page-hero .hero-blob {
-  position:absolute; border-radius:50%; filter:blur(90px);
-  pointer-events:none; opacity:.5;
-}
-.page-hero-inner {
-  max-width:640px; margin:0 auto; position:relative; z-index:2;
-}
-.page-hero .hero-tag {
-  display:inline-flex; align-items:center; gap:8px;
-  padding:6px 16px; border-radius:999px;
-  font-size:.73rem; font-weight:700;
-  letter-spacing:.1em; text-transform:uppercase;
-  margin-bottom:20px;
-}
-.page-hero h1 {
-  font-size:clamp(2rem,4.5vw,3rem); font-weight:800;
-  letter-spacing:-0.04em; color:var(--gray-900);
-  margin-bottom:14px; line-height:1.08;
-}
-.page-hero p {
-  font-size:1rem; color:var(--gray-600);
-  line-height:1.7; max-width:520px; margin:0 auto;
-}
-
-/* ── SECTION HEADER ── */
-.section-header { text-align:center; max-width:560px; margin:0 auto 56px; }
-.section-tag {
-  display:inline-flex; align-items:center; gap:8px;
-  font-size:.72rem; font-weight:700; letter-spacing:.12em;
-  text-transform:uppercase; color:var(--green-600);
-  font-family:var(--font-mono); margin-bottom:14px;
-  background:var(--green-50); padding:5px 14px;
-  border-radius:999px; border:1px solid var(--green-100);
-}
-.section-title {
-  font-size:clamp(1.8rem,3.5vw,2.6rem); font-weight:800;
-  letter-spacing:-0.04em; color:var(--gray-900);
-  margin-bottom:14px; line-height:1.1;
-}
-.section-desc { font-size:1rem; color:var(--gray-600); line-height:1.7; }
-
-/* ── BUTTONS ── */
-.btn-primary-custom {
-  display:inline-flex; align-items:center; gap:8px;
-  padding:14px 28px; border-radius:var(--radius-md);
-  font-family:var(--font-display); font-weight:700; font-size:.92rem;
-  border:none; cursor:pointer;
-  transition:all .3s cubic-bezier(.4,0,.2,1);
-  background:var(--green-500); color:var(--white);
-  box-shadow:var(--shadow-green);
-}
-.btn-primary-custom:hover {
-  background:var(--green-600); transform:translateY(-3px);
-  box-shadow:0 12px 40px rgba(16,185,129,0.35);
-}
-.btn-secondary-custom {
-  display:inline-flex; align-items:center; gap:8px;
-  padding:14px 28px; border-radius:var(--radius-md);
-  font-family:var(--font-display); font-weight:600; font-size:.92rem;
-  cursor:pointer; transition:all .3s ease;
-  background:var(--white); color:var(--gray-800);
-  border:1px solid var(--gray-200); box-shadow:var(--shadow-sm);
-}
-.btn-secondary-custom:hover {
-  background:var(--cream); border-color:var(--gray-400);
-  transform:translateY(-2px); box-shadow:var(--shadow-md);
-}
-
-/* ── TIP BOX ── */
-.tip-box {
-  max-width:640px; margin:48px auto 0;
-  background:var(--green-50); border:1px solid var(--green-100);
-  border-radius:var(--radius-lg); padding:24px 28px;
-  display:flex; align-items:flex-start; gap:14px;
-}
-.tip-box i { font-size:1.4rem; color:var(--green-500); flex-shrink:0; margin-top:2px; }
-.tip-box p { font-size:.9rem; color:var(--gray-600); line-height:1.65; margin:0; }
-.tip-box strong { color:var(--gray-900); }
-
-/* ── FORMS ── */
-.form-card {
-  background:var(--white); border:1px solid var(--gray-100);
-  border-radius:var(--radius-xl); padding:36px;
-  box-shadow:var(--shadow-lg);
-}
-.form-label {
-  font-size:.84rem; font-weight:600;
-  color:var(--gray-800); margin-bottom:6px; display:block;
-}
-.form-input {
-  width:100%; padding:12px 16px;
-  border:1px solid var(--gray-200); border-radius:var(--radius-sm);
-  font-family:var(--font-display); font-size:.9rem;
-  color:var(--gray-900); background:var(--off-white);
-  transition:all .2s ease; outline:none;
-}
-.form-input:focus {
-  border-color:var(--green-500);
-  box-shadow:0 0 0 3px rgba(16,185,129,0.12);
-  background:var(--white);
-}
-.form-input::placeholder { color:var(--gray-400); }
-textarea.form-input { resize:vertical; min-height:100px; }
-.input-group { display:flex; align-items:stretch; }
-.input-group .input-icon {
-  display:flex; align-items:center; justify-content:center;
-  padding:0 14px; background:var(--cream);
-  border:1px solid var(--gray-200); border-right:none;
-  border-radius:var(--radius-sm) 0 0 var(--radius-sm);
-  color:var(--gray-400); font-size:1rem;
-}
-.input-group .form-input { border-radius:0 var(--radius-sm) var(--radius-sm) 0; }
-.btn-submit {
-  width:100%; padding:14px; border-radius:var(--radius-md);
-  font-family:var(--font-display); font-weight:700; font-size:.92rem;
-  border:none; cursor:pointer;
-  background:var(--green-500); color:var(--white);
-  box-shadow:var(--shadow-green); transition:all .25s ease;
-}
-.btn-submit:hover {
-  background:var(--green-600); transform:translateY(-2px);
-  box-shadow:0 10px 36px rgba(16,185,129,0.3);
-}
-
-/* ── FOOTER ── */
-.footer {
-  position:relative; z-index:1;
-  border-top:1px solid var(--gray-100);
-  padding:36px 24px; background:var(--white);
-}
-.footer-inner {
-  max-width:1180px; margin:0 auto;
-  display:flex; justify-content:space-between;
-  align-items:center; flex-wrap:wrap; gap:16px;
-}
-.footer small { color:var(--gray-400); font-size:.82rem; }
-.footer-links { display:flex; gap:24px; }
-.footer-links a {
-  font-size:.82rem; color:var(--gray-400);
-  font-weight:500; transition:color .2s;
-}
-.footer-links a:hover { color:var(--green-500); }
-
-/* ── SCROLL REVEAL ── */
-.reveal {
-  opacity:0; transform:translateY(28px);
-  transition:all .65s cubic-bezier(.22,1,.36,1);
-}
-.reveal.visible { opacity:1; transform:translateY(0); }
-.reveal-d1 { transition-delay:.08s; }
-.reveal-d2 { transition-delay:.16s; }
-.reveal-d3 { transition-delay:.24s; }
-.reveal-d4 { transition-delay:.32s; }
-
-/* ── RESPONSIVE ── */
-@media (max-width:768px) {
-  .nav-links { display:none; }
-  .nav-links.open {
-    display:flex; flex-direction:column;
-    position:absolute; top:100%; left:0; right:0;
-    background:rgba(247,248,250,0.97);
-    backdrop-filter:blur(20px); padding:16px 24px;
-    border-bottom:1px solid var(--gray-100);
-    box-shadow:var(--shadow-md); gap:2px;
-  }
-  .nav-links.open a { padding:12px 16px; }
-  .nav-toggle { display:flex; align-items:center; justify-content:center; }
-  .page-hero { padding:110px 24px 48px; }
-  .tip-box { flex-direction:column; text-align:center; }
-  .footer-inner { flex-direction:column; text-align:center; }
-}
-
-
-    .exercises-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;max-width:1000px;margin:0 auto;padding:0 24px 80px}
-    .exercise-card{background:var(--white);border:1px solid var(--gray-100);border-radius:var(--radius-lg);padding:32px 28px;transition:all .35s cubic-bezier(.4,0,.2,1);position:relative;overflow:hidden}
-    .exercise-card:hover{transform:translateY(-6px);box-shadow:var(--shadow-xl);border-color:transparent}
-    .exercise-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;border-radius:var(--radius-lg) var(--radius-lg) 0 0;opacity:0;transition:opacity .3s}
-    .exercise-card:hover::before{opacity:1}
-    .exercise-card[data-color="blue"]::before{background:linear-gradient(90deg,var(--blue-500),#60a5fa)}
-    .exercise-card[data-color="green"]::before{background:linear-gradient(90deg,var(--green-500),var(--green-400))}
-    .exercise-card[data-color="amber"]::before{background:linear-gradient(90deg,var(--amber-500),#fbbf24)}
-    .exercise-card[data-color="coral"]::before{background:linear-gradient(90deg,#ef4444,var(--coral-500))}
-    .ex-icon{width:52px;height:52px;border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;font-size:1.3rem;margin-bottom:14px;transition:transform .3s}
-    .exercise-card:hover .ex-icon{transform:scale(1.1) rotate(-3deg)}
+    /* EXERCISE INFO CARDS (visible to all) */
+    .ex-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;max-width:1000px;margin:0 auto;padding:0 24px 60px}
+    .ex-card{background:var(--white);border:1px solid var(--gray-100);border-radius:var(--radius-lg);padding:32px 28px;transition:all .35s cubic-bezier(.4,0,.2,1);position:relative;overflow:hidden}
+    .ex-card:hover{transform:translateY(-6px);box-shadow:var(--shadow-xl);border-color:transparent}
+    .ex-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;border-radius:var(--radius-lg) var(--radius-lg) 0 0;opacity:0;transition:opacity .3s}.ex-card:hover::before{opacity:1}
+    .ex-card[data-color="blue"]::before{background:linear-gradient(90deg,var(--blue-500),#60a5fa)}
+    .ex-card[data-color="green"]::before{background:linear-gradient(90deg,var(--green-500),var(--green-400))}
+    .ex-card[data-color="amber"]::before{background:linear-gradient(90deg,var(--amber-500),#fbbf24)}
+    .ex-card[data-color="coral"]::before{background:linear-gradient(90deg,#ef4444,var(--coral-500))}
+    .ex-icon{width:52px;height:52px;border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;font-size:1.3rem;margin-bottom:14px;transition:transform .3s}.ex-card:hover .ex-icon{transform:scale(1.1) rotate(-3deg)}
     .muscle-badge{font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:5px 14px;border-radius:999px;margin-bottom:16px;display:inline-block;font-family:var(--font-mono)}
     .ex-title{font-size:1.08rem;font-weight:700;color:var(--gray-900);margin-bottom:16px}
-    .ex-detail{font-size:.86rem;color:var(--gray-600);line-height:1.65;margin-bottom:10px}
-    .ex-detail strong{color:var(--gray-800);font-weight:600}
-    .ex-detail:last-child{margin-bottom:0}
-    @media(max-width:768px){.exercises-grid{grid-template-columns:1fr}}
+    .ex-detail{font-size:.86rem;color:var(--gray-600);line-height:1.65;margin-bottom:10px}.ex-detail strong{color:var(--gray-800);font-weight:600}.ex-detail:last-child{margin-bottom:0}
+
+    /* TEST REQUIRED BANNER */
+    .test-banner{max-width:600px;margin:0 auto;padding:0 24px 60px;text-align:center}
+    .test-banner-card{background:var(--amber-50);border:1px solid rgba(245,158,11,.2);border-radius:var(--radius-xl);padding:48px 36px}
+    .test-banner-card i.big{font-size:2.5rem;color:var(--amber-500);margin-bottom:16px}
+    .test-banner-card h2{font-size:1.2rem;font-weight:800;color:var(--gray-900);margin-bottom:10px}
+    .test-banner-card p{font-size:.92rem;color:var(--gray-600);line-height:1.6;margin-bottom:24px}
+    .btn-cta{display:inline-flex;align-items:center;gap:8px;padding:14px 28px;border-radius:var(--radius-md);font-family:var(--font-display);font-weight:700;font-size:.92rem;border:none;cursor:pointer;background:var(--green-500);color:var(--white);box-shadow:var(--shadow-green);transition:all .3s}.btn-cta:hover{background:var(--green-600);transform:translateY(-3px)}
+
+    /* ROUTINE SECTION (logged + test done) */
+    .routine-section{max-width:1000px;margin:0 auto;padding:0 24px 80px}
+    .section-divider{text-align:center;padding:40px 0 30px}
+    .section-divider .stag{display:inline-flex;align-items:center;gap:8px;font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;font-family:var(--font-mono);padding:5px 14px;border-radius:999px;margin-bottom:14px}
+    .section-divider h2{font-size:clamp(1.5rem,3vw,2rem);font-weight:800;letter-spacing:-.03em;color:var(--gray-900);margin-bottom:8px}
+    .section-divider p{font-size:.92rem;color:var(--gray-600);max-width:480px;margin:0 auto}
+
+    /* Tips list */
+    .tips-list{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-bottom:40px}
+    .tip-item{background:var(--white);border:1px solid var(--gray-100);border-radius:var(--radius-md);padding:18px 20px;display:flex;align-items:flex-start;gap:12px;transition:all .3s}
+    .tip-item:hover{box-shadow:var(--shadow-md);border-color:var(--green-100)}
+    .tip-item .tip-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:.95rem;flex-shrink:0}
+    .tip-item .tip-text{font-size:.86rem;color:var(--gray-600);line-height:1.55}
+    .tip-item .tip-text strong{color:var(--gray-900)}
+
+    /* Routine exercises with checkboxes */
+    .routine-list{display:flex;flex-direction:column;gap:12px}
+    .routine-item{background:var(--white);border:1px solid var(--gray-100);border-radius:var(--radius-md);padding:20px 22px;display:flex;align-items:center;gap:16px;transition:all .3s;cursor:pointer}
+    .routine-item:hover{box-shadow:var(--shadow-md);border-color:var(--green-100)}
+    .routine-item.done{background:var(--green-50);border-color:var(--green-100)}
+    .routine-item.done .r-name{text-decoration:line-through;color:var(--gray-400)}
+    .r-check{width:28px;height:28px;border-radius:8px;border:2px solid var(--gray-200);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s;font-size:.85rem;color:transparent}
+    .routine-item.done .r-check{background:var(--green-500);border-color:var(--green-500);color:var(--white)}
+    .r-info{flex:1}
+    .r-name{font-size:.95rem;font-weight:600;color:var(--gray-900);margin-bottom:2px}
+    .r-desc{font-size:.8rem;color:var(--gray-400)}
+    .r-sets{font-size:.78rem;font-weight:600;color:var(--green-600);font-family:var(--font-mono);white-space:nowrap}
+
+    .streak-banner{text-align:center;margin-top:32px;padding:24px;background:var(--white);border:1px solid var(--gray-100);border-radius:var(--radius-lg)}
+    .streak-fire{font-size:2.5rem;margin-bottom:8px}
+    .streak-num{font-family:var(--font-mono);font-size:2rem;font-weight:700;color:var(--green-600)}
+    .streak-label{font-size:.82rem;color:var(--gray-400)}
+
+    @media(max-width:768px){.nav-links{display:none}.nav-links.open{display:flex;flex-direction:column;position:absolute;top:100%;left:0;right:0;background:rgba(247,248,250,.97);backdrop-filter:blur(20px);padding:16px 24px;border-bottom:1px solid var(--gray-100);box-shadow:var(--shadow-md);gap:2px}.nav-links.open a{padding:12px 16px}.nav-toggle{display:flex;align-items:center;justify-content:center}.page-hero{padding:110px 24px 48px}.ex-grid{grid-template-columns:1fr}.tips-list{grid-template-columns:1fr}.footer-inner{flex-direction:column;text-align:center}}
   </style>
 </head>
 <body>
-  <nav class="navbar" id="navbar"><div class="navbar-inner"><a href="index.html" class="nav-logo"><span class="dot"></span> Empieza en el Gym</a><button class="nav-toggle" id="navToggle" aria-label="Menú"><i class="bi bi-list"></i></button><ul class="nav-links" id="navLinks"><li><a href="primer-dia.html">Primer día</a></li><li><a href="errores.html">Errores</a></li><li><a href="mitos.html">Mitos</a></li><li><a href="ejercicios.html" class="active">Ejercicios</a></li><li><a href="test.html">Test</a></li><li><a href="contacto.html">Contacto</a></li><li><a href="login.html" id="loginLink">Login</a></li><li><a href="register.html" class="nav-cta" id="registerLink"><i class="bi bi-person-plus"></i> Registro</a></li></ul></div></nav>
+  <nav class="navbar" id="navbar"><div class="navbar-inner"><a href="index.html" class="nav-logo"><span class="dot"></span> Empieza en el Gym</a><button class="nav-toggle" id="navToggle" aria-label="Menú"><i class="bi bi-list"></i></button><ul class="nav-links" id="navLinks"><li><a href="mitos-errores.html">Mitos y Errores</a></li><li><a href="ejercicios.html" class="active">Ejercicios</a></li><li><a href="test.html">Test</a></li><li><a href="calculadora.html">Calculadora</a></li><li><a href="contacto.html">Contacto</a></li><li><a href="login.html" id="loginLink">Login</a></li><li><a href="register.html" class="nav-cta" id="registerLink"><i class="bi bi-person-plus"></i> Registro</a></li></ul></div></nav>
 
   <section class="page-hero">
-    <div class="hero-blob" style="width:400px;height:400px;background:radial-gradient(circle,rgba(59,130,246,0.12),transparent 70%);top:-80px;right:-60px;position:absolute"></div>
+    <div style="width:400px;height:400px;background:radial-gradient(circle,rgba(59,130,246,.12),transparent 70%);top:-80px;right:-60px;position:absolute;border-radius:50%;filter:blur(90px);pointer-events:none;opacity:.5"></div>
     <div class="page-hero-inner">
-      <div class="hero-tag" style="background:var(--green-50);border:1px solid var(--green-100);color:var(--green-600);"><i class="bi bi-bar-chart-fill"></i> Ejercicios básicos</div>
-      <h1>Los 4 ejercicios que debes dominar</h1>
-      <p>Fichas simples por grupo muscular, con técnica y errores comunes para empezar de forma segura.</p>
+      <div class="hero-tag" style="background:var(--green-50);border:1px solid var(--green-100);color:var(--green-600);"><i class="bi bi-bar-chart-fill"></i> Ejercicios</div>
+      <h1>Ejercicios básicos para empezar</h1>
+      <p>Fichas por grupo muscular con técnica correcta, errores comunes y consejos de seguridad.</p>
     </div>
   </section>
 
-  <main class="exercises-grid">
-    <div class="exercise-card reveal reveal-d1" data-color="blue">
-      <div class="ex-icon" style="background:var(--blue-50);color:var(--blue-500);"><i class="bi bi-arrow-bar-right"></i></div>
-      <span class="muscle-badge" style="background:var(--blue-50);color:var(--blue-500);border:1px solid rgba(59,130,246,0.15);">Pecho</span>
-      <div class="ex-title">Press de pecho en máquina</div>
-      <p class="ex-detail"><strong>Técnica:</strong> Empuja las asas hacia delante manteniendo la espalda apoyada en el respaldo.</p>
-      <p class="ex-detail"><strong>Errores:</strong> Codos muy abiertos, rebotar el peso, arquear la espalda.</p>
-      <p class="ex-detail"><strong>Tip:</strong> Ajusta el asiento para que las asas queden a altura del pecho.</p>
-    </div>
-    <div class="exercise-card reveal reveal-d2" data-color="green">
-      <div class="ex-icon" style="background:var(--green-50);color:var(--green-600);"><i class="bi bi-arrow-bar-left"></i></div>
-      <span class="muscle-badge" style="background:var(--green-50);color:var(--green-600);border:1px solid var(--green-100);">Espalda</span>
-      <div class="ex-title">Remo en polea sentado</div>
-      <p class="ex-detail"><strong>Técnica:</strong> Tira del agarre hacia el abdomen manteniendo la espalda recta y el pecho alto.</p>
-      <p class="ex-detail"><strong>Errores:</strong> Encoger hombros, tirar solo de brazos, balancear el cuerpo.</p>
-      <p class="ex-detail"><strong>Tip:</strong> Piensa en "sacar pecho" y llevar los codos hacia atrás.</p>
-    </div>
-    <div class="exercise-card reveal reveal-d3" data-color="amber">
-      <div class="ex-icon" style="background:var(--amber-50);color:var(--amber-500);"><i class="bi bi-arrow-down-up"></i></div>
-      <span class="muscle-badge" style="background:var(--amber-50);color:var(--amber-500);border:1px solid rgba(245,158,11,0.15);">Piernas</span>
-      <div class="ex-title">Prensa de piernas</div>
-      <p class="ex-detail"><strong>Técnica:</strong> Empuja la plataforma con los pies a la anchura de hombros, rodillas alineadas.</p>
-      <p class="ex-detail"><strong>Errores:</strong> Bloquear rodillas al subir, bajar tan profundo que la espalda se curve.</p>
-      <p class="ex-detail"><strong>Tip:</strong> Mantén la espalda pegada al respaldo y controla siempre el movimiento.</p>
-    </div>
-    <div class="exercise-card reveal reveal-d4" data-color="coral">
-      <div class="ex-icon" style="background:var(--coral-50);color:#ef4444;"><i class="bi bi-arrow-up-circle"></i></div>
-      <span class="muscle-badge" style="background:var(--coral-50);color:#ef4444;border:1px solid rgba(239,68,68,0.15);">Brazos</span>
-      <div class="ex-title">Curl de bíceps con mancuernas</div>
-      <p class="ex-detail"><strong>Técnica:</strong> Flexiona los codos llevando las mancuernas hacia los hombros, codos fijos al costado.</p>
-      <p class="ex-detail"><strong>Errores:</strong> Balancear el cuerpo para ayudarte, mover los codos hacia delante.</p>
-      <p class="ex-detail"><strong>Tip:</strong> Mantén los codos pegados al costado y controla la bajada lentamente.</p>
-    </div>
-  </main>
-
-  <div style="max-width:1000px;margin:0 auto;padding:0 24px 80px">
-    <div class="tip-box reveal"><i class="bi bi-info-circle-fill"></i><p><strong>Importante:</strong> Aprende la técnica correcta antes de aumentar peso. Pide ayuda a un monitor si no estás seguro.</p></div>
+  <!-- EXERCISE INFO (visible to everyone) -->
+  <div class="ex-grid" id="exerciseInfo">
+    <div class="ex-card reveal reveal-d1" data-color="blue"><div class="ex-icon" style="background:var(--blue-50);color:var(--blue-500);"><i class="bi bi-arrow-bar-right"></i></div><span class="muscle-badge" style="background:var(--blue-50);color:var(--blue-500);border:1px solid rgba(59,130,246,.15);">Pecho</span><div class="ex-title">Press de pecho en máquina</div><p class="ex-detail"><strong>Técnica:</strong> Empuja las asas hacia delante manteniendo la espalda apoyada.</p><p class="ex-detail"><strong>Errores:</strong> Codos muy abiertos, rebotar el peso, arquear la espalda.</p><p class="ex-detail"><strong>Tip:</strong> Ajusta el asiento para que las asas queden a altura del pecho.</p></div>
+    <div class="ex-card reveal reveal-d2" data-color="green"><div class="ex-icon" style="background:var(--green-50);color:var(--green-600);"><i class="bi bi-arrow-bar-left"></i></div><span class="muscle-badge" style="background:var(--green-50);color:var(--green-600);border:1px solid var(--green-100);">Espalda</span><div class="ex-title">Remo en polea sentado</div><p class="ex-detail"><strong>Técnica:</strong> Tira del agarre hacia el abdomen con la espalda recta y pecho alto.</p><p class="ex-detail"><strong>Errores:</strong> Encoger hombros, tirar solo de brazos, balancear el cuerpo.</p><p class="ex-detail"><strong>Tip:</strong> Piensa en "sacar pecho" y llevar los codos hacia atrás.</p></div>
+    <div class="ex-card reveal reveal-d3" data-color="amber"><div class="ex-icon" style="background:var(--amber-50);color:var(--amber-500);"><i class="bi bi-arrow-down-up"></i></div><span class="muscle-badge" style="background:var(--amber-50);color:var(--amber-500);border:1px solid rgba(245,158,11,.15);">Piernas</span><div class="ex-title">Prensa de piernas</div><p class="ex-detail"><strong>Técnica:</strong> Empuja la plataforma con pies a anchura de hombros, rodillas alineadas.</p><p class="ex-detail"><strong>Errores:</strong> Bloquear rodillas al subir, curvar la espalda baja.</p><p class="ex-detail"><strong>Tip:</strong> Mantén la espalda pegada y controla siempre el movimiento.</p></div>
+    <div class="ex-card reveal reveal-d4" data-color="coral"><div class="ex-icon" style="background:var(--coral-50);color:#ef4444;"><i class="bi bi-arrow-up-circle"></i></div><span class="muscle-badge" style="background:var(--coral-50);color:#ef4444;border:1px solid rgba(239,68,68,.15);">Brazos</span><div class="ex-title">Curl de bíceps con mancuernas</div><p class="ex-detail"><strong>Técnica:</strong> Flexiona codos llevando mancuernas a los hombros, codos fijos.</p><p class="ex-detail"><strong>Errores:</strong> Balancear el cuerpo, mover los codos hacia delante.</p><p class="ex-detail"><strong>Tip:</strong> Codos pegados al costado y controla la bajada lentamente.</p></div>
   </div>
 
-  <footer class="footer"><div class="footer-inner"><small>&copy; 2026 Empieza en el Gym</small><div class="footer-links"><a href="index.html">Inicio</a><a href="primer-dia.html">Primer día</a><a href="test.html">Test</a><a href="contacto.html">Contacto</a></div></div></footer>
-  
-<script>
+  <!-- TEST REQUIRED BANNER (logged but no test) -->
+  <div class="test-banner" id="testBanner" style="display:none">
+    <div class="test-banner-card">
+      <i class="bi bi-clipboard2-check-fill big"></i>
+      <h2>Haz el test para ver tu rutina</h2>
+      <p>Completa el test primero y desbloquea tu rutina personalizada con los ejercicios adaptados a tu nivel.</p>
+      <a href="test.html" class="btn-cta"><i class="bi bi-clipboard2-check-fill"></i> Hacer el test</a>
+    </div>
+  </div>
+
+  <!-- ROUTINE (logged + test done) -->
+  <div class="routine-section" id="routineSection" style="display:none">
+    <!-- First day tips -->
+    <div class="section-divider">
+      <span class="stag" style="background:var(--green-50);color:var(--green-600);border:1px solid var(--green-100);"><i class="bi bi-rocket-takeoff-fill"></i> Consejos</span>
+      <h2>Tu primer día en el gym</h2>
+      <p>Sigue estos consejos para empezar con buen pie.</p>
+    </div>
+    <div class="tips-list">
+      <div class="tip-item"><div class="tip-icon" style="background:var(--blue-50);color:var(--blue-500);"><i class="bi bi-bag-check-fill"></i></div><div class="tip-text"><strong>Prepara tu bolsa:</strong> Ropa cómoda, toalla, botella de agua y rutina en el móvil.</div></div>
+      <div class="tip-item"><div class="tip-icon" style="background:var(--amber-50);color:var(--amber-500);"><i class="bi bi-thermometer-half"></i></div><div class="tip-text"><strong>Calienta siempre:</strong> 5–10 min de cardio suave antes de tocar pesas.</div></div>
+      <div class="tip-item"><div class="tip-icon" style="background:var(--coral-50);color:#ef4444;"><i class="bi bi-shield-check"></i></div><div class="tip-text"><strong>Técnica > peso:</strong> Domina el movimiento antes de subir carga.</div></div>
+      <div class="tip-item"><div class="tip-icon" style="background:var(--green-50);color:var(--green-600);"><i class="bi bi-journal-check"></i></div><div class="tip-text"><strong>Apunta todo:</strong> Registra pesos y sensaciones para ver tu progreso.</div></div>
+    </div>
+
+    <!-- Personalized routine -->
+    <div class="section-divider">
+      <span class="stag" style="background:var(--purple-50);color:var(--purple-500);border:1px solid rgba(139,92,246,.15);"><i class="bi bi-calendar-check-fill"></i> Tu rutina</span>
+      <h2>Rutina del día</h2>
+      <p>Marca cada ejercicio como hecho para mantener tu racha.</p>
+    </div>
+    <div class="routine-list" id="routineList">
+      <!-- Filled by JS -->
+    </div>
+    <div class="streak-banner" id="streakBanner">
+      <div class="streak-fire">🔥</div>
+      <div class="streak-num" id="streakNum">0</div>
+      <div class="streak-label">días de racha</div>
+    </div>
+  </div>
+
+  <footer class="footer"><div class="footer-inner"><small>&copy; 2026 Empieza en el Gym</small><div class="footer-links"><a href="index.html">Inicio</a><a href="mitos-errores.html">Mitos y Errores</a><a href="test.html">Test</a><a href="contacto.html">Contacto</a></div></div></footer>
+
+  <script>
+    const API='http://localhost:5000';
     const navbar=document.getElementById('navbar');if(navbar){window.addEventListener('scroll',()=>{navbar.classList.toggle('scrolled',window.scrollY>30)});if(window.scrollY>30)navbar.classList.add('scrolled')}
     const navToggle=document.getElementById('navToggle'),navLinks=document.getElementById('navLinks');if(navToggle&&navLinks){navToggle.addEventListener('click',()=>{navLinks.classList.toggle('open');const i=navToggle.querySelector('i');i.classList.toggle('bi-list');i.classList.toggle('bi-x-lg')})}
     const reveals=document.querySelectorAll('.reveal');if(reveals.length){const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target)}})},{threshold:.1});reveals.forEach(el=>obs.observe(el))}
-    document.addEventListener('DOMContentLoaded',function(){const isLogged=localStorage.getItem('isLogged')==='true';let cu=null;try{cu=JSON.parse(localStorage.getItem('gymCurrentUser'))}catch(e){}if(isLogged&&cu){const ll=document.getElementById('loginLink'),rl=document.getElementById('registerLink');if(ll)ll.parentElement.style.display='none';if(rl)rl.parentElement.style.display='none';const nl=document.getElementById('navLinks');if(nl){const u=document.createElement('li');u.innerHTML='<span style="color:var(--green-600);font-weight:700;font-size:.84rem;padding:8px 14px;display:inline-flex;align-items:center;gap:6px;"><i class="bi bi-person-circle"></i> '+cu.nombre+'</span>';nl.appendChild(u);const l=document.createElement('li');l.innerHTML='<a href="#" onclick="cerrarSesion();return false;" style="color:#ef4444;font-weight:600;font-size:.84rem;padding:8px 14px;display:inline-flex;align-items:center;gap:6px;"><i class="bi bi-box-arrow-right"></i> Salir</a>';nl.appendChild(l)}}});
+
+    const isLogged=localStorage.getItem('isLogged')==='true';
+    let cu=null;try{cu=JSON.parse(localStorage.getItem('gymCurrentUser'))}catch(e){}
+
+    document.addEventListener('DOMContentLoaded',function(){
+      // Navbar auth
+      if(isLogged&&cu){
+        const ll=document.getElementById('loginLink'),rl=document.getElementById('registerLink');
+        if(ll)ll.parentElement.style.display='none';if(rl)rl.parentElement.style.display='none';
+        const nl=document.getElementById('navLinks');if(nl){
+          const u=document.createElement('li');u.innerHTML='<a href="perfil.html" style="color:var(--green-600);font-weight:700;font-size:.84rem;padding:8px 14px;display:inline-flex;align-items:center;gap:6px;"><i class="bi bi-person-circle"></i> '+cu.nombre+'</a>';nl.appendChild(u);
+          const l=document.createElement('li');l.innerHTML='<a href="#" onclick="cerrarSesion();return false;" style="color:#ef4444;font-weight:600;font-size:.84rem;padding:8px 14px;display:inline-flex;align-items:center;gap:6px;"><i class="bi bi-box-arrow-right"></i> Salir</a>';nl.appendChild(l);
+        }
+
+        // Check test status from server
+        fetch(API+'/api/profile/'+cu.id).then(r=>r.json()).then(data=>{
+          if(data.ok){
+            if(data.user.testDone){
+              document.getElementById('routineSection').style.display='block';
+              loadRoutine(data.user);
+            } else {
+              document.getElementById('testBanner').style.display='block';
+            }
+          }
+        }).catch(()=>{
+          // Fallback to localStorage
+          if(cu.testDone){document.getElementById('routineSection').style.display='block';loadRoutine(cu);}
+          else{document.getElementById('testBanner').style.display='block';}
+        });
+      }
+    });
     function cerrarSesion(){localStorage.removeItem('isLogged');localStorage.removeItem('gymCurrentUser');window.location.reload()}
-</script>
+
+    function loadRoutine(user){
+      const _gr=(()=>{try{return JSON.parse(localStorage.getItem('gymRoutine'));}catch(e){return null;}})();
+      const _di=_gr?new Date().getDay()%_gr.days.length:0;
+      const exercises=_gr
+        ?_gr.days[_di].exercises.map(ex=>({id:ex.key,name:ex.name,desc:ex.desc,sets:`${_gr.scheme.sets}×${_gr.scheme.reps}`}))
+        :[
+          {id:'warmup',name:'Calentamiento',desc:'5–10 min cardio suave (cinta/bici)',sets:'5-10 min'},
+          {id:'press',name:'Press de pecho en máquina',desc:'Pecho — espalda apoyada, codos controlados',sets:'3×12'},
+          {id:'remo',name:'Remo en polea sentado',desc:'Espalda — tira hacia abdomen, pecho alto',sets:'3×12'},
+          {id:'prensa',name:'Prensa de piernas',desc:'Piernas — pies a anchura de hombros',sets:'3×15'},
+          {id:'curl',name:'Curl de bíceps con mancuernas',desc:'Brazos — codos fijos al costado',sets:'3×12'},
+          {id:'stretch',name:'Estiramientos',desc:'5 min de estiramientos suaves al acabar',sets:'5 min'}
+        ];
+      window._todayExerciseIds=exercises.map(e=>e.id);
+
+      const list=document.getElementById('routineList');
+      const _tk=new Date().toISOString().split('T')[0];
+      let _dp={};try{_dp=JSON.parse(localStorage.getItem('gymDailyProgress')||'{}')}catch(e){}
+      const completedToday=_dp[_tk]||(user.completed||[]).filter(c=>{return new Date(c.date).toDateString()===new Date().toDateString()}).map(c=>c.exerciseId);
+
+      exercises.forEach(ex=>{
+        const isDone=completedToday.includes(ex.id);
+        const item=document.createElement('div');
+        item.className='routine-item'+(isDone?' done':'');
+        item.dataset.id=ex.id;
+        item.innerHTML=`<div class="r-check"><i class="bi bi-check-lg"></i></div><div class="r-info"><div class="r-name">${ex.name}</div><div class="r-desc">${ex.desc}</div></div><div class="r-sets">${ex.sets}</div>`;
+        if(!isDone){
+          item.addEventListener('click',()=>completeExercise(ex.id,item));
+        }
+        list.appendChild(item);
+      });
+
+      // Load streak from localStorage first, then try API
+      try{const _s=JSON.parse(localStorage.getItem('gymStreak')||'{"count":0}');document.getElementById('streakNum').textContent=_s.count}catch(e){}
+      if(cu&&cu.id){fetch(API+'/api/streak/'+cu.id).then(r=>r.json()).then(data=>{if(data.ok)document.getElementById('streakNum').textContent=data.racha}).catch(()=>{})};
+    }
+
+    async function completeExercise(exerciseId,el){
+      el.classList.add('done');
+      el.style.pointerEvents='none';
+      // Persist to localStorage
+      const _tk=new Date().toISOString().split('T')[0];
+      let _dp={};try{_dp=JSON.parse(localStorage.getItem('gymDailyProgress')||'{}')}catch(e){}
+      if(!_dp[_tk])_dp[_tk]=[];
+      if(!_dp[_tk].includes(exerciseId))_dp[_tk].push(exerciseId);
+      localStorage.setItem('gymDailyProgress',JSON.stringify(_dp));
+      // If all exercises done today, update local streak
+      const _all=window._todayExerciseIds||['warmup','press','remo','prensa','curl','stretch'];
+      if(_all.every(id=>_dp[_tk].includes(id))){
+        const _yd=new Date(Date.now()-86400000).toISOString().split('T')[0];
+        let _s;try{_s=JSON.parse(localStorage.getItem('gymStreak')||'{"count":0,"lastActive":null,"history":[]}')}catch(e){_s={count:0,lastActive:null,history:[]}}
+        if(_s.lastActive!==_tk){_s.count=(_s.lastActive===_yd)?_s.count+1:1;_s.lastActive=_tk;if(!_s.history.includes(_tk))_s.history.push(_tk);if(_s.history.length>90)_s.history=_s.history.slice(-90);localStorage.setItem('gymStreak',JSON.stringify(_s));}
+        document.getElementById('streakNum').textContent=_s.count;
+      }
+      // Try API
+      try{
+        const res=await fetch(API+'/api/complete-exercise/'+(cu&&cu.id),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({exerciseId})});
+        const data=await res.json();
+        if(data.ok){document.getElementById('streakNum').textContent=data.racha;}
+      }catch(err){console.error(err)}
+    }
+  </script>
 </body>
 </html>
