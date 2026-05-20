@@ -315,55 +315,138 @@ textarea.form-input { resize:vertical; min-height:100px; }
     .auth-footer a:hover{color:var(--green-600)}
     .auth-blob{position:absolute;border-radius:50%;filter:blur(90px);pointer-events:none;opacity:.5}
     @media(max-width:480px){.row-2{grid-template-columns:1fr}}
+    /* Inline error/success */
+    .inline-error{display:none;align-items:center;gap:8px;padding:11px 14px;border-radius:var(--radius-sm);font-size:.84rem;font-weight:500;margin-bottom:16px;background:#fef2f2;border:1px solid #fecaca;color:#dc2626}
+    .inline-error.show{display:flex}
+    .inline-error i{flex-shrink:0}
+    .inline-error a{color:#dc2626;font-weight:700;text-decoration:underline}
+    .inline-success{display:none;flex-direction:column;align-items:center;text-align:center;padding:32px 24px;gap:16px}
+    .inline-success.show{display:flex}
+    .inline-success .ok-icon{width:64px;height:64px;border-radius:50%;background:var(--green-50);border:2px solid var(--green-100);display:flex;align-items:center;justify-content:center;font-size:2rem;color:var(--green-500)}
+    .inline-success h3{font-size:1.1rem;font-weight:800;color:var(--gray-900);margin:0}
+    .inline-success p{font-size:.88rem;color:var(--gray-600);line-height:1.6;margin:0}
+    .inline-success .email-highlight{font-family:var(--font-mono);background:var(--green-50);color:var(--green-600);padding:2px 8px;border-radius:6px;font-size:.85rem;word-break:break-all}
+    .form-input.input-error{border-color:#f87171!important;box-shadow:0 0 0 3px rgba(239,68,68,0.1)!important}
   </style>
 </head>
 <body>
-  <nav class="navbar" id="navbar"><div class="navbar-inner"><a href="index.html" class="nav-logo"><span class="dot"></span> Empieza en el Gym</a><button class="nav-toggle" id="navToggle" aria-label="Menú"><i class="bi bi-list"></i></button><ul class="nav-links" id="navLinks"><li><a href="mitos-errores.html">Mitos y Errores</a></li><li><a href="ejercicios.html">Ejercicios</a></li><li><a href="test.html">Test</a></li><li><a href="calculadora.html">Calculadora</a></li><li><a href="contacto.html">Contacto</a></li><li><a href="login.html" id="loginLink">Login</a></li><li><a href="register.html" class="nav-cta active" id="registerLink"><i class="bi bi-person-plus"></i> Registro</a></li></ul></div></nav>
+  <nav class="navbar" id="navbar"><div class="navbar-inner"><a href="index.html" class="nav-logo"><span class="dot"></span> Empieza en el Gym</a><button class="nav-toggle" id="navToggle" aria-label="Menú"><i class="bi bi-list"></i></button><ul class="nav-links" id="navLinks"><li><a href="mitos-errores.html">Mitos y Errores</a></li><li><a href="ejercicios.html">Ejercicios</a></li><li><a href="test.html">Test</a></li><li><a href="calculadora.html">Calculadora</a></li><li><a href="leaderboard.html">Ranking</a></li><li><a href="contacto.html">Contacto</a></li><li><a href="login.html" id="loginLink">Login</a></li><li><a href="register.html" class="nav-cta active" id="registerLink"><i class="bi bi-person-plus"></i> Registro</a></li></ul></div></nav>
 
   <main class="auth-page">
     <div class="auth-blob" style="width:400px;height:400px;background:radial-gradient(circle,rgba(139,92,246,0.1),transparent 70%);top:-100px;left:-80px"></div>
     <div class="auth-wrapper">
-      <div class="form-card reveal">
-        <div class="auth-header"><div class="auth-tag"><i class="bi bi-person-plus-fill"></i> Crea tu cuenta</div><h1>Regístrate gratis</h1></div>
-        <form id="registerForm" onsubmit="event.preventDefault(); procesarRegistro();">
-          <div class="form-group"><label class="form-label">Nombre completo</label><div class="input-group"><span class="input-icon"><i class="bi bi-person"></i></span><input type="text" class="form-input" id="regNombre" placeholder="Juan Pérez García" required></div></div>
-          <div class="form-group"><label class="form-label">Correo electrónico</label><div class="input-group"><span class="input-icon"><i class="bi bi-envelope"></i></span><input type="email" class="form-input" id="regEmail" placeholder="tucorreo@example.com" required></div></div>
-          <div class="row-2"><div class="form-group"><label class="form-label">Contraseña</label><input type="password" class="form-input" id="regPass" placeholder="Mínimo 6" minlength="6" required></div><div class="form-group"><label class="form-label">Repetir</label><input type="password" class="form-input" id="regPassConfirm" placeholder="Repite" required></div></div>
-          <button type="submit" class="btn-submit"><i class="bi bi-person-plus-fill"></i> Crear cuenta</button>
-        </form>
-        <div class="auth-footer">¿Ya tienes cuenta? <a href="login.html">Inicia sesión</a></div>
+      <div class="form-card reveal" id="regCard">
+        <!-- FORM VIEW -->
+        <div id="formView">
+          <div class="auth-header"><div class="auth-tag"><i class="bi bi-person-plus-fill"></i> Crea tu cuenta</div><h1>Regístrate gratis</h1></div>
+
+          <!-- Inline error banner -->
+          <div class="inline-error" id="regError">
+            <i class="bi bi-exclamation-circle-fill"></i>
+            <span id="regErrorMsg">Error</span>
+          </div>
+
+          <form id="registerForm" onsubmit="event.preventDefault(); procesarRegistro();">
+            <div class="form-group">
+              <label class="form-label">Nombre completo</label>
+              <div class="input-group"><span class="input-icon"><i class="bi bi-person"></i></span><input type="text" class="form-input" id="regNombre" placeholder="Juan Pérez García" required></div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Correo electrónico</label>
+              <div class="input-group"><span class="input-icon"><i class="bi bi-envelope"></i></span><input type="email" class="form-input" id="regEmail" placeholder="tucorreo@gmail.com" required></div>
+            </div>
+            <div class="row-2">
+              <div class="form-group"><label class="form-label">Contraseña</label><input type="password" class="form-input" id="regPass" placeholder="Mínimo 6" minlength="6" required></div>
+              <div class="form-group"><label class="form-label">Repetir</label><input type="password" class="form-input" id="regPassConfirm" placeholder="Repite" required></div>
+            </div>
+            <button type="submit" class="btn-submit" id="regBtn"><i class="bi bi-person-plus-fill"></i> Crear cuenta</button>
+          </form>
+          <div class="auth-footer">¿Ya tienes cuenta? <a href="login.html">Inicia sesión</a></div>
+        </div>
+
+        <!-- SUCCESS VIEW (after registration) -->
+        <div class="inline-success" id="successView">
+          <div class="ok-icon"><i class="bi bi-envelope-check-fill"></i></div>
+          <h3>¡Revisa tu email!</h3>
+          <p>Hemos enviado un enlace de verificación a</p>
+          <span class="email-highlight" id="successEmail"></span>
+          <p>Haz clic en el enlace del email para activar tu cuenta. Si no lo ves, revisa la carpeta de <strong>spam</strong>.</p>
+          <a href="login.html" style="margin-top:8px;color:var(--green-600);font-weight:700;font-size:.88rem"><i class="bi bi-arrow-left"></i> Volver al login</a>
+        </div>
       </div>
     </div>
   </main>
 
   <script>
-    async function procesarRegistro(){
-      const nombre=document.getElementById('regNombre').value;
-      const email=document.getElementById('regEmail').value;
-      const pass=document.getElementById('regPass').value;
-      const pc=document.getElementById('regPassConfirm').value;
-      if(pass!==pc){alert('Las contraseñas no coinciden');return;}
-      const btn=document.querySelector('.btn-submit');
-      btn.disabled=true; btn.innerHTML='<i class="bi bi-hourglass-split"></i> Creando...';
-      try{
-        const res=await fetch('http://localhost:5000/api/register',{
-          method:'POST',
-          headers:{'Content-Type':'application/json'},
-          body:JSON.stringify({nombre,email,password:pass})
-        });
-        const data=await res.json();
-        if(data.ok){
-          alert('¡Cuenta creada correctamente! Ahora puedes iniciar sesión.');
-          window.location.href='login.html';
-        }else{
-          alert(data.msg||'Error al registrar.');
-        }
-      }catch(err){
-        console.error(err);
-        alert('No se pudo conectar con el servidor. ¿Está el backend encendido?');
+    function showRegError(msg) {
+      const el = document.getElementById('regError');
+      document.getElementById('regErrorMsg').innerHTML = msg;
+      el.classList.add('show');
+      // highlight email field on duplicate
+      if (msg.includes('ya está registrado')) {
+        document.getElementById('regEmail').classList.add('input-error');
       }
-      btn.disabled=false; btn.innerHTML='<i class="bi bi-person-plus-fill"></i> Crear cuenta';
     }
+    function clearRegError() {
+      document.getElementById('regError').classList.remove('show');
+      document.getElementById('regEmail').classList.remove('input-error');
+      document.getElementById('regPass').classList.remove('input-error');
+      document.getElementById('regPassConfirm').classList.remove('input-error');
+    }
+
+    async function procesarRegistro() {
+      clearRegError();
+      const nombre = document.getElementById('regNombre').value.trim();
+      const email  = document.getElementById('regEmail').value.trim();
+      const pass   = document.getElementById('regPass').value;
+      const pc     = document.getElementById('regPassConfirm').value;
+
+      if (pass !== pc) {
+        document.getElementById('regPass').classList.add('input-error');
+        document.getElementById('regPassConfirm').classList.add('input-error');
+        showRegError('Las contraseñas no coinciden. Asegúrate de escribir lo mismo en ambos campos.');
+        return;
+      }
+      if (pass.length < 6) {
+        document.getElementById('regPass').classList.add('input-error');
+        showRegError('La contraseña debe tener al menos 6 caracteres.');
+        return;
+      }
+
+      const btn = document.getElementById('regBtn');
+      btn.disabled = true; btn.innerHTML = '<i class="bi bi-hourglass-split"></i> Creando cuenta...';
+      try {
+        const res  = await fetch('http://localhost:5000/api/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ nombre, email, password: pass })
+        });
+        const data = await res.json();
+        if (data.ok) {
+          // Show success screen
+          document.getElementById('formView').style.display = 'none';
+          document.getElementById('successEmail').textContent = email;
+          document.getElementById('successView').classList.add('show');
+        } else {
+          if (data.code === 'EMAIL_EXISTS') {
+            showRegError(`${data.msg} <a href="login.html">Inicia sesión aquí</a>`);
+            document.getElementById('regEmail').classList.add('input-error');
+          } else {
+            showRegError(data.msg || 'Error al registrar. Inténtalo de nuevo.');
+          }
+        }
+      } catch (err) {
+        console.error(err);
+        showRegError('No se pudo conectar con el servidor. ¿Está el backend encendido?');
+      }
+      btn.disabled = false; btn.innerHTML = '<i class="bi bi-person-plus-fill"></i> Crear cuenta';
+    }
+
+    // Clear error on input change
+    ['regNombre','regEmail','regPass','regPassConfirm'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.addEventListener('input', clearRegError);
+    });
   </script>
   
 <script>
@@ -371,7 +454,7 @@ textarea.form-input { resize:vertical; min-height:100px; }
     const navToggle=document.getElementById('navToggle'),navLinks=document.getElementById('navLinks');if(navToggle&&navLinks){navToggle.addEventListener('click',()=>{navLinks.classList.toggle('open');const i=navToggle.querySelector('i');i.classList.toggle('bi-list');i.classList.toggle('bi-x-lg')})}
     const reveals=document.querySelectorAll('.reveal');if(reveals.length){const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target)}})},{threshold:.1});reveals.forEach(el=>obs.observe(el))}
     document.addEventListener('DOMContentLoaded',function(){const isLogged=localStorage.getItem('isLogged')==='true';let cu=null;try{cu=JSON.parse(localStorage.getItem('gymCurrentUser'))}catch(e){}if(isLogged&&cu){const ll=document.getElementById('loginLink'),rl=document.getElementById('registerLink');if(ll)ll.parentElement.style.display='none';if(rl)rl.parentElement.style.display='none';const nl=document.getElementById('navLinks');if(nl){const u=document.createElement('li');u.innerHTML='<span style="color:var(--green-600);font-weight:700;font-size:.84rem;padding:8px 14px;display:inline-flex;align-items:center;gap:6px;"><i class="bi bi-person-circle"></i> '+cu.nombre+'</span>';nl.appendChild(u);const l=document.createElement('li');l.innerHTML='<a href="#" onclick="cerrarSesion();return false;" style="color:#ef4444;font-weight:600;font-size:.84rem;padding:8px 14px;display:inline-flex;align-items:center;gap:6px;"><i class="bi bi-box-arrow-right"></i> Salir</a>';nl.appendChild(l)}}});
-    function cerrarSesion(){localStorage.removeItem('isLogged');localStorage.removeItem('gymCurrentUser');window.location.reload()}
+    function cerrarSesion(){['isLogged','gymCurrentUser','gymToken','gymRoutine','gymDailyProgress','gymStreak'].forEach(k=>localStorage.removeItem(k));window.location.href='index.html';}
 </script>
 </body>
 </html>

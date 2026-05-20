@@ -76,7 +76,7 @@
   </style>
 </head>
 <body>
-  <nav class="navbar" id="navbar"><div class="navbar-inner"><a href="index.html" class="nav-logo"><span class="dot"></span> Empieza en el Gym</a><button class="nav-toggle" id="navToggle" aria-label="Menú"><i class="bi bi-list"></i></button><ul class="nav-links" id="navLinks"><li><a href="mitos-errores.html">Mitos y Errores</a></li><li><a href="ejercicios.html" class="active">Ejercicios</a></li><li><a href="test.html">Test</a></li><li><a href="calculadora.html">Calculadora</a></li><li><a href="contacto.html">Contacto</a></li><li><a href="login.html" id="loginLink">Login</a></li><li><a href="register.html" class="nav-cta" id="registerLink"><i class="bi bi-person-plus"></i> Registro</a></li></ul></div></nav>
+  <nav class="navbar" id="navbar"><div class="navbar-inner"><a href="index.html" class="nav-logo"><span class="dot"></span> Empieza en el Gym</a><button class="nav-toggle" id="navToggle" aria-label="Menú"><i class="bi bi-list"></i></button><ul class="nav-links" id="navLinks"><li><a href="mitos-errores.html">Mitos y Errores</a></li><li><a href="ejercicios.html" class="active">Ejercicios</a></li><li><a href="test.html">Test</a></li><li><a href="calculadora.html">Calculadora</a></li><li><a href="leaderboard.html">Ranking</a></li><li><a href="contacto.html">Contacto</a></li><li id="adminNavItem" style="display:none"><a href="admin.html"><i class="bi bi-shield-check"></i> Admin</a></li><li id="rutinaNavItem" style="display:none"><a href="mi-rutina.html"><i class="bi bi-journal-check"></i> Mi Rutina</a></li><li id="perfilNavItem" style="display:none"><a href="perfil.html"><i class="bi bi-person-circle"></i> Perfil</a></li><li id="logoutNavItem" style="display:none"><a href="#" onclick="cerrarSesion();return false;" style="color:#ef4444;font-weight:600"><i class="bi bi-box-arrow-right"></i> Salir</a></li><li id="loginNavItem"><a href="login.html">Login</a></li><li id="registerNavItem"><a href="register.html" class="nav-cta"><i class="bi bi-person-plus"></i> Registro</a></li></ul></div></nav>
 
   <section class="page-hero">
     <div style="width:400px;height:400px;background:radial-gradient(circle,rgba(59,130,246,.12),transparent 70%);top:-80px;right:-60px;position:absolute;border-radius:50%;filter:blur(90px);pointer-events:none;opacity:.5"></div>
@@ -149,13 +149,8 @@
 
     document.addEventListener('DOMContentLoaded',function(){
       // Navbar auth
+      initNavAuth(isLogged,cu);
       if(isLogged&&cu){
-        const ll=document.getElementById('loginLink'),rl=document.getElementById('registerLink');
-        if(ll)ll.parentElement.style.display='none';if(rl)rl.parentElement.style.display='none';
-        const nl=document.getElementById('navLinks');if(nl){
-          const u=document.createElement('li');u.innerHTML='<a href="perfil.html" style="color:var(--green-600);font-weight:700;font-size:.84rem;padding:8px 14px;display:inline-flex;align-items:center;gap:6px;"><i class="bi bi-person-circle"></i> '+cu.nombre+'</a>';nl.appendChild(u);
-          const l=document.createElement('li');l.innerHTML='<a href="#" onclick="cerrarSesion();return false;" style="color:#ef4444;font-weight:600;font-size:.84rem;padding:8px 14px;display:inline-flex;align-items:center;gap:6px;"><i class="bi bi-box-arrow-right"></i> Salir</a>';nl.appendChild(l);
-        }
 
         // Check test status from server
         fetch(API+'/api/profile/'+cu.id).then(r=>r.json()).then(data=>{
@@ -174,7 +169,8 @@
         });
       }
     });
-    function cerrarSesion(){localStorage.removeItem('isLogged');localStorage.removeItem('gymCurrentUser');window.location.reload()}
+    function initNavAuth(isLogged,user){if(isLogged&&user){['loginNavItem','registerNavItem'].forEach(function(id){var el=document.getElementById(id);if(el)el.style.display='none';});['rutinaNavItem','perfilNavItem','logoutNavItem'].forEach(function(id){var el=document.getElementById(id);if(el)el.style.display='';});if(user.isAdmin){var ai=document.getElementById('adminNavItem');if(ai)ai.style.display='';}}}
+    function cerrarSesion(){['isLogged','gymCurrentUser','gymToken','gymRoutine','gymDailyProgress','gymStreak'].forEach(k=>localStorage.removeItem(k));window.location.href='index.html';}
 
     function loadRoutine(user){
       const _gr=(()=>{try{return JSON.parse(localStorage.getItem('gymRoutine'));}catch(e){return null;}})();
@@ -216,26 +212,51 @@
     async function completeExercise(exerciseId,el){
       el.classList.add('done');
       el.style.pointerEvents='none';
-      // Persist to localStorage
+
       const _tk=new Date().toISOString().split('T')[0];
+      const _token=localStorage.getItem('gymToken');
+
+      // 1. Guardar en localStorage
       let _dp={};try{_dp=JSON.parse(localStorage.getItem('gymDailyProgress')||'{}')}catch(e){}
       if(!_dp[_tk])_dp[_tk]=[];
       if(!_dp[_tk].includes(exerciseId))_dp[_tk].push(exerciseId);
       localStorage.setItem('gymDailyProgress',JSON.stringify(_dp));
-      // If all exercises done today, update local streak
+
+      // 2. Guardar ejercicio completado en MongoDB
+      if(_token){
+        try{
+          await fetch('http://localhost:5000/api/progress',{
+            method:'POST',
+            headers:{'Content-Type':'application/json','Authorization':'Bearer '+_token},
+            body:JSON.stringify({date:_tk,exerciseId})
+          });
+        }catch(err){console.warn('No se pudo guardar progreso en BD:',err.message)}
+      }
+
+      // 3. Si todos los ejercicios del día completados → actualizar racha
       const _all=window._todayExerciseIds||['warmup','press','remo','prensa','curl','stretch'];
       if(_all.every(id=>_dp[_tk].includes(id))){
         const _yd=new Date(Date.now()-86400000).toISOString().split('T')[0];
         let _s;try{_s=JSON.parse(localStorage.getItem('gymStreak')||'{"count":0,"lastActive":null,"history":[]}')}catch(e){_s={count:0,lastActive:null,history:[]}}
-        if(_s.lastActive!==_tk){_s.count=(_s.lastActive===_yd)?_s.count+1:1;_s.lastActive=_tk;if(!_s.history.includes(_tk))_s.history.push(_tk);if(_s.history.length>90)_s.history=_s.history.slice(-90);localStorage.setItem('gymStreak',JSON.stringify(_s));}
+        if(_s.lastActive!==_tk){
+          _s.count=(_s.lastActive===_yd)?_s.count+1:1;
+          _s.lastActive=_tk;
+          if(!_s.history.includes(_tk))_s.history.push(_tk);
+          if(_s.history.length>90)_s.history=_s.history.slice(-90);
+          localStorage.setItem('gymStreak',JSON.stringify(_s));
+          // Guardar racha en MongoDB
+          if(_token){
+            try{
+              await fetch('http://localhost:5000/api/streak',{
+                method:'POST',
+                headers:{'Content-Type':'application/json','Authorization':'Bearer '+_token},
+                body:JSON.stringify({count:_s.count,lastActive:_s.lastActive,history:_s.history})
+              });
+            }catch(err){console.warn('No se pudo guardar racha en BD:',err.message)}
+          }
+        }
         document.getElementById('streakNum').textContent=_s.count;
       }
-      // Try API
-      try{
-        const res=await fetch(API+'/api/complete-exercise/'+(cu&&cu.id),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({exerciseId})});
-        const data=await res.json();
-        if(data.ok){document.getElementById('streakNum').textContent=data.racha;}
-      }catch(err){console.error(err)}
     }
   </script>
 </body>

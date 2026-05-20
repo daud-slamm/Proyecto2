@@ -160,12 +160,17 @@
       <button class="nav-toggle" id="navToggle" aria-label="Menú"><i class="bi bi-list"></i></button>
       <ul class="nav-links" id="navLinks">
         <li><a href="mitos-errores.html">Mitos y Errores</a></li>
-        <li><a href="ejercicios.html">Ejercicios</a></li>
         <li><a href="test.html">Test</a></li>
         <li><a href="calculadora.html">Calculadora</a></li>
+
+        <li><a href="leaderboard.html">Ranking</a></li>
         <li><a href="contacto.html">Contacto</a></li>
-        <li><a href="login.html" id="loginLink">Login</a></li>
-        <li><a href="register.html" class="nav-cta" id="registerLink"><i class="bi bi-person-plus"></i> Registro</a></li>
+        <li id="adminNavItem" style="display:none"><a href="admin.html"><i class="bi bi-shield-check"></i> Admin</a></li>
+        <li id="rutinaNavItem" style="display:none"><a href="mi-rutina.html"><i class="bi bi-journal-check"></i> Mi Rutina</a></li>
+        <li id="perfilNavItem" style="display:none"><a href="perfil.html"><i class="bi bi-person-circle"></i> Perfil</a></li>
+        <li id="logoutNavItem" style="display:none"><a href="#" onclick="cerrarSesion();return false;" style="color:#ef4444;font-weight:600"><i class="bi bi-box-arrow-right"></i> Salir</a></li>
+        <li id="loginNavItem"><a href="login.html">Login</a></li>
+        <li id="registerNavItem"><a href="register.html" class="nav-cta"><i class="bi bi-person-plus"></i> Registro</a></li>
       </ul>
     </div>
   </nav>
@@ -274,23 +279,13 @@
     const reveals=document.querySelectorAll('.reveal');
     const observer=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');observer.unobserve(e.target)}})},{threshold:0.1});
     reveals.forEach(el=>observer.observe(el));
+    function initNavAuth(isLogged,user){if(isLogged&&user){['loginNavItem','registerNavItem'].forEach(function(id){var el=document.getElementById(id);if(el)el.style.display='none';});['rutinaNavItem','perfilNavItem','logoutNavItem'].forEach(function(id){var el=document.getElementById(id);if(el)el.style.display='';});if(user.isAdmin){var ai=document.getElementById('adminNavItem');if(ai)ai.style.display='';}}}
+    function cerrarSesion(){['isLogged','gymCurrentUser','gymToken','gymRoutine','gymDailyProgress','gymStreak'].forEach(k=>localStorage.removeItem(k));window.location.href='index.html';}
     document.addEventListener("DOMContentLoaded",function(){
       const isLogged=localStorage.getItem('isLogged')==='true';
       let currentUser=null;try{currentUser=JSON.parse(localStorage.getItem('gymCurrentUser'))}catch(e){}
-      if(isLogged&&currentUser){
-        const loginLink=document.getElementById('loginLink'),registerLink=document.getElementById('registerLink');
-        if(loginLink)loginLink.parentElement.style.display='none';
-        if(registerLink)registerLink.parentElement.style.display='none';
-        const navList=document.getElementById('navLinks');
-        const profileLi=document.createElement('li');
-        profileLi.innerHTML=`<a href="perfil.html" style="color:var(--green-600);font-weight:700;font-size:.84rem;padding:8px 14px;display:inline-flex;align-items:center;gap:6px;"><i class="bi bi-person-circle"></i> ${currentUser.nombre}</a>`;
-        navList.appendChild(profileLi);
-        const logoutLi=document.createElement('li');
-        logoutLi.innerHTML=`<a href="#" onclick="cerrarSesion();return false;" style="color:#ef4444;font-weight:600;font-size:.84rem;padding:8px 14px;display:inline-flex;align-items:center;gap:6px;"><i class="bi bi-box-arrow-right"></i> Salir</a>`;
-        navList.appendChild(logoutLi);
-      }
+      initNavAuth(isLogged,currentUser);
     });
-    function cerrarSesion(){localStorage.removeItem('isLogged');localStorage.removeItem('gymCurrentUser');window.location.reload()}
   </script>
 </body>
 </html>

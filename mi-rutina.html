@@ -1,0 +1,1192 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Mi Rutina — Empieza en el Gym</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root{--white:#fff;--off-white:#f7f8fa;--cream:#f0f2f5;--gray-50:#f9fafb;--gray-100:#e8ebf0;--gray-200:#d1d5de;--gray-400:#9098a9;--gray-600:#5a6278;--gray-700:#374151;--gray-800:#2d3142;--gray-900:#1a1d2e;--green-500:#10b981;--green-600:#059669;--green-400:#34d399;--green-50:#ecfdf5;--green-100:#d1fae5;--shadow-sm:0 1px 3px rgba(15,17,26,.06);--shadow-md:0 4px 16px rgba(15,17,26,.08);--shadow-green:0 8px 32px rgba(16,185,129,.25);--radius-xl:28px;--radius-lg:20px;--radius-md:14px;--radius-sm:10px;--radius:14px;--font-display:'Sora',sans-serif;--font-mono:'DM Mono',monospace}
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:var(--font-display);background:var(--off-white);color:var(--gray-800);min-height:100vh;-webkit-font-smoothing:antialiased}
+    a{text-decoration:none;color:inherit}
+
+    /* ── NAVBAR ── */
+    .navbar{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(247,248,250,.92);backdrop-filter:blur(20px);border-bottom:1px solid transparent;transition:all .3s}
+    .navbar.scrolled{border-bottom-color:var(--gray-200);box-shadow:var(--shadow-sm)}
+    .navbar-inner{max-width:1180px;margin:0 auto;padding:0 24px;height:64px;display:flex;align-items:center;justify-content:space-between}
+    .nav-logo{font-weight:700;font-size:1.05rem;color:var(--gray-900);display:flex;align-items:center;gap:8px}
+    .nav-logo .dot{width:11px;height:11px;border-radius:50%;background:var(--green-500);box-shadow:0 0 0 3px rgba(34,197,94,.2);animation:breathe 3s ease-in-out infinite}
+    @keyframes breathe{0%,100%{box-shadow:0 0 0 3px rgba(16,185,129,.2)}50%{box-shadow:0 0 0 8px rgba(16,185,129,.1),0 0 20px rgba(16,185,129,.15)}}
+    .nav-links{display:flex;align-items:center;gap:2px;list-style:none}
+    .nav-links a{font-size:.84rem;font-weight:500;color:var(--gray-600);padding:8px 14px;border-radius:var(--radius-sm);transition:all .2s}
+    .nav-links a:hover{color:var(--gray-900);background:var(--cream)}
+    .nav-links a.active{color:var(--green-600);background:var(--green-50)}
+    .nav-cta{background:var(--green-500)!important;color:#fff!important;font-weight:600!important;margin-left:8px;padding:8px 18px!important;box-shadow:var(--shadow-green);border-radius:var(--radius-sm)!important}
+    .nav-toggle{display:none;background:var(--cream);border:1px solid var(--gray-200);color:var(--gray-800);font-size:1.3rem;cursor:pointer;padding:6px 10px;border-radius:var(--radius-sm)}
+    @media(max-width:768px){.nav-links{display:none}.nav-links.open{display:flex;flex-direction:column;position:absolute;top:100%;left:0;right:0;background:rgba(247,248,250,.97);backdrop-filter:blur(20px);padding:16px 24px;border-bottom:1px solid var(--gray-100);box-shadow:var(--shadow-md);gap:2px}.nav-links.open a{padding:12px 16px}.nav-toggle{display:flex;align-items:center;justify-content:center}}
+
+    /* ── HERO ── */
+    .page-hero{padding:96px 24px 40px;text-align:center;background:linear-gradient(to bottom,var(--green-50),var(--cream));border-bottom:1px solid var(--green-100);position:relative;overflow:hidden}
+    .hero-blob{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none;opacity:.5}
+    .hero-tag{display:inline-flex;align-items:center;gap:6px;font-size:.78rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;background:var(--green-50);border:1px solid var(--green-100);color:var(--green-600);padding:5px 14px;border-radius:20px;margin-bottom:16px}
+    .page-hero h1{font-size:clamp(2rem,4vw,3rem);font-weight:800;color:var(--gray-900);margin-bottom:12px;letter-spacing:-.02em}
+    .page-hero p{font-size:1.05rem;color:var(--gray-600);max-width:520px;margin:0 auto 24px}
+    .hero-stats{display:flex;gap:24px;justify-content:center;flex-wrap:wrap}
+    .hstat{background:var(--white);border:1px solid var(--gray-100);border-radius:var(--radius);padding:14px 24px;text-align:center;box-shadow:var(--shadow-sm)}
+    .hstat-num{font-size:1.6rem;font-weight:800;color:var(--green-600)}
+    .hstat-lbl{font-size:.78rem;color:var(--gray-400);margin-top:2px}
+
+    /* ── LAYOUT ── */
+    .page-wrap{max-width:1200px;margin:0 auto;padding:40px 24px 80px}
+
+    /* ── TABS ── */
+    .tabs{display:flex;gap:8px;margin-bottom:32px;border-bottom:2px solid var(--gray-100);padding-bottom:0}
+    .tab-btn{background:none;border:none;padding:12px 24px;font-size:.9rem;font-weight:600;color:var(--gray-400);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .2s;border-radius:var(--radius-sm) var(--radius-sm) 0 0}
+    .tab-btn:hover{color:var(--gray-700);background:var(--gray-50)}
+    .tab-btn.active{color:var(--green-600);border-bottom-color:var(--green-500)}
+    .tab-content{display:none}
+    .tab-content.active{display:block}
+
+    /* ── MY ROUTINE TAB ── */
+    .routine-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:32px}
+    .rsum{background:var(--white);border:1px solid var(--gray-100);border-radius:var(--radius);padding:20px;text-align:center;box-shadow:var(--shadow-sm)}
+    .rsum-num{font-size:2rem;font-weight:800;color:var(--green-600);line-height:1}
+    .rsum-lbl{font-size:.8rem;color:var(--gray-400);margin-top:6px}
+    @media(max-width:600px){.routine-summary{grid-template-columns:1fr 1fr}.rsum:last-child{grid-column:span 2}}
+
+    /* ── DAY BLOCKS ── */
+    .routine-list{display:flex;flex-direction:column;gap:16px;margin-bottom:16px}
+    .day-block{background:var(--white);border:1px solid var(--gray-100);border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--shadow-sm);transition:box-shadow .2s}
+    .day-block:hover{box-shadow:var(--shadow-md)}
+    .day-header{display:flex;align-items:center;justify-content:space-between;padding:18px 22px;cursor:pointer;transition:background .2s;user-select:none;gap:12px}
+    .day-header:hover{background:var(--gray-50)}
+    .day-header-left{display:flex;align-items:center;gap:14px;flex:1;min-width:0}
+    .day-num-badge{width:44px;height:44px;background:linear-gradient(135deg,var(--green-500),var(--green-600));color:#fff;border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.8rem;flex-shrink:0;box-shadow:var(--shadow-green);letter-spacing:.04em;text-transform:uppercase}
+    .day-title{font-size:1rem;font-weight:700;color:var(--gray-900);line-height:1.3}
+    .day-sub{font-size:.77rem;color:var(--gray-400);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .day-header-right{display:flex;align-items:center;gap:10px;flex-shrink:0}
+    .day-badge{background:var(--green-50);color:var(--green-600);border:1px solid var(--green-100);font-size:.73rem;font-weight:700;padding:3px 11px;border-radius:20px;white-space:nowrap}
+    .day-chevron{color:var(--gray-400);font-size:1rem;transition:transform .25s}
+    .day-chevron.collapsed{transform:rotate(-90deg)}
+
+    /* ── EXERCISE CARDS (inside day) ── */
+    .day-exercises{padding:0 16px 16px;display:flex;flex-direction:column;gap:12px}
+    .rx-card{background:var(--off-white);border:1px solid var(--gray-100);border-radius:var(--radius-md);overflow:hidden;display:grid;grid-template-columns:180px 1fr;transition:transform .2s,box-shadow .2s}
+    .rx-card:hover{transform:translateY(-2px);box-shadow:0 6px 24px rgba(0,0,0,.1)}
+    .rx-img{background-size:cover;background-position:center;position:relative;min-height:140px}
+    .rx-badge{position:absolute;top:10px;left:10px;background:rgba(0,0,0,.55);backdrop-filter:blur(8px);color:#fff;font-size:.68rem;font-weight:700;padding:3px 9px;border-radius:20px;letter-spacing:.03em}
+    .rx-num{position:absolute;bottom:10px;right:10px;width:28px;height:28px;background:var(--green-500);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.8rem;box-shadow:var(--shadow-green)}
+    .rx-body{padding:16px 20px;display:flex;flex-direction:column;gap:12px}
+    .rx-name{font-size:1.05rem;font-weight:700;color:var(--gray-900)}
+    .rx-controls{display:flex;gap:16px;flex-wrap:wrap}
+    .rx-ctrl-grp{display:flex;flex-direction:column;gap:5px}
+    .rx-ctrl-lbl{font-size:.72rem;font-weight:600;color:var(--gray-400);text-transform:uppercase;letter-spacing:.04em}
+    .rx-counter{display:flex;align-items:center;background:var(--white);border:1px solid var(--gray-200);border-radius:var(--radius-sm);overflow:hidden}
+    .rx-counter button{width:32px;height:32px;background:none;border:none;cursor:pointer;font-size:.9rem;color:var(--gray-700);transition:background .15s}
+    .rx-counter button:hover{background:var(--gray-100)}
+    .rx-counter span{min-width:36px;text-align:center;font-weight:700;font-size:.9rem;color:var(--gray-900)}
+    .rx-select{height:32px;border:1px solid var(--gray-200);border-radius:var(--radius-sm);padding:0 10px;font-size:.85rem;color:var(--gray-800);background:var(--white);cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236b7280' d='M6 8L1 3h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 8px center;padding-right:26px}
+    .rx-footer{display:flex;gap:8px;margin-top:auto}
+    .btn-swap{display:flex;align-items:center;gap:5px;padding:7px 13px;background:var(--white);border:1px solid var(--gray-200);border-radius:var(--radius-sm);color:var(--gray-700);font-size:.8rem;font-weight:600;cursor:pointer;transition:all .2s}
+    .btn-swap:hover{background:var(--gray-100);color:var(--gray-900)}
+    .btn-remove{display:flex;align-items:center;gap:5px;padding:7px 12px;background:#fef2f2;border:1px solid #fecaca;border-radius:var(--radius-sm);color:#dc2626;font-size:.8rem;cursor:pointer;transition:all .2s}
+    .btn-remove:hover{background:#fee2e2}
+    @media(max-width:640px){.rx-card{grid-template-columns:1fr}.rx-img{min-height:160px}}
+
+    /* ── DAY ACTIONS ── */
+    .day-ex-actions{display:flex;gap:10px;margin-top:8px;flex-wrap:wrap;padding-top:4px}
+    .btn-add-day-ex{display:flex;align-items:center;gap:7px;padding:10px 16px;background:var(--gray-50);border:2px dashed var(--green-400);border-radius:var(--radius-sm);color:var(--green-600);font-size:.82rem;font-weight:600;cursor:pointer;transition:all .2s;font-family:var(--font-display)}
+    .btn-add-day-ex:hover{background:var(--green-50);border-color:var(--green-500)}
+    .btn-remove-day{display:flex;align-items:center;gap:7px;padding:10px 14px;background:#fef2f2;border:1px solid #fecaca;border-radius:var(--radius-sm);color:#dc2626;font-size:.82rem;font-weight:600;cursor:pointer;transition:all .2s;font-family:var(--font-display)}
+    .btn-remove-day:hover{background:#fee2e2}
+
+    /* ── ADD NEW DAY BUTTON ── */
+    .btn-add-day{display:flex;align-items:center;justify-content:center;gap:9px;padding:16px 22px;background:var(--white);border:2px dashed var(--gray-300);border-radius:var(--radius-lg);color:var(--gray-500);font-weight:600;font-size:.9rem;cursor:pointer;transition:all .2s;width:100%;font-family:var(--font-display)}
+    .btn-add-day:hover{background:var(--green-50);border-color:var(--green-400);color:var(--green-600)}
+
+    /* ── EMPTY STATE ── */
+    .empty-state{text-align:center;padding:60px 24px;color:var(--gray-400)}
+    .empty-state i{font-size:3rem;display:block;margin-bottom:16px;color:var(--gray-300)}
+    .empty-state h3{font-size:1.2rem;font-weight:700;color:var(--gray-600);margin-bottom:8px}
+    .empty-state p{font-size:.9rem;margin-bottom:20px}
+    .btn-goto-catalog{display:inline-flex;align-items:center;gap:8px;padding:12px 24px;background:var(--green-500);color:#fff;border:none;border-radius:var(--radius-sm);font-weight:600;cursor:pointer;font-size:.9rem;box-shadow:var(--shadow-green);transition:all .2s;font-family:var(--font-display)}
+    .btn-goto-catalog:hover{background:var(--green-600);transform:translateY(-1px)}
+
+    /* ── ROUTINE ACTIONS ── */
+    .routine-actions{display:flex;gap:12px;flex-wrap:wrap;padding-top:8px}
+    .btn-add-ex{display:flex;align-items:center;gap:8px;padding:12px 22px;background:var(--white);border:2px dashed var(--green-500);border-radius:var(--radius-sm);color:var(--green-600);font-weight:600;font-size:.9rem;cursor:pointer;transition:all .2s;font-family:var(--font-display)}
+    .btn-add-ex:hover{background:var(--green-50)}
+    .btn-save{display:flex;align-items:center;gap:8px;padding:12px 28px;background:var(--green-500);color:#fff;border:none;border-radius:var(--radius-sm);font-weight:600;font-size:.9rem;cursor:pointer;box-shadow:var(--shadow-green);transition:all .2s;margin-left:auto;font-family:var(--font-display)}
+    .btn-save:hover{background:var(--green-600);transform:translateY(-1px)}
+    .btn-save:disabled{opacity:.6;cursor:not-allowed;transform:none}
+
+    /* ── CATALOG ── */
+    .catalog-controls{display:flex;flex-direction:column;gap:16px;margin-bottom:28px}
+    .search-box{position:relative}
+    .search-box input{width:100%;padding:12px 44px 12px 16px;border:1px solid var(--gray-200);border-radius:var(--radius-sm);font-size:.9rem;background:var(--white);color:var(--gray-900);outline:none;transition:border .2s;font-family:var(--font-display)}
+    .search-box input:focus{border-color:var(--green-500)}
+    .search-box i{position:absolute;right:14px;top:50%;transform:translateY(-50%);color:var(--gray-400);font-size:1.1rem}
+    .muscle-filters{display:flex;gap:8px;flex-wrap:wrap}
+    .filter-btn{padding:7px 16px;border:1px solid var(--gray-200);border-radius:20px;background:var(--white);color:var(--gray-600);font-size:.82rem;font-weight:600;cursor:pointer;transition:all .2s;font-family:var(--font-display)}
+    .filter-btn:hover{border-color:var(--green-500);color:var(--green-600)}
+    .filter-btn.active{background:var(--green-500);border-color:var(--green-500);color:#fff}
+
+    /* ── CATALOG TARGET BANNER ── */
+    .catalog-target-bar{background:linear-gradient(135deg,var(--green-50),#d1fae5);border:1px solid var(--green-200);border-radius:var(--radius-sm);padding:12px 18px;display:flex;align-items:center;gap:12px;margin-bottom:20px;font-size:.88rem;font-weight:600;color:var(--green-700)}
+    .catalog-target-bar i{font-size:1.2rem;color:var(--green-500)}
+    .btn-cancel-target{margin-left:auto;padding:5px 12px;background:var(--white);border:1px solid var(--gray-200);border-radius:var(--radius-sm);color:var(--gray-600);font-size:.8rem;cursor:pointer;font-family:var(--font-display)}
+
+    /* ── CATALOG GRID ── */
+    .catalog-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px}
+    .cat-card{background:var(--white);border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--shadow-sm);border:1px solid var(--gray-100);cursor:pointer;transition:transform .2s,box-shadow .2s}
+    .cat-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-md)}
+    .cat-img{height:180px;background-size:cover;background-position:center;position:relative}
+    .cat-img-gradient{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.4),transparent)}
+    .cat-dif{position:absolute;top:12px;right:12px;font-size:.7rem;font-weight:700;padding:3px 10px;border-radius:20px;letter-spacing:.03em}
+    .dif-easy{background:rgba(16,185,129,.9);color:#fff}
+    .dif-mid{background:rgba(245,158,11,.9);color:#fff}
+    .dif-hard{background:rgba(239,68,68,.9);color:#fff}
+    .cat-body{padding:16px}
+    .cat-muscle{font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;margin-bottom:5px}
+    .cat-name{font-size:1rem;font-weight:700;color:var(--gray-900);margin-bottom:12px;line-height:1.3}
+    .cat-add{width:100%;padding:9px;border:none;border-radius:var(--radius-sm);font-size:.83rem;font-weight:600;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:6px;background:var(--green-50);color:var(--green-600);font-family:var(--font-display)}
+    .cat-add:hover{background:var(--green-500);color:#fff}
+    .cat-add.cat-added{background:#f0fdf4;color:var(--green-700);border:1px solid var(--green-200)}
+    .cat-add.cat-added:hover{background:#dcfce7}
+    .no-results{text-align:center;padding:60px 24px;color:var(--gray-400);grid-column:1/-1}
+    .no-results i{font-size:2.5rem;display:block;margin-bottom:12px}
+
+    /* ── MODAL ── */
+    .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(6px);z-index:1000;display:none;align-items:center;justify-content:center;padding:20px}
+    .modal-overlay.open{display:flex}
+    .modal-card{background:var(--white);border-radius:var(--radius-lg);overflow:hidden;width:100%;max-width:680px;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.3);animation:modalIn .25s ease}
+    @keyframes modalIn{from{transform:scale(.95);opacity:0}to{transform:scale(1);opacity:1}}
+    .modal-img{height:280px;background-size:cover;background-position:center;position:relative}
+    .modal-img-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.6),transparent)}
+    .modal-img-tag{position:absolute;bottom:20px;left:20px;color:#fff}
+    .modal-img-tag h2{font-size:1.5rem;font-weight:800;margin-bottom:4px}
+    .modal-img-tag .tag{display:inline-block;font-size:.75rem;font-weight:700;padding:3px 12px;border-radius:20px;background:rgba(255,255,255,.25)}
+    .modal-body{padding:28px}
+    .modal-meta{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+    .meta-chip{display:flex;align-items:center;gap:6px;font-size:.82rem;background:var(--gray-50);border:1px solid var(--gray-100);padding:6px 14px;border-radius:20px;color:var(--gray-700)}
+    .meta-chip i{color:var(--green-500)}
+    .modal-desc{font-size:.95rem;color:var(--gray-600);line-height:1.7;margin-bottom:24px;background:var(--gray-50);padding:16px;border-radius:var(--radius-sm);border-left:3px solid var(--green-500)}
+    .modal-actions{display:flex;gap:12px}
+    .modal-btn-add{flex:1;padding:13px;background:var(--green-500);color:#fff;border:none;border-radius:var(--radius-sm);font-weight:700;font-size:.95rem;cursor:pointer;box-shadow:var(--shadow-green);transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;font-family:var(--font-display)}
+    .modal-btn-add:hover{background:var(--green-600)}
+    .modal-btn-add.modal-btn-added{background:var(--gray-100);color:var(--gray-700);box-shadow:none}
+    .modal-btn-close{padding:13px 20px;background:var(--gray-100);color:var(--gray-700);border:none;border-radius:var(--radius-sm);font-weight:600;cursor:pointer;transition:background .2s;font-family:var(--font-display)}
+    .modal-btn-close:hover{background:var(--gray-200)}
+
+    /* ── SWAP MODAL ── */
+    .swap-list{display:flex;flex-direction:column;gap:8px;max-height:55vh;overflow-y:auto;padding:4px}
+    .swap-item{display:flex;align-items:center;gap:14px;padding:12px 16px;border-radius:var(--radius-sm);cursor:pointer;transition:background .15s;border:1px solid var(--gray-100)}
+    .swap-item:hover{background:var(--green-50);border-color:var(--green-200)}
+    .swap-item-img{width:56px;height:44px;border-radius:8px;background-size:cover;background-position:center;flex-shrink:0}
+    .swap-item-name{font-weight:600;font-size:.9rem;color:var(--gray-900)}
+    .swap-item-muscle{font-size:.78rem;color:var(--gray-400)}
+
+    /* ── DAY PICKER MODAL ── */
+    .day-picker-list{display:flex;flex-direction:column;gap:8px}
+    .day-picker-item{display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:var(--radius-sm);cursor:pointer;transition:all .15s;border:1.5px solid var(--gray-100);background:var(--gray-50);user-select:none}
+    .day-picker-item:hover:not(.already-in){background:var(--green-50);border-color:var(--green-300)}
+    .day-picker-item.selected{background:var(--green-50);border-color:var(--green-500)}
+    .day-picker-item.already-in{opacity:.5;cursor:default;pointer-events:none}
+    .day-picker-num{width:36px;height:36px;background:var(--green-500);color:#fff;border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.78rem;flex-shrink:0}
+    .day-picker-check{width:22px;height:22px;border-radius:6px;border:2px solid var(--gray-300);display:flex;align-items:center;justify-content:center;margin-left:auto;flex-shrink:0;transition:all .15s;font-size:.75rem;color:transparent}
+    .day-picker-item.selected .day-picker-check{background:var(--green-500);border-color:var(--green-500);color:#fff}
+    .day-picker-item.already-in .day-picker-check{background:var(--green-100);border-color:var(--green-300);color:var(--green-600)}
+    .day-picker-info{flex:1}
+    .day-picker-title{font-weight:700;font-size:.92rem;color:var(--gray-900)}
+    .day-picker-sub{font-size:.76rem;color:var(--gray-400);margin-top:2px}
+    .day-picker-confirm{width:100%;padding:12px;border-radius:var(--radius-sm);border:none;font-family:var(--font-display);font-size:.9rem;font-weight:700;cursor:pointer;background:var(--green-500);color:#fff;transition:all .2s;margin-top:14px;display:flex;align-items:center;justify-content:center;gap:8px}
+    .day-picker-confirm:hover{background:var(--green-600);transform:translateY(-1px)}
+    .day-picker-confirm:disabled{opacity:.4;cursor:not-allowed;transform:none}
+
+    /* ── TOAST ── */
+    .toast{position:fixed;bottom:24px;right:24px;background:var(--gray-900);color:#fff;padding:14px 20px;border-radius:var(--radius-sm);font-size:.88rem;font-weight:600;z-index:9999;transform:translateY(100px);opacity:0;transition:all .35s cubic-bezier(.34,1.56,.64,1);display:flex;align-items:center;gap:10px;box-shadow:var(--shadow-md)}
+    .toast.show{transform:translateY(0);opacity:1}
+    .toast.success{border-left:4px solid var(--green-500)}
+    .toast.error{border-left:4px solid #ef4444}
+
+    /* ── IMPORT BANNER ── */
+    .import-banner{background:linear-gradient(135deg,#f0fdf4,#dcfce7);border:1px solid var(--green-100);border-radius:var(--radius-lg);padding:20px 24px;display:flex;align-items:center;gap:16px;margin-bottom:24px}
+    .import-banner i{font-size:1.8rem;color:var(--green-500);flex-shrink:0}
+    .import-banner-text h4{font-weight:700;color:var(--gray-900);margin-bottom:4px}
+    .import-banner-text p{font-size:.85rem;color:var(--gray-600)}
+    .import-banner-actions{margin-left:auto;display:flex;gap:10px;flex-shrink:0}
+    .btn-import{padding:9px 18px;background:var(--green-500);color:#fff;border:none;border-radius:var(--radius-sm);font-weight:600;font-size:.85rem;cursor:pointer;box-shadow:var(--shadow-green);transition:all .2s;font-family:var(--font-display)}
+    .btn-import:hover{background:var(--green-600)}
+    .btn-import-skip{padding:9px 14px;background:var(--white);color:var(--gray-600);border:1px solid var(--gray-200);border-radius:var(--radius-sm);font-weight:600;font-size:.85rem;cursor:pointer;transition:all .2s;font-family:var(--font-display)}
+    .btn-import-skip:hover{background:var(--gray-50)}
+
+    /* ── LOADER ── */
+    .loader-wrap{text-align:center;padding:60px;color:var(--gray-400)}
+    .spinner{display:inline-block;width:40px;height:40px;border:3px solid var(--gray-200);border-top-color:var(--green-500);border-radius:50%;animation:spin .7s linear infinite;margin-bottom:16px}
+    @keyframes spin{to{transform:rotate(360deg)}}
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar" id="navbar">
+  <div class="navbar-inner">
+    <a href="index.html" class="nav-logo"><span class="dot"></span> Empieza en el Gym</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Menú"><i class="bi bi-list"></i></button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="mitos-errores.html">Mitos y Errores</a></li>
+      <li><a href="test.html">Test</a></li>
+      <li><a href="calculadora.html">Calculadora</a></li>
+
+      <li><a href="leaderboard.html">Ranking</a></li>
+      <li><a href="contacto.html">Contacto</a></li>
+      <li id="adminNavItem" style="display:none"><a href="admin.html"><i class="bi bi-shield-check"></i> Admin</a></li>
+      <li><a href="mi-rutina.html" class="active"><i class="bi bi-journal-check"></i> Mi Rutina</a></li>
+      <li id="perfilNavItem" style="display:none"><a href="perfil.html"><i class="bi bi-person-circle"></i> Perfil</a></li>
+      <li id="logoutNavItem" style="display:none"><a href="#" onclick="cerrarSesion();return false;" style="color:#ef4444;font-weight:600"><i class="bi bi-box-arrow-right"></i> Salir</a></li>
+      <li id="loginNavItem"><a href="login.html">Login</a></li>
+      <li id="registerNavItem"><a href="register.html" class="nav-cta"><i class="bi bi-person-plus"></i> Registro</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="page-hero">
+  <div class="hero-blob" style="width:400px;height:400px;background:radial-gradient(circle,rgba(34,197,94,.1),transparent 70%);top:-80px;left:-60px"></div>
+  <div class="hero-blob" style="width:300px;height:300px;background:radial-gradient(circle,rgba(59,130,246,.08),transparent 70%);bottom:-40px;right:5%"></div>
+  <div class="hero-tag"><i class="bi bi-journal-check"></i> Plan personalizado</div>
+  <h1>Mi Rutina</h1>
+  <p>Crea, edita y guarda tu plan de entrenamiento personalizado</p>
+  <div class="hero-stats" id="heroStats" style="display:none">
+    <div class="hstat"><div class="hstat-num" id="hExercicios">—</div><div class="hstat-lbl">Ejercicios</div></div>
+    <div class="hstat"><div class="hstat-num" id="hDias">—</div><div class="hstat-lbl">Días</div></div>
+    <div class="hstat"><div class="hstat-num" id="hMusculos">—</div><div class="hstat-lbl">Grupos musculares</div></div>
+    <div class="hstat"><div class="hstat-num" id="hSeries">—</div><div class="hstat-lbl">Series totales</div></div>
+    <div class="hstat"><div class="hstat-num" id="hStreak">—</div><div class="hstat-lbl">Racha actual</div></div>
+  </div>
+</section>
+
+<!-- MAIN -->
+<main class="page-wrap">
+
+  <!-- TABS -->
+  <div class="tabs">
+    <button class="tab-btn active" id="tabBtnRoutine" onclick="switchTab('routine')"><i class="bi bi-journal-check"></i> Mi Rutina</button>
+    <button class="tab-btn" id="tabBtnCatalog" onclick="switchTab('catalog')"><i class="bi bi-grid-3x3-gap"></i> Catálogo de ejercicios</button>
+  </div>
+
+  <!-- ── MY ROUTINE TAB ── -->
+  <div id="tab-routine" class="tab-content active">
+
+    <!-- Loading -->
+    <div class="loader-wrap" id="routineLoader">
+      <div class="spinner"></div>
+      <p>Cargando tu rutina...</p>
+    </div>
+
+    <!-- Import banner -->
+    <div class="import-banner" id="importBanner" style="display:none">
+      <i class="bi bi-lightning-charge-fill"></i>
+      <div class="import-banner-text">
+        <h4>Recargar rutina del test</h4>
+        <p>Sustituye tu rutina actual por la que generó el test. Tus cambios manuales se perderán.</p>
+      </div>
+      <div class="import-banner-actions">
+        <button class="btn-import" onclick="importAIRoutine()"><i class="bi bi-arrow-repeat"></i> Recargar</button>
+        <button class="btn-import-skip" onclick="dismissBanner()">Cancelar</button>
+      </div>
+    </div>
+
+    <!-- Routine content -->
+    <div id="routineContent" style="display:none">
+
+      <!-- Summary -->
+      <div class="routine-summary">
+        <div class="rsum"><div class="rsum-num" id="totalDays">0</div><div class="rsum-lbl">Días</div></div>
+        <div class="rsum"><div class="rsum-num" id="totalEx">0</div><div class="rsum-lbl">Ejercicios</div></div>
+        <div class="rsum"><div class="rsum-num" id="totalSeries">0</div><div class="rsum-lbl">Series totales</div></div>
+      </div>
+
+      <!-- Day blocks -->
+      <div id="routineList" class="routine-list"></div>
+
+      <!-- Add new day button -->
+      <button class="btn-add-day" id="addDayBtn" onclick="addNewDay()" style="display:none">
+        <i class="bi bi-plus-circle"></i> Añadir nuevo día
+      </button>
+
+      <!-- Empty state -->
+      <div id="emptyState" style="display:none" class="empty-state">
+        <i class="bi bi-journal-x"></i>
+        <h3>Tu rutina está vacía</h3>
+        <p>Haz el test para generar tu rutina o añade ejercicios desde el catálogo</p>
+        <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+          <a href="test.html" style="display:inline-flex;align-items:center;gap:8px;padding:12px 22px;background:var(--green-500);color:#fff;border-radius:var(--radius-sm);font-weight:600;font-size:.9rem;box-shadow:var(--shadow-green)"><i class="bi bi-clipboard-check"></i> Hacer el test</a>
+          <button class="btn-goto-catalog" onclick="switchTab('catalog')"><i class="bi bi-grid-3x3-gap"></i> Ver catálogo</button>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="routine-actions" style="margin-top:16px">
+        <button class="btn-add-ex" id="reloadTestBtn" onclick="showImportBanner()" style="display:none;border-color:#f59e0b;color:#d97706"><i class="bi bi-arrow-repeat"></i> Recargar desde test</button>
+        <button class="btn-save" id="saveBtn" onclick="saveRoutine()"><i class="bi bi-cloud-upload"></i> Guardar rutina</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── CATALOG TAB ── -->
+  <div id="tab-catalog" class="tab-content">
+    <!-- Target day banner (shown when adding from day) -->
+    <div id="catalogTargetBar" style="display:none" class="catalog-target-bar">
+      <i class="bi bi-arrow-return-right"></i>
+      <span id="catalogTargetText">Selecciona un ejercicio para añadirlo</span>
+      <button class="btn-cancel-target" onclick="cancelPendingDay()"><i class="bi bi-x"></i> Cancelar</button>
+    </div>
+    <div class="catalog-controls">
+      <div class="search-box">
+        <input type="text" id="catalogSearch" placeholder="Buscar ejercicio por nombre..." oninput="onSearch(this.value)">
+        <i class="bi bi-search"></i>
+      </div>
+      <div class="muscle-filters" id="muscleFilters">
+        <button class="filter-btn active" data-muscle="Todos" onclick="setFilter('Todos',this)">Todos</button>
+        <button class="filter-btn" data-muscle="Pecho" onclick="setFilter('Pecho',this)"><i class="bi bi-heart-pulse"></i> Pecho</button>
+        <button class="filter-btn" data-muscle="Espalda" onclick="setFilter('Espalda',this)">Espalda</button>
+        <button class="filter-btn" data-muscle="Hombros" onclick="setFilter('Hombros',this)">Hombros</button>
+        <button class="filter-btn" data-muscle="Piernas" onclick="setFilter('Piernas',this)">Piernas</button>
+        <button class="filter-btn" data-muscle="Bíceps" onclick="setFilter('Bíceps',this)">Bíceps</button>
+        <button class="filter-btn" data-muscle="Tríceps" onclick="setFilter('Tríceps',this)">Tríceps</button>
+        <button class="filter-btn" data-muscle="Core" onclick="setFilter('Core',this)">Core</button>
+        <button class="filter-btn" data-muscle="Cardio" onclick="setFilter('Cardio',this)">Cardio</button>
+      </div>
+    </div>
+    <div id="catalogGrid" class="catalog-grid">
+      <div class="loader-wrap" style="grid-column:1/-1"><div class="spinner"></div><p>Cargando ejercicios...</p></div>
+    </div>
+  </div>
+
+</main>
+
+<!-- EXERCISE DETAIL MODAL -->
+<div id="exModal" class="modal-overlay" onclick="if(event.target===this)closeModal()">
+  <div class="modal-card">
+    <div class="modal-img" id="modalImgDiv">
+      <div class="modal-img-overlay"></div>
+      <div class="modal-img-tag">
+        <h2 id="modalName"></h2>
+        <span class="tag" id="modalMuscleTag"></span>
+      </div>
+    </div>
+    <div class="modal-body">
+      <div class="modal-meta">
+        <div class="meta-chip"><i class="bi bi-bar-chart"></i> <span id="modalDif"></span></div>
+        <div class="meta-chip" id="modalEquipChip"><i class="bi bi-tools"></i> <span id="modalEquip"></span></div>
+      </div>
+      <div class="modal-desc" id="modalDesc"></div>
+      <div class="modal-actions">
+        <button class="modal-btn-add" id="modalAddBtn" onclick="toggleFromModal()"></button>
+        <button class="modal-btn-close" onclick="closeModal()"><i class="bi bi-x-lg"></i> Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SWAP MODAL -->
+<div id="swapModal" class="modal-overlay" onclick="if(event.target===this)closeSwap()">
+  <div class="modal-card" style="max-width:500px">
+    <div class="modal-body">
+      <h3 style="font-size:1.1rem;font-weight:700;color:var(--gray-900);margin-bottom:4px"><i class="bi bi-arrow-repeat"></i> Cambiar ejercicio</h3>
+      <p style="font-size:.85rem;color:var(--gray-400);margin-bottom:16px">Selecciona el ejercicio por el que quieres sustituir</p>
+      <div class="swap-list" id="swapList"></div>
+      <div style="margin-top:16px;text-align:right">
+        <button class="modal-btn-close" onclick="closeSwap()">Cancelar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DAY PICKER MODAL -->
+<div id="dayPickerModal" class="modal-overlay" onclick="if(event.target===this)closeDayPicker()">
+  <div class="modal-card" style="max-width:420px">
+    <div class="modal-body">
+      <h3 style="font-size:1.1rem;font-weight:700;color:var(--gray-900);margin-bottom:4px"><i class="bi bi-calendar-check"></i> ¿A qué días añades el ejercicio?</h3>
+      <p style="font-size:.85rem;color:var(--gray-400);margin-bottom:16px">Selecciona uno o varios días y confirma</p>
+      <div class="day-picker-list" id="dayPickerList"></div>
+      <button class="day-picker-confirm" id="dayPickerConfirm" onclick="confirmDayPicker()" disabled>
+        <i class="bi bi-check-circle-fill"></i> <span id="dayPickerConfirmTxt">Selecciona al menos un día</span>
+      </button>
+      <div style="margin-top:10px;text-align:center">
+        <button class="modal-btn-close" onclick="closeDayPicker()">Cancelar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+const API = 'http://localhost:5000';
+
+// ── IMAGE MAPPING ──────────────────────────────────────────────────────────────
+const EX_IMAGES = {
+  // Pecho
+  'Press de banca':               '1690731033723-ad718c6e585a',
+  'Press con mancuernas':         '1630065612476-294f637f0248',
+  'Press en máquina':             '1517836357463-d25dfeac3438',
+  'Flexiones':                    '1598971457999-ca4ef48a9a71',
+  'Press inclinado con barra':    '1692372372344-41aed374b848',
+  'Press inclinado mancuernas':   '1639673529903-bb8be2cc8bb1',
+  'Press inclinado máquina':      '1517836357463-d25dfeac3438',
+  // Espalda
+  'Jalón al pecho':        '1646072508097-0c8b3cbe44bc', // jalón en polea alta
+  'Remo en máquina':       '1534258936925-c58bed479fcb', // máquina de remo
+  'Remo con barra':        '1604480132736-44c188fe4d20', // remo con barra
+  'Dominadas':             '1605296867424-35fc25c9212a', // dominadas en barra
+  // Hombros
+  'Press militar':         '1541534741688-6078c6bfb5c5', // press por encima de cabeza
+  'Elevaciones laterales': '1606889462784-c033891d5a3e', // hombre con mancuernas
+  // Piernas
+  'Sentadilla con barra':  '1666121363683-1f03bf2e0cc1', // sentadilla con barra
+  'Prensa de piernas':     '1434682772747-f16d3ea162c3', // máquina prensa piernas
+  'Extensión de piernas':  '1738524107966-23c49aa65ba3', // máquina extensión
+  'Curl femoral':          '1574680178050-55c6a6a96e0a', // máquina piernas
+  'Zancadas':              '1650116385006-2a82a7b9941b', // zancadas
+  // Bíceps
+  'Curl con barra':        '1597452573811-85e7383195a6', // curl con barra
+  'Curl alterno':          '1598268030450-7a476f602bf6', // curl alterno mancuerna
+  'Curl martillo':         '1581009146145-b5ef050c2e1e', // curl martillo mancuerna
+  'Curl en polea':         '1534438327276-14e5300c3a48', // curl en polea baja
+  'Curl predicador':       '1583454110551-21f2fa2afe61', // curl predicador
+  // Tríceps
+  'Extensión en polea':    '1581009146145-b5ef050c2e1e', // extensión en cable
+  'Fondos en paralelas':   '1634225251578-d5f6ffced78a', // fondos en paralelas
+  'Press francés':         '1690731033723-ad718c6e585a', // press francés / skull crusher
+  'Patada de tríceps':     '1598268030450-7a476f602bf6', // patada de tríceps
+  // Core
+  'Plancha':               '1544216717-3bbf52512659',    // plancha abdominal
+  'Crunch abdominal':      '1616803824305-a07cfbc8ea60', // crunch/abdominales
+  // Cardio
+  'Bicicleta estática':    '1571902943202-507ec2618e8f', // bicicleta estática
+  'Caminata inclinada':    '1637713871652-4c9f1e601209', // cinta de correr
+  'Jumping Jacks':         '1587433093163-49f2914e17e7'  // jumping jacks
+};
+const MUSCLE_IMAGES = {
+  'Pecho':      '1571019613454-1cb2f99b2d8b',
+  'Espalda':    '1518611012118-696072aa579a',
+  'Hombros':    '1541534741688-6078c6bfb5c5',
+  'Piernas':    '1534438327276-14e5300c3a48',
+  'Cuádriceps': '1574680178050-55c6a6a96e0a',
+  'Isquios':    '1574680178050-55c6a6a96e0a',
+  'Bíceps':     '1583454110551-21f2fa2afe61',
+  'Tríceps':    '1581009146145-b5ef050c2e1e',
+  'Core':       '1544216717-3bbf52512659',
+  'Cardio':     '1571902943202-507ec2618e8f'
+};
+function imgUrl(nombre, musculo, imagenField) {
+  // Use imagen from DB if available, otherwise fall back to local dict
+  if (imagenField && imagenField.startsWith('http')) return imagenField;
+  const id = EX_IMAGES[nombre] || MUSCLE_IMAGES[musculo] || '1571902943202-507ec2618e8f';
+  return 'https://images.unsplash.com/photo-' + id + '?w=500&h=320&fit=crop&auto=format&q=75';
+}
+
+// ── STATE ──────────────────────────────────────────────────────────────────────
+// myRoutine is now day-based: [{title, exercises:[{nombre, musculo, series, reps, color, muscleText}]}]
+let myRoutine = [];
+let allExercises = [];
+let currentFilter = 'Todos';
+let currentSearch = '';
+let currentModalEx = null;
+let swapTargetDay = -1;
+let swapTargetEx  = -1;
+let pendingDayIdx = -1;   // set when "Añadir al día X" is clicked
+let pendingPickerEx = null; // exercise waiting for day picker
+const token = localStorage.getItem('gymToken') || '';
+const isLogged = localStorage.getItem('isLogged') === 'true';
+let user = null;
+try { user = JSON.parse(localStorage.getItem('gymCurrentUser')); } catch(e) {}
+
+// ── AUTH ───────────────────────────────────────────────────────────────────────
+function initNavAuth(isLogged, user) {
+  if (isLogged && user) {
+    ['loginNavItem','registerNavItem'].forEach(function(id){ var el=document.getElementById(id); if(el) el.style.display='none'; });
+    ['rutinaNavItem','perfilNavItem','logoutNavItem'].forEach(function(id){ var el=document.getElementById(id); if(el) el.style.display=''; });
+    if (user.isAdmin) { var ai=document.getElementById('adminNavItem'); if(ai) ai.style.display=''; }
+  }
+}
+function cerrarSesion() {
+  ['isLogged','gymCurrentUser','gymToken','gymRoutine','gymDailyProgress','gymStreak'].forEach(k => localStorage.removeItem(k));
+  window.location.href = 'index.html';
+}
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', () => navbar.classList.toggle('scrolled', window.scrollY > 30));
+const navToggle = document.getElementById('navToggle'), navLinksEl = document.getElementById('navLinks');
+if (navToggle) navToggle.addEventListener('click', () => {
+  navLinksEl.classList.toggle('open');
+  const i = navToggle.querySelector('i'); i.classList.toggle('bi-list'); i.classList.toggle('bi-x-lg');
+});
+
+// ── TABS ──────────────────────────────────────────────────────────────────────
+function switchTab(tab) {
+  document.getElementById('tab-routine').classList.toggle('active', tab === 'routine');
+  document.getElementById('tab-catalog').classList.toggle('active', tab === 'catalog');
+  document.getElementById('tabBtnRoutine').classList.toggle('active', tab === 'routine');
+  document.getElementById('tabBtnCatalog').classList.toggle('active', tab === 'catalog');
+}
+
+// ── TOAST ─────────────────────────────────────────────────────────────────────
+function showToast(msg, type = 'success') {
+  const t = document.getElementById('toast');
+  t.innerHTML = (type === 'success' ? '<i class="bi bi-check-circle-fill"></i>' : '<i class="bi bi-exclamation-circle-fill"></i>') + msg;
+  t.className = 'toast ' + type + ' show';
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// ── DEFAULT SETS PER EXERCISE ─────────────────────────────────────────────────
+// Used as fallback when gymRoutine in localStorage was saved before sets were per-exercise
+const DEFAULT_SETS = {
+  'Press de banca':3,'Press con mancuernas':3,'Press en máquina':3,'Flexiones':2,
+  'Press inclinado con barra':3,'Press inclinado mancuernas':3,'Press inclinado máquina':3,
+  'Jalón al pecho':3,'Remo en máquina':3,'Remo con barra':3,'Dominadas':2,
+  'Press militar':3,'Elevaciones laterales':2,'Press hombros máquina':3,
+  'Sentadilla con barra':3,'Prensa de piernas':3,'Extensión de piernas':2,
+  'Curl femoral':2,'Sentadilla con peso corporal':3,'Zancadas':3,
+  'Curl con barra':3,'Curl alterno':2,'Curl en máquina':2,
+  'Curl martillo':3,'Curl en polea':3,'Curl predicador':3,
+  'Extensión en polea':3,'Fondos en paralelas':2,'Tríceps en máquina':2,
+  'Press francés':3,'Patada de tríceps':3,
+  'Plancha':3,'Crunch abdominal':2,
+  'Bicicleta estática':2,'Caminata inclinada':2,'Jumping Jacks':2
+};
+
+// ── BACKWARD COMPAT ────────────────────────────────────────────────────────────
+// Convert old flat-array routine (saved before day-structure) to day-based format
+function toMyRoutine(data) {
+  if (!data || !Array.isArray(data) || data.length === 0) return [];
+  // Already day-based if first item has an exercises array
+  if (data[0].exercises && Array.isArray(data[0].exercises)) return data;
+  // Flat array → wrap in a single day
+  return [{ title: 'Mi Rutina', exercises: data }];
+}
+
+// ── BUILD ROUTINE FROM AI TEST ────────────────────────────────────────────────
+// Preserves day structure from test.html gymRoutine
+function buildRoutineFromAI(r) {
+  if (!r || !r.days || !Array.isArray(r.days)) return [];
+  return r.days.map(day => ({
+    title: day.title || 'Día',
+    exercises: (day.exercises || [])
+      .filter(ex => (ex.name || ex.nombre))
+      .map(ex => {
+        const nombre = ex.name || ex.nombre;
+        const dbEx = allExercises.find(e => e.nombre === nombre);
+        return {
+          nombre,
+          musculo:    ex.muscle     || (dbEx ? dbEx.musculo    : 'General'),
+          series:     ex.sets || DEFAULT_SETS[nombre] || (r.scheme ? (parseInt(r.scheme.sets) || 3) : 3),
+          reps:       r.scheme      ? (r.scheme.reps || '10-12') : '10-12',
+          color:      ex.color      || (dbEx ? dbEx.color      : '#6b7280'),
+          muscleText: ex.muscleText || (dbEx ? dbEx.muscleText : '#374151')
+        };
+      })
+  })).filter(day => day.exercises.length > 0);
+}
+
+// ── DATA LOADING ──────────────────────────────────────────────────────────────
+async function loadData() {
+  try {
+    const r1 = await fetch(API + '/api/exercises');
+    const d1 = await r1.json();
+    allExercises = d1.exercises || [];
+
+    if (token) {
+      const r2 = await fetch(API + '/api/my-routine', { headers: { 'Authorization': 'Bearer ' + token } });
+      const d2 = await r2.json();
+
+      if (d2.ok && d2.customRoutine && Array.isArray(d2.customRoutine) && d2.customRoutine.length > 0) {
+        const converted = toMyRoutine(d2.customRoutine);
+        // Detect OLD format: flat array got wrapped into a single "Mi Rutina" day
+        // If gymRoutine in localStorage has multiple real days → auto-upgrade
+        const isOldFormat = converted.length === 1 && converted[0].title === 'Mi Rutina';
+        const aiStored = localStorage.getItem('gymRoutine');
+        if (isOldFormat && aiStored) {
+          try {
+            const parsed = JSON.parse(aiStored);
+            const imported = buildRoutineFromAI(parsed);
+            if (imported.length > 1) {
+              // Found proper multi-day structure → upgrade
+              myRoutine = imported;
+              await saveRoutineQuiet();
+              showToast('<strong>Rutina actualizada</strong> — ahora organizada por días', 'success');
+            } else {
+              myRoutine = converted;
+            }
+          } catch(e) { myRoutine = converted; }
+        } else {
+          myRoutine = converted;
+        }
+      } else {
+        const aiStored = localStorage.getItem('gymRoutine');
+        if (aiStored) {
+          try {
+            const parsed = JSON.parse(aiStored);
+            const imported = buildRoutineFromAI(parsed);
+            if (imported.length > 0) {
+              myRoutine = imported;
+              await saveRoutineQuiet();
+              showToast('<strong>¡Rutina del test cargada!</strong> Personalízala a tu gusto', 'success');
+            } else { myRoutine = []; }
+          } catch(e) { myRoutine = []; }
+        } else { myRoutine = []; }
+      }
+    } else { myRoutine = []; }
+
+    showRoutineContent();
+    renderRoutine();
+    renderCatalog();
+    updateHeroStats();
+
+    if (localStorage.getItem('gymRoutine')) {
+      const btn = document.getElementById('reloadTestBtn');
+      if (btn) btn.style.display = 'flex';
+    }
+  } catch(e) {
+    console.error('Error loading data', e);
+    document.getElementById('routineLoader').innerHTML = '<p style="color:#ef4444"><i class="bi bi-wifi-off"></i> Error al conectar con el servidor. Asegúrate de que está corriendo.</p>';
+  }
+}
+
+function showRoutineContent() {
+  document.getElementById('routineLoader').style.display = 'none';
+  document.getElementById('routineContent').style.display = 'block';
+}
+
+async function saveRoutineQuiet() {
+  if (!token || myRoutine.length === 0) return;
+  try {
+    await fetch(API + '/api/my-routine', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+      body: JSON.stringify({ exercises: myRoutine })
+    });
+  } catch(e) { /* silent */ }
+}
+
+// ── IMPORT AI ROUTINE (manual) ────────────────────────────────────────────────
+function importAIRoutine() {
+  try {
+    const stored = localStorage.getItem('gymRoutine');
+    if (!stored) { showToast('No hay rutina del test disponible', 'error'); return; }
+    const parsed = JSON.parse(stored);
+    const imported = buildRoutineFromAI(parsed);
+    if (imported.length === 0) { showToast('No se encontraron ejercicios en la rutina del test', 'error'); return; }
+    myRoutine = imported;
+    document.getElementById('importBanner').style.display = 'none';
+    renderRoutine();
+    renderCatalog();
+    updateHeroStats();
+    showToast('<strong>Rutina importada</strong> — guárdala cuando termines de personalizarla');
+  } catch(e) { showToast('Error al importar la rutina', 'error'); }
+}
+function dismissBanner() { document.getElementById('importBanner').style.display = 'none'; }
+function showImportBanner() {
+  document.getElementById('importBanner').style.display = 'flex';
+  document.getElementById('importBanner').scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+// ── RENDER ROUTINE ────────────────────────────────────────────────────────────
+function renderRoutine() {
+  const list  = document.getElementById('routineList');
+  const empty = document.getElementById('emptyState');
+  const addDayBtn = document.getElementById('addDayBtn');
+
+  // Compute totals
+  let totalEx = 0, totalSeries = 0;
+  const muscles = new Set();
+  myRoutine.forEach(day => {
+    (day.exercises || []).forEach(ex => {
+      totalEx++;
+      totalSeries += parseInt(ex.series) || 3;
+      muscles.add(ex.musculo);
+    });
+  });
+  document.getElementById('totalDays').textContent   = myRoutine.length;
+  document.getElementById('totalEx').textContent     = totalEx;
+  document.getElementById('totalSeries').textContent = totalSeries;
+
+  if (myRoutine.length === 0) {
+    list.innerHTML = '';
+    empty.style.display = 'block';
+    addDayBtn.style.display = 'none';
+    return;
+  }
+  empty.style.display = 'none';
+  addDayBtn.style.display = 'flex';
+
+  list.innerHTML = myRoutine.map((day, di) => {
+    const exList = day.exercises || [];
+    const muscleSet = [...new Set(exList.map(e => e.musculo))];
+    const subText = muscleSet.length
+      ? muscleSet.slice(0, 3).join(' · ') + (muscleSet.length > 3 ? ' +' + (muscleSet.length - 3) : '')
+      : 'Sin ejercicios';
+    return (
+      '<div class="day-block" id="day-' + di + '">' +
+        '<div class="day-header" onclick="toggleDay(' + di + ')">' +
+          '<div class="day-header-left">' +
+            '<div class="day-num-badge">DÍA<br>' + (di + 1) + '</div>' +
+            '<div>' +
+              '<div class="day-title">' + (day.title || 'Día ' + (di + 1)) + '</div>' +
+              '<div class="day-sub">' + subText + '</div>' +
+            '</div>' +
+          '</div>' +
+          '<div class="day-header-right">' +
+            '<span class="day-badge">' + exList.length + ' ejercicio' + (exList.length !== 1 ? 's' : '') + '</span>' +
+            '<i class="bi bi-chevron-down day-chevron" id="chev-' + di + '"></i>' +
+          '</div>' +
+        '</div>' +
+        '<div class="day-exercises" id="dayex-' + di + '">' +
+          exList.map((ex, ei) => renderExCard(ex, di, ei)).join('') +
+          '<div class="day-ex-actions">' +
+            '<button class="btn-add-day-ex" onclick="addExToDay(' + di + ')">' +
+              '<i class="bi bi-plus-circle"></i> Añadir ejercicio al Día ' + (di + 1) +
+            '</button>' +
+            '<button class="btn-remove-day" onclick="removeDay(' + di + ')">' +
+              '<i class="bi bi-trash3"></i> Eliminar día' +
+            '</button>' +
+          '</div>' +
+        '</div>' +
+      '</div>'
+    );
+  }).join('');
+}
+
+function renderExCard(ex, di, ei) {
+  return (
+    '<div class="rx-card">' +
+      '<div class="rx-img" style="background-image:url(\'' + imgUrl(ex.nombre, ex.musculo, ex.imagen) + '\')">' +
+        '<div class="rx-badge">' + ex.musculo + '</div>' +
+        '<div class="rx-num">' + (ei + 1) + '</div>' +
+      '</div>' +
+      '<div class="rx-body">' +
+        '<div class="rx-name">' + ex.nombre + '</div>' +
+        '<div class="rx-controls">' +
+          '<div class="rx-ctrl-grp">' +
+            '<span class="rx-ctrl-lbl">Series</span>' +
+            '<div class="rx-counter">' +
+              '<button onclick="changeSeries(' + di + ',' + ei + ',-1)"><i class="bi bi-dash"></i></button>' +
+              '<span id="sc-' + di + '-' + ei + '">' + (ex.series || 3) + '</span>' +
+              '<button onclick="changeSeries(' + di + ',' + ei + ',1)"><i class="bi bi-plus"></i></button>' +
+            '</div>' +
+          '</div>' +
+          '<div class="rx-ctrl-grp">' +
+            '<span class="rx-ctrl-lbl">Repeticiones</span>' +
+            '<select class="rx-select" onchange="changeReps(' + di + ',' + ei + ',this.value)">' +
+              ['6-8','8-10','10-12','12-15','15-20','Al fallo','20s','30s','45s','60s'].map(v =>
+                '<option value="' + v + '"' + ((ex.reps || '10-12') === v ? ' selected' : '') + '>' + v + '</option>'
+              ).join('') +
+            '</select>' +
+          '</div>' +
+        '</div>' +
+        '<div class="rx-footer">' +
+          '<button class="btn-swap" onclick="openSwap(' + di + ',' + ei + ')"><i class="bi bi-arrow-repeat"></i> Cambiar</button>' +
+          '<button class="btn-remove" onclick="removeExercise(' + di + ',' + ei + ')"><i class="bi bi-trash3"></i></button>' +
+        '</div>' +
+      '</div>' +
+    '</div>'
+  );
+}
+
+// ── DAY ACTIONS ───────────────────────────────────────────────────────────────
+function toggleDay(di) {
+  const content = document.getElementById('dayex-' + di);
+  const chev    = document.getElementById('chev-' + di);
+  if (!content) return;
+  const isOpen = content.style.display !== 'none';
+  content.style.display = isOpen ? 'none' : '';
+  if (chev) chev.classList.toggle('collapsed', isOpen);
+}
+
+function addNewDay() {
+  myRoutine.push({ title: 'Día ' + (myRoutine.length + 1), exercises: [] });
+  renderRoutine();
+  updateHeroStats();
+  // Scroll to the new day
+  setTimeout(() => {
+    const newBlock = document.getElementById('day-' + (myRoutine.length - 1));
+    if (newBlock) newBlock.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }, 80);
+}
+
+function removeDay(di) {
+  const dayTitle = myRoutine[di].title || ('Día ' + (di + 1));
+  if (!confirm('¿Eliminar "' + dayTitle + '" y todos sus ejercicios?')) return;
+  myRoutine.splice(di, 1);
+  renderRoutine();
+  updateHeroStats();
+  showToast('Día eliminado');
+}
+
+// Called from the "Añadir ejercicio al Día X" button inside a day block
+function addExToDay(di) {
+  pendingDayIdx = di;
+  // Show a banner in catalog tab indicating the target day
+  const bar = document.getElementById('catalogTargetBar');
+  const txt = document.getElementById('catalogTargetText');
+  if (bar && txt) {
+    txt.textContent = 'Añadiendo al Día ' + (di + 1) + ': ' + (myRoutine[di].title || 'Día ' + (di + 1));
+    bar.style.display = 'flex';
+  }
+  switchTab('catalog');
+}
+
+function cancelPendingDay() {
+  pendingDayIdx = -1;
+  const bar = document.getElementById('catalogTargetBar');
+  if (bar) bar.style.display = 'none';
+}
+
+// ── EXERCISE CRUD ─────────────────────────────────────────────────────────────
+function changeSeries(di, ei, delta) {
+  const cur = parseInt(myRoutine[di].exercises[ei].series) || 3;
+  const nv  = Math.max(1, Math.min(10, cur + delta));
+  myRoutine[di].exercises[ei].series = nv;
+  const el = document.getElementById('sc-' + di + '-' + ei);
+  if (el) el.textContent = nv;
+  // Update total series counter
+  let total = 0;
+  myRoutine.forEach(d => (d.exercises || []).forEach(e => { total += parseInt(e.series) || 3; }));
+  document.getElementById('totalSeries').textContent = total;
+}
+
+function changeReps(di, ei, val) {
+  myRoutine[di].exercises[ei].reps = val;
+}
+
+function removeExercise(di, ei) {
+  myRoutine[di].exercises.splice(ei, 1);
+  renderRoutine();
+  renderCatalog();
+  updateHeroStats();
+}
+
+// Add exercise to a specific day
+function addToRoutine(ex, di) {
+  // If di is explicitly set, add directly
+  if (di !== undefined && di !== null && di >= 0 && di < myRoutine.length) {
+    const day = myRoutine[di];
+    if ((day.exercises || []).some(r => r.nombre === ex.nombre)) {
+      showToast('Ya está en el Día ' + (di + 1), 'error');
+      return;
+    }
+    if (!day.exercises) day.exercises = [];
+    day.exercises.push({
+      nombre: ex.nombre, musculo: ex.musculo,
+      series: 3, reps: '10-12',
+      color: ex.color || '#6b7280', muscleText: ex.muscleText || '#374151'
+    });
+    renderRoutine();
+    renderCatalog();
+    updateHeroStats();
+    showToast('<strong>' + ex.nombre + '</strong> añadido al Día ' + (di + 1));
+    return;
+  }
+  // No target day specified
+  if (myRoutine.length === 0) {
+    // Create first day automatically
+    myRoutine.push({ title: 'Día 1', exercises: [] });
+    addToRoutine(ex, 0);
+    return;
+  }
+  if (myRoutine.length === 1) {
+    addToRoutine(ex, 0);
+    return;
+  }
+  // Multiple days → show picker
+  showDayPicker(ex);
+}
+
+function toggleFromModal() {
+  if (!currentModalEx) return;
+  const inR = myRoutine.some(d => (d.exercises || []).some(r => r.nombre === currentModalEx.nombre));
+  if (inR) {
+    myRoutine.forEach(day => {
+      const idx = (day.exercises || []).findIndex(r => r.nombre === currentModalEx.nombre);
+      if (idx >= 0) day.exercises.splice(idx, 1);
+    });
+    renderRoutine();
+    renderCatalog();
+    updateHeroStats();
+    showToast(currentModalEx.nombre + ' eliminado de tu rutina');
+    updateModalBtn(false);
+  } else {
+    addToRoutine(currentModalEx);
+    updateModalBtn(true);
+  }
+}
+
+function updateModalBtn(inRoutine) {
+  const btn = document.getElementById('modalAddBtn');
+  if (inRoutine) {
+    btn.className = 'modal-btn-add modal-btn-added';
+    btn.innerHTML = '<i class="bi bi-check-circle-fill"></i> En tu rutina — Quitar';
+  } else {
+    btn.className = 'modal-btn-add';
+    btn.innerHTML = '<i class="bi bi-plus-circle-fill"></i> Añadir a mi rutina';
+  }
+}
+
+// ── SAVE ROUTINE ──────────────────────────────────────────────────────────────
+async function saveRoutine() {
+  if (!token) { showToast('Debes iniciar sesión para guardar', 'error'); return; }
+  const btn = document.getElementById('saveBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<i class="bi bi-hourglass-split"></i> Guardando...';
+  try {
+    const r = await fetch(API + '/api/my-routine', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+      body: JSON.stringify({ exercises: myRoutine })
+    });
+    const d = await r.json();
+    if (d.ok) { showToast('<strong>¡Rutina guardada!</strong> Tus cambios están en la nube'); }
+    else { showToast('Error: ' + (d.msg || 'Fallo'), 'error'); }
+  } catch(e) { showToast('Error de conexión con el servidor', 'error'); }
+  btn.disabled = false;
+  btn.innerHTML = '<i class="bi bi-cloud-check"></i> Guardar rutina';
+}
+
+// ── CATALOG ───────────────────────────────────────────────────────────────────
+function setFilter(muscle, btn) {
+  currentFilter = muscle;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderCatalog();
+}
+function onSearch(val) { currentSearch = val; renderCatalog(); }
+
+function renderCatalog() {
+  const filtered = allExercises.filter(ex => {
+    const matchM = currentFilter === 'Todos' || ex.musculo === currentFilter;
+    const matchS = !currentSearch || ex.nombre.toLowerCase().includes(currentSearch.toLowerCase()) || (ex.musculo || '').toLowerCase().includes(currentSearch.toLowerCase());
+    return matchM && matchS;
+  });
+  const grid = document.getElementById('catalogGrid');
+  if (allExercises.length === 0) {
+    grid.innerHTML = '<div class="no-results" style="grid-column:1/-1"><i class="bi bi-database-x" style="font-size:2.5rem;display:block;margin-bottom:12px;color:#9ca3af"></i><p style="font-weight:600;color:#374151">Base de datos de ejercicios vacía</p><p style="font-size:.85rem;margin-top:6px">Ve a <a href="admin.html" style="color:#16a34a;font-weight:600">Panel Admin</a> → pestaña Ejercicios → botón <strong>Seed</strong> para cargar los 23 ejercicios.</p></div>';
+    return;
+  }
+  if (filtered.length === 0) {
+    grid.innerHTML = '<div class="no-results" style="grid-column:1/-1"><i class="bi bi-search"></i><p>No hay ejercicios que coincidan con tu búsqueda</p></div>';
+    return;
+  }
+  grid.innerHTML = filtered.map(ex => {
+    const exIdx = allExercises.indexOf(ex);
+    const inR   = myRoutine.some(d => (d.exercises || []).some(r => r.nombre === ex.nombre));
+    const dif   = ex.dificultad === 'Principiante' ? 'dif-easy' : ex.dificultad === 'Avanzado' ? 'dif-hard' : 'dif-mid';
+    const img   = imgUrl(ex.nombre, ex.musculo, ex.imagen);
+    return (
+      '<div class="cat-card" data-exidx="' + exIdx + '">' +
+        '<div class="cat-img" style="background-image:url(\'' + img + '\')">' +
+          '<div class="cat-img-gradient"></div>' +
+          '<div class="cat-dif ' + dif + '">' + ex.dificultad + '</div>' +
+        '</div>' +
+        '<div class="cat-body">' +
+          '<div class="cat-muscle" style="color:' + (ex.muscleText || '#059669') + '">' + ex.musculo + '</div>' +
+          '<div class="cat-name">' + ex.nombre + '</div>' +
+          '<button class="cat-add' + (inR ? ' cat-added' : '') + '" data-addidx="' + exIdx + '">' +
+            (inR ? '<i class="bi bi-check-circle-fill"></i> En tu rutina' : '<i class="bi bi-plus-circle"></i> Añadir a rutina') +
+          '</button>' +
+        '</div>' +
+      '</div>'
+    );
+  }).join('');
+  grid.querySelectorAll('.cat-card').forEach(card => {
+    card.addEventListener('click', function(e) {
+      if (e.target.closest('[data-addidx]')) return;
+      openModal(allExercises[parseInt(this.dataset.exidx)]);
+    });
+  });
+  grid.querySelectorAll('[data-addidx]').forEach(btn => {
+    btn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      handleCatalogAdd(allExercises[parseInt(this.dataset.addidx)]);
+    });
+  });
+}
+
+function handleCatalogAdd(ex) {
+  const inRoutine = myRoutine.some(d => (d.exercises || []).some(r => r.nombre === ex.nombre));
+  if (inRoutine) {
+    // Remove from wherever it is
+    myRoutine.forEach(day => {
+      const idx = (day.exercises || []).findIndex(r => r.nombre === ex.nombre);
+      if (idx >= 0) day.exercises.splice(idx, 1);
+    });
+    renderRoutine();
+    renderCatalog();
+    updateHeroStats();
+    showToast(ex.nombre + ' eliminado de la rutina');
+    return;
+  }
+  // Check if we have a pending day target
+  if (pendingDayIdx >= 0 && pendingDayIdx < myRoutine.length) {
+    const targetDay = pendingDayIdx;
+    pendingDayIdx = -1;
+    const bar = document.getElementById('catalogTargetBar');
+    if (bar) bar.style.display = 'none';
+    addToRoutine(ex, targetDay);
+    // Switch back to routine tab and scroll to that day
+    switchTab('routine');
+    setTimeout(() => {
+      const block = document.getElementById('day-' + targetDay);
+      if (block) block.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 100);
+    return;
+  }
+  // Normal add
+  addToRoutine(ex);
+}
+
+// ── MODAL ─────────────────────────────────────────────────────────────────────
+function openModal(ex) {
+  currentModalEx = ex;
+  document.getElementById('exModal').classList.add('open');
+  document.getElementById('modalImgDiv').style.backgroundImage = "url('" + imgUrl(ex.nombre, ex.musculo, ex.imagen) + "')";
+  document.getElementById('modalName').textContent    = ex.nombre;
+  document.getElementById('modalMuscleTag').textContent = ex.musculo;
+  document.getElementById('modalDif').textContent    = ex.dificultad || '—';
+  document.getElementById('modalEquip').textContent  = (ex.equipo || []).join(', ') || 'Sin equipo';
+  document.getElementById('modalDesc').textContent   = ex.descripcion || '';
+  updateModalBtn(myRoutine.some(d => (d.exercises || []).some(r => r.nombre === ex.nombre)));
+}
+function closeModal() { document.getElementById('exModal').classList.remove('open'); }
+document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeModal(); closeSwap(); closeDayPicker(); } });
+
+// ── SWAP ──────────────────────────────────────────────────────────────────────
+function openSwap(di, ei) {
+  swapTargetDay = di;
+  swapTargetEx  = ei;
+  const currentName = myRoutine[di].exercises[ei].nombre;
+  const swapList = document.getElementById('swapList');
+  swapList.innerHTML = allExercises.filter(ex => ex.nombre !== currentName).map(ex =>
+    '<div class="swap-item" onclick="doSwap(\'' + ex.nombre.replace(/'/g, "\\'") + '\')">' +
+      '<div class="swap-item-img" style="background-image:url(\'' + imgUrl(ex.nombre, ex.musculo, ex.imagen) + '\')"></div>' +
+      '<div><div class="swap-item-name">' + ex.nombre + '</div><div class="swap-item-muscle">' + ex.musculo + ' · ' + ex.dificultad + '</div></div>' +
+    '</div>'
+  ).join('');
+  document.getElementById('swapModal').classList.add('open');
+}
+function doSwap(nombre) {
+  const ex = allExercises.find(e => e.nombre === nombre);
+  if (!ex || swapTargetDay < 0) return;
+  const old = myRoutine[swapTargetDay].exercises[swapTargetEx];
+  myRoutine[swapTargetDay].exercises[swapTargetEx] = {
+    nombre: ex.nombre, musculo: ex.musculo,
+    series: old.series || 3, reps: old.reps || '10-12',
+    color: ex.color, muscleText: ex.muscleText
+  };
+  closeSwap();
+  renderRoutine();
+  renderCatalog();
+  showToast('Ejercicio cambiado a <strong>' + nombre + '</strong>');
+}
+function closeSwap() {
+  document.getElementById('swapModal').classList.remove('open');
+  swapTargetDay = -1; swapTargetEx = -1;
+}
+
+// ── DAY PICKER ────────────────────────────────────────────────────────────────
+let pickerSelectedDays = new Set();
+
+function showDayPicker(ex) {
+  pendingPickerEx = ex;
+  pickerSelectedDays = new Set();
+  renderDayPickerList();
+  document.getElementById('dayPickerModal').classList.add('open');
+}
+
+function renderDayPickerList() {
+  const ex = pendingPickerEx;
+  const list = document.getElementById('dayPickerList');
+  list.innerHTML = myRoutine.map((day, di) => {
+    const alreadyIn = (day.exercises || []).some(e => e.nombre === ex.nombre);
+    const selected  = pickerSelectedDays.has(di);
+    const cls = alreadyIn ? 'already-in' : selected ? 'selected' : '';
+    return (
+      '<div class="day-picker-item ' + cls + '" onclick="togglePickerDay(' + di + ')">' +
+        '<div class="day-picker-num">' + (di + 1) + '</div>' +
+        '<div class="day-picker-info">' +
+          '<div class="day-picker-title">' + (day.title || 'Día ' + (di + 1)) + '</div>' +
+          '<div class="day-picker-sub">' + (day.exercises || []).length + ' ejercicios' + (alreadyIn ? ' · Ya incluido' : '') + '</div>' +
+        '</div>' +
+        '<div class="day-picker-check"><i class="bi bi-check-lg"></i></div>' +
+      '</div>'
+    );
+  }).join('');
+  updateDayPickerBtn();
+}
+
+function togglePickerDay(di) {
+  if (pickerSelectedDays.has(di)) pickerSelectedDays.delete(di);
+  else pickerSelectedDays.add(di);
+  renderDayPickerList();
+}
+
+function updateDayPickerBtn() {
+  const n = pickerSelectedDays.size;
+  const btn = document.getElementById('dayPickerConfirm');
+  const txt = document.getElementById('dayPickerConfirmTxt');
+  btn.disabled = n === 0;
+  txt.textContent = n === 0
+    ? 'Selecciona al menos un día'
+    : 'Añadir a ' + n + ' día' + (n > 1 ? 's' : '');
+}
+
+function confirmDayPicker() {
+  if (!pendingPickerEx || pickerSelectedDays.size === 0) return;
+  const ex = pendingPickerEx;
+  const days = [...pickerSelectedDays].sort((a, b) => a - b);
+  closeDayPicker();
+  days.forEach(di => addToRoutine(ex, di));
+  const names = days.map(di => myRoutine[di]?.title || 'Día ' + (di + 1)).join(', ');
+  showToast('<strong>' + ex.nombre + '</strong> añadido a: ' + names);
+}
+
+function closeDayPicker() {
+  document.getElementById('dayPickerModal').classList.remove('open');
+  pendingPickerEx = null;
+  pickerSelectedDays = new Set();
+}
+
+// ── HERO STATS ────────────────────────────────────────────────────────────────
+function updateHeroStats() {
+  let totalEx = 0, totalSeries = 0;
+  const muscles = new Set();
+  myRoutine.forEach(day => {
+    (day.exercises || []).forEach(ex => {
+      totalEx++;
+      totalSeries += parseInt(ex.series) || 3;
+      muscles.add(ex.musculo);
+    });
+  });
+  document.getElementById('hExercicios').textContent = totalEx;
+  document.getElementById('hDias').textContent       = myRoutine.length;
+  document.getElementById('hMusculos').textContent   = muscles.size;
+  document.getElementById('hSeries').textContent     = totalSeries;
+  let streak = 0;
+  try { const s = JSON.parse(localStorage.getItem('gymStreak') || '{}'); streak = s.count || 0; } catch(e) {}
+  document.getElementById('hStreak').textContent = streak + ' 🔥';
+  if (user) document.getElementById('heroStats').style.display = 'flex';
+}
+
+// ── INIT ──────────────────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  if (!isLogged || !user) { window.location.href = 'login.html'; return; }
+  initNavAuth(isLogged, user);
+  loadData();
+});
+</script>
+</body>
+</html>

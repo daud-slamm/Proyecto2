@@ -314,53 +314,238 @@ textarea.form-input { resize:vertical; min-height:100px; }
     .auth-footer a{color:var(--green-500);font-weight:600}
     .auth-footer a:hover{color:var(--green-600)}
     .auth-blob{position:absolute;border-radius:50%;filter:blur(90px);pointer-events:none;opacity:.5}
+    /* Inline messages */
+    .inline-error{display:none;align-items:flex-start;gap:8px;padding:11px 14px;border-radius:var(--radius-sm);font-size:.84rem;font-weight:500;margin-bottom:16px;background:#fef2f2;border:1px solid #fecaca;color:#dc2626;line-height:1.5}
+    .inline-error.show{display:flex}
+    .inline-error i{flex-shrink:0;margin-top:2px}
+    .inline-success-banner{display:none;align-items:center;gap:10px;padding:12px 16px;border-radius:var(--radius-sm);font-size:.84rem;font-weight:500;margin-bottom:18px;background:var(--green-50);border:1px solid var(--green-100);color:var(--green-600)}
+    .inline-success-banner.show{display:flex}
+    .inline-success-banner i{flex-shrink:0;font-size:1.1rem}
+    .form-input.input-error{border-color:#f87171!important;box-shadow:0 0 0 3px rgba(239,68,68,0.1)!important}
+    /* Forgot password link */
+    .forgot-link{display:block;text-align:right;font-size:.8rem;font-weight:600;color:var(--gray-400);margin-top:-10px;margin-bottom:18px;transition:color .2s}
+    .forgot-link:hover{color:var(--green-600)}
+    /* Forgot modal */
+    .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:2000;display:none;align-items:center;justify-content:center;padding:24px;backdrop-filter:blur(4px)}
+    .modal-overlay.open{display:flex}
+    .modal-box{background:var(--white);border-radius:var(--radius-xl);padding:32px;width:100%;max-width:400px;box-shadow:var(--shadow-xl);position:relative}
+    .modal-close{position:absolute;top:16px;right:16px;background:var(--cream);border:none;border-radius:50%;width:32px;height:32px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--gray-600);transition:all .2s}
+    .modal-close:hover{background:var(--gray-100);color:var(--gray-900)}
+    .modal-title{font-size:1.05rem;font-weight:800;color:var(--gray-900);margin-bottom:6px}
+    .modal-desc{font-size:.85rem;color:var(--gray-600);margin-bottom:20px;line-height:1.55}
+    .modal-footer{text-align:center;margin-top:16px;font-size:.82rem;color:var(--gray-400)}
   </style>
 </head>
 <body>
-  <nav class="navbar" id="navbar"><div class="navbar-inner"><a href="index.html" class="nav-logo"><span class="dot"></span> Empieza en el Gym</a><button class="nav-toggle" id="navToggle" aria-label="Menú"><i class="bi bi-list"></i></button><ul class="nav-links" id="navLinks"><li><li><a href="mitos-errores.html">Mitos y Errores</a><li><a href="ejercicios.html">Ejercicios</a></li><li><a href="test.html">Test</a></li><li><a href="calculadora.html">Calculadora</a></li><li><a href="contacto.html">Contacto</a></li><li><a href="login.html" class="active" id="loginLink">Login</a></li><li><a href="register.html" class="nav-cta" id="registerLink"><i class="bi bi-person-plus"></i> Registro</a></li></ul></div></nav>
+  <nav class="navbar" id="navbar"><div class="navbar-inner"><a href="index.html" class="nav-logo"><span class="dot"></span> Empieza en el Gym</a><button class="nav-toggle" id="navToggle" aria-label="Menú"><i class="bi bi-list"></i></button><ul class="nav-links" id="navLinks"><li><a href="mitos-errores.html">Mitos y Errores</a></li><li><a href="ejercicios.html">Ejercicios</a></li><li><a href="test.html">Test</a></li><li><a href="calculadora.html">Calculadora</a></li><li><a href="leaderboard.html">Ranking</a></li><li><a href="contacto.html">Contacto</a></li><li><a href="login.html" class="active" id="loginLink">Login</a></li><li><a href="register.html" class="nav-cta" id="registerLink"><i class="bi bi-person-plus"></i> Registro</a></li></ul></div></nav>
 
   <main class="auth-page">
     <div class="auth-blob" style="width:400px;height:400px;background:radial-gradient(circle,rgba(16,185,129,0.12),transparent 70%);top:-100px;right:-80px"></div>
     <div class="auth-wrapper">
       <div class="form-card reveal">
         <div class="auth-header"><div class="auth-tag"><i class="bi bi-lock-fill"></i> Área privada</div><h1>Inicia sesión</h1><p>Accede a tu espacio para guardar rutinas y progreso.</p></div>
+
+        <!-- Email verified success banner (shown when redirected from verify link) -->
+        <div class="inline-success-banner" id="verifiedBanner">
+          <i class="bi bi-check-circle-fill"></i>
+          <span>¡Email verificado correctamente! Ya puedes iniciar sesión.</span>
+        </div>
+        <!-- Inline error banner -->
+        <div class="inline-error" id="loginError">
+          <i class="bi bi-exclamation-circle-fill"></i>
+          <span id="loginErrorMsg">Error</span>
+        </div>
+
         <form id="loginForm" onsubmit="event.preventDefault(); procesarLogin();">
-          <div class="form-group"><label class="form-label">Correo electrónico</label><div class="input-group"><span class="input-icon"><i class="bi bi-envelope"></i></span><input type="email" class="form-input" id="loginEmail" placeholder="tucorreo@example.com" required></div></div>
-          <div class="form-group"><label class="form-label">Contraseña</label><div class="input-group"><span class="input-icon"><i class="bi bi-lock"></i></span><input type="password" class="form-input" id="loginPass" placeholder="Tu contraseña" required></div></div>
-          <button type="submit" class="btn-submit"><i class="bi bi-box-arrow-in-right"></i> Entrar</button>
+          <div class="form-group">
+            <label class="form-label">Correo electrónico</label>
+            <div class="input-group"><span class="input-icon"><i class="bi bi-envelope"></i></span><input type="email" class="form-input" id="loginEmail" placeholder="tucorreo@gmail.com" required></div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Contraseña</label>
+            <div class="input-group"><span class="input-icon"><i class="bi bi-lock"></i></span><input type="password" class="form-input" id="loginPass" placeholder="Tu contraseña" required></div>
+          </div>
+          <a href="#" class="forgot-link" onclick="abrirForgot();return false;"><i class="bi bi-question-circle"></i> ¿Olvidaste tu contraseña?</a>
+          <button type="submit" class="btn-submit" id="loginBtn"><i class="bi bi-box-arrow-in-right"></i> Entrar</button>
         </form>
         <div class="auth-footer">¿Aún no tienes cuenta? <a href="register.html">Regístrate</a></div>
       </div>
+
+    <!-- FORGOT PASSWORD MODAL -->
+    <div class="modal-overlay" id="forgotModal" onclick="if(event.target===this)cerrarForgot()">
+      <div class="modal-box">
+        <button class="modal-close" onclick="cerrarForgot()"><i class="bi bi-x-lg"></i></button>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
+          <div style="width:40px;height:40px;border-radius:50%;background:var(--green-50);display:flex;align-items:center;justify-content:center;color:var(--green-500);font-size:1.2rem"><i class="bi bi-key-fill"></i></div>
+          <div class="modal-title">Recuperar contraseña</div>
+        </div>
+        <p class="modal-desc">Escribe tu email y te enviaremos un enlace para que puedas crear una nueva contraseña.</p>
+
+        <!-- Error / success inside modal -->
+        <div class="inline-error" id="forgotError" style="margin-bottom:12px">
+          <i class="bi bi-exclamation-circle-fill"></i>
+          <span id="forgotErrorMsg"></span>
+        </div>
+        <div class="inline-success-banner" id="forgotSuccess" style="margin-bottom:12px">
+          <i class="bi bi-envelope-check-fill"></i>
+          <span id="forgotSuccessMsg"></span>
+        </div>
+
+        <div class="form-group" id="forgotFormGroup">
+          <label class="form-label">Correo electrónico</label>
+          <div class="input-group"><span class="input-icon"><i class="bi bi-envelope"></i></span><input type="email" class="form-input" id="forgotEmail" placeholder="tucorreo@gmail.com"></div>
+        </div>
+        <button class="btn-submit" id="forgotBtn" onclick="enviarRecuperacion()">
+          <i class="bi bi-send-fill"></i> Enviar enlace
+        </button>
+        <p class="modal-footer">Recuerda revisar la carpeta de spam si no ves el email.</p>
+      </div>
+    </div>
     </div>
   </main>
 
   <script>
-    async function procesarLogin(){
-      const email=document.getElementById('loginEmail').value;
-      const pass=document.getElementById('loginPass').value;
-      const btn=document.querySelector('.btn-submit');
-      btn.disabled=true; btn.innerHTML='<i class="bi bi-hourglass-split"></i> Entrando...';
-      try{
-        const res=await fetch('http://localhost:5000/api/login',{
-          method:'POST',
-          headers:{'Content-Type':'application/json'},
-          body:JSON.stringify({email,password:pass})
-        });
-        const data=await res.json();
-        if(data.ok){
-          localStorage.setItem('gymCurrentUser',JSON.stringify(data.user));
-          localStorage.setItem('isLogged','true');
-          alert('¡Login exitoso! Bienvenido '+data.user.nombre);
-          window.location.href='index.html';
-        }else{
-          alert(data.msg||'Email o contraseña incorrectos.');
-        }
-      }catch(err){
-        console.error(err);
-        alert('No se pudo conectar con el servidor. ¿Está el backend encendido?');
+    // ── Show/hide verified banner from URL param ───────────────────────────────
+    window.addEventListener('DOMContentLoaded', function() {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('verified') === '1') {
+        document.getElementById('verifiedBanner').classList.add('show');
+        // Clean URL
+        window.history.replaceState({}, '', 'login.html');
+      } else if (params.get('verified') === 'error') {
+        showLoginError('El enlace de verificación no es válido o ya fue usado. Regístrate de nuevo.');
+        window.history.replaceState({}, '', 'login.html');
       }
-      btn.disabled=false; btn.innerHTML='<i class="bi bi-box-arrow-in-right"></i> Entrar';
+    });
+
+    // ── Login ──────────────────────────────────────────────────────────────────
+    function showLoginError(msg) {
+      const el = document.getElementById('loginError');
+      document.getElementById('loginErrorMsg').innerHTML = msg;
+      el.classList.add('show');
     }
+    function clearLoginError() {
+      document.getElementById('loginError').classList.remove('show');
+      document.getElementById('loginEmail').classList.remove('input-error');
+      document.getElementById('loginPass').classList.remove('input-error');
+    }
+
+    ['loginEmail','loginPass'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.addEventListener('input', clearLoginError);
+    });
+
+    async function procesarLogin() {
+      clearLoginError();
+      const email = document.getElementById('loginEmail').value.trim();
+      const pass  = document.getElementById('loginPass').value;
+      const btn   = document.getElementById('loginBtn');
+      btn.disabled = true; btn.innerHTML = '<i class="bi bi-hourglass-split"></i> Entrando...';
+      try {
+        const res  = await fetch('http://localhost:5000/api/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password: pass })
+        });
+        const data = await res.json();
+        if (data.ok) {
+          // 1. Limpiar datos de sesión anterior
+          ['gymRoutine','gymDailyProgress','gymStreak','gymCurrentUser','gymToken'].forEach(k => localStorage.removeItem(k));
+          // 2. Guardar token y datos básicos
+          localStorage.setItem('gymToken', data.token);
+          localStorage.setItem('gymCurrentUser', JSON.stringify(data.user));
+          localStorage.setItem('isLogged', 'true');
+          // 3. Cargar perfil completo desde MongoDB
+          try {
+            const profileRes = await fetch('http://localhost:5000/api/profile', {
+              headers: { 'Authorization': 'Bearer ' + data.token }
+            });
+            const profile = await profileRes.json();
+            if (profile.ok && profile.user) {
+              const u = profile.user;
+              if (u.routine) {
+                const routineObj = {
+                  objetivo:    u.testAnswers?.objetivo    || '',
+                  nivel:       u.testAnswers?.nivel       || '',
+                  dias:        u.testAnswers?.dias        || '3',
+                  equipo:      u.testAnswers?.equipo      || 'completo',
+                  restriccion: u.testAnswers?.restriccion || 'ninguna',
+                  scheme:      u.testAnswers?.scheme      || { sets:3, reps:'12-15', rest:'60s', label:'Equilibrado' },
+                  days:        u.routine
+                };
+                localStorage.setItem('gymRoutine', JSON.stringify(routineObj));
+              }
+              if (u.streak && u.streak.count > 0) localStorage.setItem('gymStreak', JSON.stringify(u.streak));
+              if (u.dailyProgress && Object.keys(u.dailyProgress).length > 0) localStorage.setItem('gymDailyProgress', JSON.stringify(u.dailyProgress));
+              const cu = JSON.parse(localStorage.getItem('gymCurrentUser') || '{}');
+              cu.testDone = u.testDone;
+              localStorage.setItem('gymCurrentUser', JSON.stringify(cu));
+            }
+          } catch(e) { console.warn('No se pudo cargar el perfil completo:', e.message); }
+
+          window.location.href = 'dashboard.html';
+        } else {
+          if (data.code === 'EMAIL_NOT_VERIFIED') {
+            showLoginError('<strong>Email no verificado.</strong> ' + data.msg);
+          } else {
+            document.getElementById('loginEmail').classList.add('input-error');
+            document.getElementById('loginPass').classList.add('input-error');
+            showLoginError(data.msg || 'Email o contraseña incorrectos.');
+          }
+        }
+      } catch(err) {
+        console.error(err);
+        showLoginError('No se pudo conectar con el servidor. ¿Está el backend encendido?');
+      }
+      btn.disabled = false; btn.innerHTML = '<i class="bi bi-box-arrow-in-right"></i> Entrar';
+    }
+
+    // ── Forgot password modal ──────────────────────────────────────────────────
+    function abrirForgot() {
+      document.getElementById('forgotModal').classList.add('open');
+      document.getElementById('forgotEmail').value = document.getElementById('loginEmail').value || '';
+      document.getElementById('forgotError').classList.remove('show');
+      document.getElementById('forgotSuccess').classList.remove('show');
+      document.getElementById('forgotFormGroup').style.display = '';
+      document.getElementById('forgotBtn').style.display = '';
+      setTimeout(() => document.getElementById('forgotEmail').focus(), 100);
+    }
+    function cerrarForgot() {
+      document.getElementById('forgotModal').classList.remove('open');
+    }
+
+    async function enviarRecuperacion() {
+      const email = document.getElementById('forgotEmail').value.trim();
+      document.getElementById('forgotError').classList.remove('show');
+      document.getElementById('forgotSuccess').classList.remove('show');
+      if (!email) {
+        document.getElementById('forgotErrorMsg').textContent = 'Por favor introduce tu email.';
+        document.getElementById('forgotError').classList.add('show');
+        return;
+      }
+      const btn = document.getElementById('forgotBtn');
+      btn.disabled = true; btn.innerHTML = '<i class="bi bi-hourglass-split"></i> Enviando...';
+      try {
+        const res  = await fetch('http://localhost:5000/api/forgot-password', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email })
+        });
+        const data = await res.json();
+        // Hide form, show success (always, to avoid email enumeration)
+        document.getElementById('forgotFormGroup').style.display = 'none';
+        document.getElementById('forgotBtn').style.display = 'none';
+        document.getElementById('forgotSuccessMsg').textContent = 'Si ese email está registrado, recibirás un enlace en breve. Revisa también la carpeta de spam.';
+        document.getElementById('forgotSuccess').classList.add('show');
+      } catch(err) {
+        document.getElementById('forgotErrorMsg').textContent = 'No se pudo conectar con el servidor.';
+        document.getElementById('forgotError').classList.add('show');
+        btn.disabled = false; btn.innerHTML = '<i class="bi bi-send-fill"></i> Enviar enlace';
+      }
+    }
+
+    // Close modal on Escape
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') cerrarForgot(); });
   </script>
   
 <script>
@@ -368,7 +553,7 @@ textarea.form-input { resize:vertical; min-height:100px; }
     const navToggle=document.getElementById('navToggle'),navLinks=document.getElementById('navLinks');if(navToggle&&navLinks){navToggle.addEventListener('click',()=>{navLinks.classList.toggle('open');const i=navToggle.querySelector('i');i.classList.toggle('bi-list');i.classList.toggle('bi-x-lg')})}
     const reveals=document.querySelectorAll('.reveal');if(reveals.length){const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target)}})},{threshold:.1});reveals.forEach(el=>obs.observe(el))}
     document.addEventListener('DOMContentLoaded',function(){const isLogged=localStorage.getItem('isLogged')==='true';let cu=null;try{cu=JSON.parse(localStorage.getItem('gymCurrentUser'))}catch(e){}if(isLogged&&cu){const ll=document.getElementById('loginLink'),rl=document.getElementById('registerLink');if(ll)ll.parentElement.style.display='none';if(rl)rl.parentElement.style.display='none';const nl=document.getElementById('navLinks');if(nl){const u=document.createElement('li');u.innerHTML='<span style="color:var(--green-600);font-weight:700;font-size:.84rem;padding:8px 14px;display:inline-flex;align-items:center;gap:6px;"><i class="bi bi-person-circle"></i> '+cu.nombre+'</span>';nl.appendChild(u);const l=document.createElement('li');l.innerHTML='<a href="#" onclick="cerrarSesion();return false;" style="color:#ef4444;font-weight:600;font-size:.84rem;padding:8px 14px;display:inline-flex;align-items:center;gap:6px;"><i class="bi bi-box-arrow-right"></i> Salir</a>';nl.appendChild(l)}}});
-    function cerrarSesion(){localStorage.removeItem('isLogged');localStorage.removeItem('gymCurrentUser');window.location.reload()}
+    function cerrarSesion(){['isLogged','gymCurrentUser','gymToken','gymRoutine','gymDailyProgress','gymStreak'].forEach(k=>localStorage.removeItem(k));window.location.href='index.html';}
 </script>
 </body>
 </html>

@@ -71,12 +71,17 @@
       <button class="nav-toggle" id="navToggle" aria-label="Menú"><i class="bi bi-list"></i></button>
       <ul class="nav-links" id="navLinks">
         <li><a href="mitos-errores.html">Mitos y Errores</a></li>
-        <li><a href="ejercicios.html">Ejercicios</a></li>
         <li><a href="test.html" class="active">Test</a></li>
         <li><a href="calculadora.html">Calculadora</a></li>
+
+        <li><a href="leaderboard.html">Ranking</a></li>
         <li><a href="contacto.html">Contacto</a></li>
-        <li><a href="login.html" id="loginLink">Login</a></li>
-        <li><a href="register.html" class="nav-cta" id="registerLink"><i class="bi bi-person-plus"></i> Registro</a></li>
+        <li id="adminNavItem" style="display:none"><a href="admin.html"><i class="bi bi-shield-check"></i> Admin</a></li>
+        <li id="rutinaNavItem" style="display:none"><a href="mi-rutina.html"><i class="bi bi-journal-check"></i> Mi Rutina</a></li>
+        <li id="perfilNavItem" style="display:none"><a href="perfil.html"><i class="bi bi-person-circle"></i> Perfil</a></li>
+        <li id="logoutNavItem" style="display:none"><a href="#" onclick="cerrarSesion();return false;" style="color:#ef4444;font-weight:600"><i class="bi bi-box-arrow-right"></i> Salir</a></li>
+        <li id="loginNavItem"><a href="login.html">Login</a></li>
+        <li id="registerNavItem"><a href="register.html" class="nav-cta"><i class="bi bi-person-plus"></i> Registro</a></li>
       </ul>
     </div>
   </nav>
@@ -126,7 +131,7 @@
     <div class="profile-summary" id="profileSummary"></div>
     <div id="routineContainer"></div>
     <div class="result-actions">
-      <button class="btn-cta" onclick="location.href='ejercicios.html'"><i class="bi bi-play-circle"></i> Ir a mis ejercicios</button>
+      <a href="mi-rutina.html" class="btn-cta"><i class="bi bi-journal-check"></i> Ver mi rutina</a>
       <button class="btn-secondary" onclick="restartTest()"><i class="bi bi-arrow-counterclockwise"></i> Repetir test</button>
     </div>
   </div>
@@ -150,16 +155,19 @@
   } else {
     document.getElementById('wizardView').style.display = 'block';
     const cu = JSON.parse(localStorage.getItem('gymCurrentUser') || '{}');
-    const loginLink = document.getElementById('loginLink');
-    const regLink   = document.getElementById('registerLink');
-    if (loginLink)  loginLink.href = 'perfil.html';
-    if (loginLink)  loginLink.textContent = cu.nombre || 'Perfil';
-    if (regLink)    regLink.style.display = 'none';
+    // Update navbar for logged-in user
+    initNavAuth(true, cu);
     // If routine already done, skip to result
     const saved = localStorage.getItem('gymRoutine');
     if (saved) {
       try { showResult(JSON.parse(saved)); } catch(e) {}
     }
+  }
+
+  function initNavAuth(isLogged,user){if(isLogged&&user){['loginNavItem','registerNavItem'].forEach(function(id){var el=document.getElementById(id);if(el)el.style.display='none';});['rutinaNavItem','perfilNavItem','logoutNavItem'].forEach(function(id){var el=document.getElementById(id);if(el)el.style.display='';});if(user.isAdmin){var ai=document.getElementById('adminNavItem');if(ai)ai.style.display='';}}}
+  function cerrarSesion() {
+    ['isLogged','gymCurrentUser','gymToken','gymRoutine','gymDailyProgress','gymStreak'].forEach(k => localStorage.removeItem(k));
+    window.location.href = 'index.html';
   }
 
   // ── NAVBAR ────────────────────────────────────────────────────────────
@@ -295,17 +303,51 @@
     document.getElementById('btnNext').disabled = false;
   }
 
-  function nextStep() {
+  async function nextStep() {
     if (currentStep < QUESTIONS.length - 1) {
       currentStep++;
       renderStep();
       window.scrollTo({ top: 200, behavior: 'smooth' });
     } else {
+      // Deshabilitar botón y mostrar estado de carga
+      const btnNext = document.getElementById('btnNext');
+      btnNext.disabled = true;
+      btnNext.innerHTML = '<i class="bi bi-hourglass-split"></i> Guardando...';
+
       const routine = generateRoutine(answers);
+
+      // 1. Guardar en localStorage siempre
       localStorage.setItem('gymRoutine', JSON.stringify(routine));
       const cu = JSON.parse(localStorage.getItem('gymCurrentUser') || '{}');
       cu.testDone = true;
       localStorage.setItem('gymCurrentUser', JSON.stringify(cu));
+
+      // 2. Intentar guardar en MongoDB Atlas con JWT
+      const token = localStorage.getItem('gymToken');
+      if (token) {
+        try {
+          const res = await fetch('http://localhost:5000/api/routine', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify({
+              days: routine.days,
+              testAnswers: { objetivo: answers.objetivo, nivel: answers.nivel, dias: answers.dias, equipo: answers.equipo, restriccion: answers.restriccion, scheme: routine.scheme }
+            })
+          });
+          const data = await res.json();
+          if (data.ok) {
+            console.log('✅ Rutina y test guardados en MongoDB:', data.msg);
+          } else {
+            console.error('❌ Error del servidor:', data.msg);
+          }
+        } catch (err) {
+          console.error('❌ No se pudo conectar al servidor:', err.message);
+        }
+      }
+
       showResult(routine);
     }
   }
@@ -327,41 +369,49 @@
   // ── EXERCISE DATABASE ─────────────────────────────────────────────────
   const EXERCISE_DB = {
     // Pecho
-    press_banca:     { name: 'Press de banca', muscle: 'Pecho',    color: '#3b82f6', muscleColor: '#eff6ff', muscleText: '#2563eb', icon: 'bi-bar-chart-line', desc: 'Tumbado en banco, baja la barra al esternón y empuja. Codos a 45°.', equipo: ['completo','pesas'], restricciones: ['ninguna','rodilla','espalda'] },
-    press_mancuerna: { name: 'Press con mancuernas', muscle: 'Pecho', color: '#3b82f6', muscleColor: '#eff6ff', muscleText: '#2563eb', icon: 'bi-bar-chart-line', desc: 'Banco plano, mancuernas a los lados, baja controlado hasta el pecho.', equipo: ['completo','pesas'], restricciones: ['ninguna','rodilla'] },
-    press_maquina:   { name: 'Press en máquina', muscle: 'Pecho',   color: '#3b82f6', muscleColor: '#eff6ff', muscleText: '#2563eb', icon: 'bi-building', desc: 'Ajusta el asiento al nivel del pecho. Empuja hacia adelante de forma controlada.', equipo: ['maquinas','completo'], restricciones: ['ninguna','rodilla','espalda','hombro'] },
-    flexiones:       { name: 'Flexiones', muscle: 'Pecho',          color: '#3b82f6', muscleColor: '#eff6ff', muscleText: '#2563eb', icon: 'bi-person-arms-up', desc: 'Cuerpo recto, codos a 45°. Baja el pecho casi al suelo y sube explosivo.', equipo: ['sin_equipo','pesas','completo','maquinas'], restricciones: ['ninguna','rodilla'] },
+    press_banca:          { sets:3, name: 'Press de banca',            muscle: 'Pecho', color: '#3b82f6', muscleColor: '#eff6ff', muscleText: '#2563eb', icon: 'bi-bar-chart-line',  desc: 'Tumbado en banco, baja la barra al esternón y empuja. Codos a 45°.', equipo: ['completo','pesas'], restricciones: ['ninguna','rodilla','espalda'] },
+    press_mancuerna:      { sets:3, name: 'Press con mancuernas',       muscle: 'Pecho', color: '#3b82f6', muscleColor: '#eff6ff', muscleText: '#2563eb', icon: 'bi-bar-chart-line',  desc: 'Banco plano, mancuernas a los lados, baja controlado hasta el pecho.', equipo: ['completo','pesas'], restricciones: ['ninguna','rodilla'] },
+    press_maquina:        { sets:3, name: 'Press en máquina',           muscle: 'Pecho', color: '#3b82f6', muscleColor: '#eff6ff', muscleText: '#2563eb', icon: 'bi-building',        desc: 'Ajusta el asiento al nivel del pecho. Empuja hacia adelante de forma controlada.', equipo: ['maquinas','completo'], restricciones: ['ninguna','rodilla','espalda','hombro'] },
+    flexiones:            { sets:2, name: 'Flexiones',                  muscle: 'Pecho', color: '#3b82f6', muscleColor: '#eff6ff', muscleText: '#2563eb', icon: 'bi-person-arms-up', desc: 'Cuerpo recto, codos a 45°. Baja el pecho casi al suelo y sube explosivo.', equipo: ['sin_equipo','pesas','completo','maquinas'], restricciones: ['ninguna','rodilla'] },
+    press_inc_barra:      { sets:3, name: 'Press inclinado con barra',  muscle: 'Pecho', color: '#3b82f6', muscleColor: '#eff6ff', muscleText: '#2563eb', icon: 'bi-bar-chart-line',  desc: 'Banco inclinado 30-45°, baja la barra al pecho superior. Trabaja el pecho alto.', equipo: ['completo','pesas'], restricciones: ['ninguna','rodilla','hombro'] },
+    press_inc_mancuerna:  { sets:3, name: 'Press inclinado mancuernas', muscle: 'Pecho', color: '#3b82f6', muscleColor: '#eff6ff', muscleText: '#2563eb', icon: 'bi-bar-chart-line',  desc: 'Banco inclinado, mancuernas a los lados. Baja hasta la línea del pecho y empuja.', equipo: ['completo','pesas'], restricciones: ['ninguna','rodilla','hombro'] },
+    press_inc_maquina:    { sets:3, name: 'Press inclinado máquina',    muscle: 'Pecho', color: '#3b82f6', muscleColor: '#eff6ff', muscleText: '#2563eb', icon: 'bi-building',        desc: 'Máquina de press inclinado. Ajusta asiento y empuja hacia arriba controlado.', equipo: ['maquinas','completo'], restricciones: ['ninguna','rodilla','hombro'] },
     // Espalda
-    jalon:           { name: 'Jalón al pecho', muscle: 'Espalda',   color: '#8b5cf6', muscleColor: '#f5f3ff', muscleText: '#7c3aed', icon: 'bi-arrow-down-circle', desc: 'Agarra la barra ancha, lleva los codos hacia el suelo apretando la espalda.', equipo: ['maquinas','completo'], restricciones: ['ninguna','rodilla','hombro'] },
-    remo_maquina:    { name: 'Remo en máquina', muscle: 'Espalda',  color: '#8b5cf6', muscleColor: '#f5f3ff', muscleText: '#7c3aed', icon: 'bi-arrows-move', desc: 'Pecho apoyado, tira del agarre hacia ti apretando los omóplatos.', equipo: ['maquinas','completo'], restricciones: ['ninguna','rodilla','hombro'] },
-    remo_barra:      { name: 'Remo con barra', muscle: 'Espalda',   color: '#8b5cf6', muscleColor: '#f5f3ff', muscleText: '#7c3aed', icon: 'bi-arrows-move', desc: 'Espalda recta 45°, tira la barra hacia el ombligo apretando la espalda.', equipo: ['completo','pesas'], restricciones: ['ninguna','rodilla','hombro'] },
-    dominadas:       { name: 'Dominadas', muscle: 'Espalda',        color: '#8b5cf6', muscleColor: '#f5f3ff', muscleText: '#7c3aed', icon: 'bi-arrow-up-circle', desc: 'Agarre prono ancho, sube hasta que el pecho toque la barra.', equipo: ['sin_equipo','pesas','completo'], restricciones: ['ninguna','rodilla'] },
+    jalon:           { sets:3, name: 'Jalón al pecho', muscle: 'Espalda',   color: '#8b5cf6', muscleColor: '#f5f3ff', muscleText: '#7c3aed', icon: 'bi-arrow-down-circle', desc: 'Agarra la barra ancha, lleva los codos hacia el suelo apretando la espalda.', equipo: ['maquinas','completo'], restricciones: ['ninguna','rodilla','hombro'] },
+    remo_maquina:    { sets:3, name: 'Remo en máquina', muscle: 'Espalda',  color: '#8b5cf6', muscleColor: '#f5f3ff', muscleText: '#7c3aed', icon: 'bi-arrows-move', desc: 'Pecho apoyado, tira del agarre hacia ti apretando los omóplatos.', equipo: ['maquinas','completo'], restricciones: ['ninguna','rodilla','hombro'] },
+    remo_barra:      { sets:3, name: 'Remo con barra', muscle: 'Espalda',   color: '#8b5cf6', muscleColor: '#f5f3ff', muscleText: '#7c3aed', icon: 'bi-arrows-move', desc: 'Espalda recta 45°, tira la barra hacia el ombligo apretando la espalda.', equipo: ['completo','pesas'], restricciones: ['ninguna','rodilla','hombro'] },
+    dominadas:       { sets:2, name: 'Dominadas', muscle: 'Espalda',        color: '#8b5cf6', muscleColor: '#f5f3ff', muscleText: '#7c3aed', icon: 'bi-arrow-up-circle', desc: 'Agarre prono ancho, sube hasta que el pecho toque la barra.', equipo: ['sin_equipo','pesas','completo'], restricciones: ['ninguna','rodilla'] },
     // Hombros
-    press_militar:   { name: 'Press militar', muscle: 'Hombros',    color: '#f59e0b', muscleColor: '#fffbeb', muscleText: '#d97706', icon: 'bi-arrow-up-square', desc: 'De pie, empuja la barra desde los hombros hasta arriba. No arquees la espalda.', equipo: ['completo','pesas'], restricciones: ['ninguna','rodilla'] },
-    elevaciones:     { name: 'Elevaciones laterales', muscle: 'Hombros', color: '#f59e0b', muscleColor: '#fffbeb', muscleText: '#d97706', icon: 'bi-arrows-expand', desc: 'Mancuernas a los lados, eleva hasta la altura del hombro. Control total.', equipo: ['completo','pesas'], restricciones: ['ninguna','rodilla','espalda'] },
-    hombro_maquina:  { name: 'Press hombros máquina', muscle: 'Hombros', color: '#f59e0b', muscleColor: '#fffbeb', muscleText: '#d97706', icon: 'bi-building', desc: 'Ajusta el asiento y empuja el mango hacia arriba de forma controlada.', equipo: ['maquinas','completo'], restricciones: ['ninguna','rodilla','espalda'] },
+    press_militar:   { sets:3, name: 'Press militar', muscle: 'Hombros',    color: '#f59e0b', muscleColor: '#fffbeb', muscleText: '#d97706', icon: 'bi-arrow-up-square', desc: 'De pie, empuja la barra desde los hombros hasta arriba. No arquees la espalda.', equipo: ['completo','pesas'], restricciones: ['ninguna','rodilla'] },
+    elevaciones:     { sets:2, name: 'Elevaciones laterales', muscle: 'Hombros', color: '#f59e0b', muscleColor: '#fffbeb', muscleText: '#d97706', icon: 'bi-arrows-expand', desc: 'Mancuernas a los lados, eleva hasta la altura del hombro. Control total.', equipo: ['completo','pesas'], restricciones: ['ninguna','rodilla','espalda'] },
+    hombro_maquina:  { sets:3, name: 'Press hombros máquina', muscle: 'Hombros', color: '#f59e0b', muscleColor: '#fffbeb', muscleText: '#d97706', icon: 'bi-building', desc: 'Ajusta el asiento y empuja el mango hacia arriba de forma controlada.', equipo: ['maquinas','completo'], restricciones: ['ninguna','rodilla','espalda'] },
     // Piernas
-    sentadilla:      { name: 'Sentadilla con barra', muscle: 'Piernas', color: '#10b981', muscleColor: '#ecfdf5', muscleText: '#059669', icon: 'bi-person-standing', desc: 'Pies al ancho de hombros, baja hasta paralelo. Rodillas alineadas con pies.', equipo: ['completo','pesas'], restricciones: ['ninguna','espalda','hombro'] },
-    prensa:          { name: 'Prensa de piernas', muscle: 'Piernas',  color: '#10b981', muscleColor: '#ecfdf5', muscleText: '#059669', icon: 'bi-building', desc: 'Pies al ancho de caderas, baja hasta 90°. No bloquees las rodillas al subir.', equipo: ['maquinas','completo'], restricciones: ['ninguna','espalda','hombro'] },
-    extension:       { name: 'Extensión de piernas', muscle: 'Cuádriceps', color: '#10b981', muscleColor: '#ecfdf5', muscleText: '#059669', icon: 'bi-person-standing', desc: 'En máquina, extiende la pierna completamente y baja despacio.', equipo: ['maquinas','completo'], restricciones: ['ninguna','espalda','hombro'] },
-    curl_pierna:     { name: 'Curl femoral', muscle: 'Isquios',      color: '#10b981', muscleColor: '#ecfdf5', muscleText: '#059669', icon: 'bi-person-standing', desc: 'Tumbado o sentado, flexiona la rodilla hasta 90°. Control en la bajada.', equipo: ['maquinas','completo'], restricciones: ['ninguna','espalda','hombro'] },
-    sentadilla_copo: { name: 'Sentadilla con peso corporal', muscle: 'Piernas', color: '#10b981', muscleColor: '#ecfdf5', muscleText: '#059669', icon: 'bi-person', desc: 'Sin peso, haz la sentadilla perfecta. Rodillas a la línea de pies.', equipo: ['sin_equipo','maquinas','completo','pesas'], restricciones: ['ninguna','espalda','hombro'] },
-    zancadas:        { name: 'Zancadas', muscle: 'Piernas',          color: '#10b981', muscleColor: '#ecfdf5', muscleText: '#059669', icon: 'bi-person-walking', desc: 'Da un paso al frente y baja la rodilla trasera casi al suelo.', equipo: ['sin_equipo','pesas','completo'], restricciones: ['ninguna','espalda','hombro'] },
+    sentadilla:      { sets:3, name: 'Sentadilla con barra', muscle: 'Piernas', color: '#10b981', muscleColor: '#ecfdf5', muscleText: '#059669', icon: 'bi-person-standing', desc: 'Pies al ancho de hombros, baja hasta paralelo. Rodillas alineadas con pies.', equipo: ['completo','pesas'], restricciones: ['ninguna','espalda','hombro'] },
+    prensa:          { sets:3, name: 'Prensa de piernas', muscle: 'Piernas',  color: '#10b981', muscleColor: '#ecfdf5', muscleText: '#059669', icon: 'bi-building', desc: 'Pies al ancho de caderas, baja hasta 90°. No bloquees las rodillas al subir.', equipo: ['maquinas','completo'], restricciones: ['ninguna','espalda','hombro'] },
+    extension:       { sets:2, name: 'Extensión de piernas', muscle: 'Cuádriceps', color: '#10b981', muscleColor: '#ecfdf5', muscleText: '#059669', icon: 'bi-person-standing', desc: 'En máquina, extiende la pierna completamente y baja despacio.', equipo: ['maquinas','completo'], restricciones: ['ninguna','espalda','hombro'] },
+    curl_pierna:     { sets:2, name: 'Curl femoral', muscle: 'Isquios',      color: '#10b981', muscleColor: '#ecfdf5', muscleText: '#059669', icon: 'bi-person-standing', desc: 'Tumbado o sentado, flexiona la rodilla hasta 90°. Control en la bajada.', equipo: ['maquinas','completo'], restricciones: ['ninguna','espalda','hombro'] },
+    sentadilla_copo: { sets:3, name: 'Sentadilla con peso corporal', muscle: 'Piernas', color: '#10b981', muscleColor: '#ecfdf5', muscleText: '#059669', icon: 'bi-person', desc: 'Sin peso, haz la sentadilla perfecta. Rodillas a la línea de pies.', equipo: ['sin_equipo','maquinas','completo','pesas'], restricciones: ['ninguna','espalda','hombro'] },
+    zancadas:        { sets:3, name: 'Zancadas', muscle: 'Piernas',          color: '#10b981', muscleColor: '#ecfdf5', muscleText: '#059669', icon: 'bi-person-walking', desc: 'Da un paso al frente y baja la rodilla trasera casi al suelo.', equipo: ['sin_equipo','pesas','completo'], restricciones: ['ninguna','espalda','hombro'] },
     // Bíceps
-    curl_barra:      { name: 'Curl con barra', muscle: 'Bíceps',     color: '#14b8a6', muscleColor: '#f0fdfa', muscleText: '#0d9488', icon: 'bi-bar-chart-steps', desc: 'Codos pegados al cuerpo, sube la barra y baja controlado. Sin balanceo.', equipo: ['completo','pesas'], restricciones: ['ninguna','rodilla','espalda'] },
-    curl_mancuerna:  { name: 'Curl alterno', muscle: 'Bíceps',       color: '#14b8a6', muscleColor: '#f0fdfa', muscleText: '#0d9488', icon: 'bi-bar-chart-steps', desc: 'De pie, curla una mancuerna, supina la muñeca al subir. Alterna lados.', equipo: ['completo','pesas'], restricciones: ['ninguna','rodilla','espalda'] },
-    curl_maquina:    { name: 'Curl en máquina', muscle: 'Bíceps',    color: '#14b8a6', muscleColor: '#f0fdfa', muscleText: '#0d9488', icon: 'bi-building', desc: 'Apoya los brazos y curla el peso. Baja de forma controlada.', equipo: ['maquinas','completo'], restricciones: ['ninguna','rodilla','espalda'] },
+    curl_barra:      { sets:3, name: 'Curl con barra',    muscle: 'Bíceps', color: '#14b8a6', muscleColor: '#f0fdfa', muscleText: '#0d9488', icon: 'bi-bar-chart-steps', desc: 'Codos pegados al cuerpo, sube la barra y baja controlado. Sin balanceo.', equipo: ['completo','pesas'], restricciones: ['ninguna','rodilla','espalda'] },
+    curl_mancuerna:  { sets:2, name: 'Curl alterno',      muscle: 'Bíceps', color: '#14b8a6', muscleColor: '#f0fdfa', muscleText: '#0d9488', icon: 'bi-bar-chart-steps', desc: 'De pie, curla una mancuerna, supina la muñeca al subir. Alterna lados.', equipo: ['completo','pesas'], restricciones: ['ninguna','rodilla','espalda'] },
+    curl_maquina:    { sets:2, name: 'Curl en máquina',   muscle: 'Bíceps', color: '#14b8a6', muscleColor: '#f0fdfa', muscleText: '#0d9488', icon: 'bi-building', desc: 'Apoya los brazos y curla el peso. Baja de forma controlada.', equipo: ['maquinas','completo'], restricciones: ['ninguna','rodilla','espalda'] },
+    curl_martillo:   { sets:3, name: 'Curl martillo',     muscle: 'Bíceps', color: '#14b8a6', muscleColor: '#f0fdfa', muscleText: '#0d9488', icon: 'bi-bar-chart-steps', desc: 'Agarre neutro (como un martillo), curla la mancuerna sin rotar la muñeca.', equipo: ['completo','pesas'], restricciones: ['ninguna','rodilla','espalda'] },
+    curl_polea:      { sets:3, name: 'Curl en polea',     muscle: 'Bíceps', color: '#14b8a6', muscleColor: '#f0fdfa', muscleText: '#0d9488', icon: 'bi-arrow-up-circle', desc: 'Polea baja, agarra la barra o cuerda y curla hacia los hombros. Tensión constante.', equipo: ['maquinas','completo'], restricciones: ['ninguna','rodilla','espalda'] },
+    curl_predicador: { sets:3, name: 'Curl predicador',   muscle: 'Bíceps', color: '#14b8a6', muscleColor: '#f0fdfa', muscleText: '#0d9488', icon: 'bi-building', desc: 'Apoya los tríceps en el banco predicador. Curla sin levantar los codos.', equipo: ['maquinas','completo','pesas'], restricciones: ['ninguna','rodilla','espalda'] },
     // Tríceps
-    triceps_polea:   { name: 'Extensión en polea', muscle: 'Tríceps', color: '#f97066', muscleColor: '#fef2f2', muscleText: '#dc2626', icon: 'bi-arrow-down', desc: 'Codos fijos, empuja la cuerda hacia abajo hasta extender el brazo.', equipo: ['maquinas','completo'], restricciones: ['ninguna','rodilla','espalda'] },
-    fondos:          { name: 'Fondos en paralelas', muscle: 'Tríceps', color: '#f97066', muscleColor: '#fef2f2', muscleText: '#dc2626', icon: 'bi-person-arms-up', desc: 'Baja hasta 90° de flexión en el codo. Cuerpo ligeramente inclinado.', equipo: ['sin_equipo','pesas','completo'], restricciones: ['ninguna','rodilla'] },
-    triceps_maquina: { name: 'Tríceps en máquina', muscle: 'Tríceps', color: '#f97066', muscleColor: '#fef2f2', muscleText: '#dc2626', icon: 'bi-building', desc: 'Empuja el agarre hacia abajo manteniendo los codos fijos a los costados.', equipo: ['maquinas','completo'], restricciones: ['ninguna','rodilla','espalda'] },
+    triceps_polea:   { sets:3, name: 'Extensión en polea', muscle: 'Tríceps', color: '#f97066', muscleColor: '#fef2f2', muscleText: '#dc2626', icon: 'bi-arrow-down', desc: 'Codos fijos, empuja la cuerda hacia abajo hasta extender el brazo.', equipo: ['maquinas','completo'], restricciones: ['ninguna','rodilla','espalda'] },
+    fondos:          { sets:2, name: 'Fondos en paralelas', muscle: 'Tríceps', color: '#f97066', muscleColor: '#fef2f2', muscleText: '#dc2626', icon: 'bi-person-arms-up', desc: 'Baja hasta 90° de flexión en el codo. Cuerpo ligeramente inclinado.', equipo: ['sin_equipo','pesas','completo'], restricciones: ['ninguna','rodilla'] },
+    triceps_maquina: { sets:2, name: 'Tríceps en máquina', muscle: 'Tríceps', color: '#f97066', muscleColor: '#fef2f2', muscleText: '#dc2626', icon: 'bi-building', desc: 'Empuja el agarre hacia abajo manteniendo los codos fijos a los costados.', equipo: ['maquinas','completo'], restricciones: ['ninguna','rodilla','espalda'] },
+    press_frances:   { sets:3, name: 'Press francés',      muscle: 'Tríceps', color: '#f97066', muscleColor: '#fef2f2', muscleText: '#dc2626', icon: 'bi-bar-chart-line', desc: 'Tumbado, baja la barra hacia la frente doblando solo los codos. Sube explosivo.', equipo: ['completo','pesas'], restricciones: ['ninguna','rodilla','hombro'] },
+    patada_triceps:  { sets:3, name: 'Patada de tríceps',  muscle: 'Tríceps', color: '#f97066', muscleColor: '#fef2f2', muscleText: '#dc2626', icon: 'bi-arrow-right', desc: 'Inclinado hacia adelante, codo fijo arriba, extiende el brazo hacia atrás.', equipo: ['completo','pesas'], restricciones: ['ninguna','rodilla','espalda'] },
     // Core
-    plancha:         { name: 'Plancha', muscle: 'Core',              color: '#6366f1', muscleColor: '#eef2ff', muscleText: '#4f46e5', icon: 'bi-align-middle', desc: 'Cuerpo recto apoyado en codos. Contrae el abdomen. Sin caer la cadera.', equipo: ['sin_equipo','pesas','completo','maquinas'], restricciones: ['ninguna','rodilla','hombro'] },
-    crunch:          { name: 'Crunch abdominal', muscle: 'Core',     color: '#6366f1', muscleColor: '#eef2ff', muscleText: '#4f46e5', icon: 'bi-arrow-repeat', desc: 'Tumbado, curva la columna llevando las costillas hacia la pelvis.', equipo: ['sin_equipo','pesas','completo','maquinas'], restricciones: ['ninguna','rodilla','hombro'] },
+    plancha:         { sets:3, name: 'Plancha', muscle: 'Core',              color: '#6366f1', muscleColor: '#eef2ff', muscleText: '#4f46e5', icon: 'bi-align-middle', desc: 'Cuerpo recto apoyado en codos. Contrae el abdomen. Sin caer la cadera.', equipo: ['sin_equipo','pesas','completo','maquinas'], restricciones: ['ninguna','rodilla','hombro'] },
+    crunch:          { sets:2, name: 'Crunch abdominal', muscle: 'Core',     color: '#6366f1', muscleColor: '#eef2ff', muscleText: '#4f46e5', icon: 'bi-arrow-repeat', desc: 'Tumbado, curva la columna llevando las costillas hacia la pelvis.', equipo: ['sin_equipo','pesas','completo','maquinas'], restricciones: ['ninguna','rodilla','hombro'] },
     // Cardio
-    bici:            { name: 'Bicicleta estática', muscle: 'Cardio', color: '#06b6d4', muscleColor: '#ecfeff', muscleText: '#0891b2', icon: 'bi-bicycle', desc: 'Resistencia moderada, mantén un ritmo constante durante toda la sesión.', equipo: ['maquinas','completo'], restricciones: ['ninguna','espalda','hombro'] },
-    caminata:        { name: 'Caminata inclinada', muscle: 'Cardio', color: '#06b6d4', muscleColor: '#ecfeff', muscleText: '#0891b2', icon: 'bi-person-walking', desc: 'Cinta a 6-8% inclinación, ritmo moderado. Ideal para quemar grasa sin perder músculo.', equipo: ['maquinas','completo'], restricciones: ['ninguna','espalda','hombro'] },
-    jumping:         { name: 'Jumping Jacks', muscle: 'Cardio',      color: '#06b6d4', muscleColor: '#ecfeff', muscleText: '#0891b2', icon: 'bi-stars', desc: 'Saltos con brazos arriba y piernas abiertas. Ritmo constante 30-60s.', equipo: ['sin_equipo','pesas','completo','maquinas'], restricciones: ['ninguna','espalda','hombro'] }
+    bici:            { sets:2, name: 'Bicicleta estática', muscle: 'Cardio', color: '#06b6d4', muscleColor: '#ecfeff', muscleText: '#0891b2', icon: 'bi-bicycle', desc: 'Resistencia moderada, mantén un ritmo constante durante toda la sesión.', equipo: ['maquinas','completo'], restricciones: ['ninguna','espalda','hombro'] },
+    caminata:        { sets:2, name: 'Caminata inclinada', muscle: 'Cardio', color: '#06b6d4', muscleColor: '#ecfeff', muscleText: '#0891b2', icon: 'bi-person-walking', desc: 'Cinta a 6-8% inclinación, ritmo moderado. Ideal para quemar grasa sin perder músculo.', equipo: ['maquinas','completo'], restricciones: ['ninguna','espalda','hombro'] },
+    jumping:         { sets:2, name: 'Jumping Jacks', muscle: 'Cardio',      color: '#06b6d4', muscleColor: '#ecfeff', muscleText: '#0891b2', icon: 'bi-stars', desc: 'Saltos con brazos arriba y piernas abiertas. Ritmo constante 30-60s.', equipo: ['sin_equipo','pesas','completo','maquinas'], restricciones: ['ninguna','espalda','hombro'] }
   };
 
   // ── SETS/REPS SCHEMES ─────────────────────────────────────────────────
@@ -492,7 +542,7 @@
           </div>
           <div class="ex-desc">${ex.desc}</div>
           <div class="ex-tags">
-            <span class="ex-tag"><i class="bi bi-repeat"></i> ${scheme.sets} series × ${scheme.reps} reps</span>
+            <span class="ex-tag"><i class="bi bi-repeat"></i> ${ex.sets || scheme.sets} series × ${scheme.reps} reps</span>
             <span class="ex-tag"><i class="bi bi-clock"></i> ${scheme.rest} descanso</span>
             <span class="ex-tag"><i class="bi bi-lightning"></i> ${scheme.label}</span>
           </div>

@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Ranking | Empieza en el Gym</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root{--white:#fff;--off-white:#f7f8fa;--cream:#f0f2f5;--gray-100:#e8ebf0;--gray-200:#d1d5de;--gray-400:#9098a9;--gray-600:#5a6278;--gray-800:#2d3142;--gray-900:#1a1d2e;--green-500:#10b981;--green-600:#059669;--green-400:#34d399;--green-50:#ecfdf5;--green-100:#d1fae5;--amber-500:#f59e0b;--amber-50:#fffbeb;--blue-500:#3b82f6;--blue-50:#eff6ff;--shadow-sm:0 1px 3px rgba(15,17,26,.06);--shadow-md:0 4px 16px rgba(15,17,26,.08);--shadow-lg:0 12px 40px rgba(15,17,26,.1);--shadow-green:0 8px 32px rgba(16,185,129,.25);--radius-xl:28px;--radius-lg:20px;--radius-md:14px;--radius-sm:10px;--font-display:'Sora',sans-serif;--font-mono:'DM Mono',monospace}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{font-family:var(--font-display);background:var(--off-white);color:var(--gray-800);overflow-x:hidden;min-height:100vh;-webkit-font-smoothing:antialiased}
+    ::selection{background:var(--green-100);color:var(--green-600)}
+    ::-webkit-scrollbar{width:7px}::-webkit-scrollbar-track{background:var(--off-white)}::-webkit-scrollbar-thumb{background:var(--gray-200);border-radius:99px}::-webkit-scrollbar-thumb:hover{background:var(--green-500)}
+    a{color:inherit;text-decoration:none}
+    body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,0,0,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,.02) 1px,transparent 1px);background-size:60px 60px;pointer-events:none;z-index:0}
+
+    /* NAVBAR */
+    .navbar{position:fixed;top:0;left:0;right:0;z-index:1000;padding:16px 0;transition:all .35s cubic-bezier(.4,0,.2,1)}
+    .navbar.scrolled{background:rgba(247,248,250,.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--gray-100);padding:10px 0;box-shadow:var(--shadow-sm)}
+    .navbar-inner{max-width:1180px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between}
+    .nav-logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:1.1rem;letter-spacing:-.04em;color:var(--gray-900)}
+    .nav-logo .dot{width:11px;height:11px;border-radius:50%;background:var(--green-500);box-shadow:0 0 0 3px rgba(16,185,129,.2);animation:breathe 3s ease-in-out infinite}
+    @keyframes breathe{0%,100%{box-shadow:0 0 0 3px rgba(16,185,129,.2)}50%{box-shadow:0 0 0 8px rgba(16,185,129,.1),0 0 20px rgba(16,185,129,.15)}}
+    .nav-links{display:flex;align-items:center;gap:2px;list-style:none}
+    .nav-links a{font-size:.84rem;font-weight:500;color:var(--gray-600);padding:8px 14px;border-radius:var(--radius-sm);transition:all .2s}
+    .nav-links a:hover{color:var(--gray-900);background:var(--cream)}
+    .nav-links a.active{color:var(--green-600);background:var(--green-50)}
+    .nav-cta{background:var(--green-500)!important;color:var(--white)!important;font-weight:600!important;margin-left:8px;padding:8px 18px!important;box-shadow:var(--shadow-green);border-radius:var(--radius-sm)!important}
+    .nav-toggle{display:none;background:var(--cream);border:1px solid var(--gray-100);color:var(--gray-800);font-size:1.3rem;cursor:pointer;padding:6px 10px;border-radius:var(--radius-sm)}
+    @media(max-width:768px){.nav-links{display:none}.nav-links.open{display:flex;flex-direction:column;position:absolute;top:100%;left:0;right:0;background:rgba(247,248,250,.97);backdrop-filter:blur(20px);padding:16px 24px;border-bottom:1px solid var(--gray-100);box-shadow:var(--shadow-md);gap:2px}.nav-links.open a{padding:12px 16px}.nav-toggle{display:flex;align-items:center;justify-content:center}}
+
+    /* PAGE */
+    .page-wrap{position:relative;z-index:1;max-width:740px;margin:0 auto;padding:110px 24px 80px}
+    .page-top{text-align:center;margin-bottom:40px}
+    .page-tag{display:inline-flex;align-items:center;gap:8px;background:var(--amber-50);border:1px solid rgba(245,158,11,.2);padding:5px 14px;border-radius:999px;font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--amber-500);font-family:var(--font-mono);margin-bottom:14px}
+    .page-top h1{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;letter-spacing:-.04em;color:var(--gray-900);margin-bottom:8px}
+    .page-top p{font-size:.95rem;color:var(--gray-600);line-height:1.65}
+
+    /* TOP 3 PODIUM */
+    .podium{display:flex;align-items:flex-end;justify-content:center;gap:12px;margin-bottom:40px}
+    .podium-item{display:flex;flex-direction:column;align-items:center;gap:8px}
+    .podium-avatar{border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1.1rem;color:var(--white);flex-shrink:0;position:relative}
+    .podium-item.p1 .podium-avatar{width:72px;height:72px;background:linear-gradient(135deg,#f59e0b,#fbbf24);box-shadow:0 8px 24px rgba(245,158,11,.35)}
+    .podium-item.p2 .podium-avatar{width:56px;height:56px;background:linear-gradient(135deg,#9098a9,#bdc3cf);box-shadow:0 8px 24px rgba(144,152,169,.3)}
+    .podium-item.p3 .podium-avatar{width:52px;height:52px;background:linear-gradient(135deg,#c97c3a,#e89c60);box-shadow:0 8px 24px rgba(201,124,58,.25)}
+    .podium-crown{position:absolute;top:-18px;left:50%;transform:translateX(-50%);font-size:1.2rem}
+    .podium-block{border-radius:var(--radius-md) var(--radius-md) 0 0;width:110px;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--white);padding-top:8px}
+    .podium-item.p1 .podium-block{height:80px;background:linear-gradient(180deg,#fbbf24,#f59e0b)}
+    .podium-item.p2 .podium-block{height:60px;background:linear-gradient(180deg,#bdc3cf,#9098a9)}
+    .podium-item.p3 .podium-block{height:45px;background:linear-gradient(180deg,#e89c60,#c97c3a)}
+    .podium-name{font-size:.82rem;font-weight:700;color:var(--gray-900);text-align:center;max-width:110px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .podium-streak{font-size:.72rem;color:var(--gray-400);display:flex;align-items:center;gap:4px}
+    .podium-streak i{color:var(--amber-500)}
+
+    /* YOUR RANK CARD */
+    .my-rank-card{background:var(--green-50);border:1px solid var(--green-100);border-radius:var(--radius-lg);padding:20px 24px;display:flex;align-items:center;gap:16px;margin-bottom:28px}
+    .my-rank-card .rank-num{font-family:var(--font-mono);font-size:1.4rem;font-weight:800;color:var(--green-600);flex-shrink:0;min-width:36px;text-align:center}
+    .my-rank-card .rank-info{flex:1}
+    .my-rank-card .rank-label{font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--green-600);margin-bottom:2px}
+    .my-rank-card .rank-name{font-size:.95rem;font-weight:700;color:var(--gray-900)}
+    .my-rank-card .rank-streak{font-size:.82rem;color:var(--gray-600);display:flex;align-items:center;gap:4px}
+    .my-rank-card .rank-streak i{color:var(--amber-500)}
+
+    /* LEADERBOARD TABLE */
+    .lb-card{background:var(--white);border:1px solid var(--gray-100);border-radius:var(--radius-xl);overflow:hidden;box-shadow:var(--shadow-sm)}
+    .lb-header{display:grid;grid-template-columns:60px 1fr 120px 100px;padding:12px 20px;background:var(--off-white);border-bottom:1px solid var(--gray-100);font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gray-400);font-family:var(--font-mono)}
+    .lb-row{display:grid;grid-template-columns:60px 1fr 120px 100px;padding:16px 20px;border-bottom:1px solid var(--gray-100);align-items:center;transition:background .2s}
+    .lb-row:last-child{border-bottom:none}
+    .lb-row:hover{background:var(--off-white)}
+    .lb-row.me{background:var(--green-50);border-left:3px solid var(--green-500)}
+    .lb-rank{font-family:var(--font-mono);font-size:.95rem;font-weight:800;color:var(--gray-900);display:flex;align-items:center;gap:6px}
+    .lb-rank .medal{font-size:1.1rem}
+    .lb-user{display:flex;align-items:center;gap:12px}
+    .lb-avatar{width:36px;height:36px;border-radius:50%;background:var(--green-50);color:var(--green-600);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.88rem;flex-shrink:0}
+    .lb-name{font-size:.9rem;font-weight:700;color:var(--gray-900)}
+    .lb-name .you-badge{font-size:.64rem;font-weight:700;background:var(--green-500);color:var(--white);padding:2px 7px;border-radius:999px;margin-left:6px}
+    .lb-streak{font-size:.88rem;font-weight:700;color:var(--amber-500);display:flex;align-items:center;gap:5px;font-family:var(--font-mono)}
+    .lb-date{font-size:.74rem;color:var(--gray-400)}
+    .lb-loading{text-align:center;padding:48px 24px;color:var(--gray-400)}
+    .lb-loading i{font-size:2rem;margin-bottom:12px;display:block;animation:spin 1s linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .lb-error{text-align:center;padding:48px 24px;color:var(--gray-400)}
+    .lb-error i{font-size:2rem;margin-bottom:12px;display:block;color:var(--coral-500)}
+
+    /* FOOTER */
+    .footer{position:relative;z-index:1;border-top:1px solid var(--gray-100);padding:36px 24px;background:var(--white)}
+    .footer-inner{max-width:1180px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
+    .footer small{color:var(--gray-400);font-size:.82rem}
+    .footer-links{display:flex;gap:24px}
+    .footer-links a{font-size:.82rem;color:var(--gray-400);font-weight:500;transition:color .2s}
+    .footer-links a:hover{color:var(--green-500)}
+    @media(max-width:600px){.lb-header,.lb-row{grid-template-columns:50px 1fr 80px}.lb-date{display:none}.podium-block{width:85px}.footer-inner{flex-direction:column;text-align:center}}
+
+    /* AUTH MODAL */
+    .auth-overlay{position:fixed;inset:0;z-index:2000;display:flex;align-items:center;justify-content:center;padding:24px}
+    .auth-overlay-bg{position:absolute;inset:0;background:rgba(15,17,26,.55);backdrop-filter:blur(6px)}
+    .auth-modal{position:relative;z-index:1;background:var(--white);border-radius:var(--radius-xl);padding:48px 40px 40px;max-width:420px;width:100%;box-shadow:var(--shadow-lg);text-align:center;animation:modalIn .35s cubic-bezier(.34,1.56,.64,1) both}
+    @keyframes modalIn{from{opacity:0;transform:translateY(24px) scale(.97)}to{opacity:1;transform:none}}
+    .auth-modal-icon{width:68px;height:68px;border-radius:50%;background:var(--green-50);border:2px solid var(--green-100);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:1.9rem;color:var(--green-500)}
+    .auth-modal h2{font-size:1.35rem;font-weight:800;letter-spacing:-.04em;color:var(--gray-900);margin-bottom:8px}
+    .auth-modal p{font-size:.9rem;color:var(--gray-600);line-height:1.6;margin-bottom:28px}
+    .auth-modal-btns{display:flex;flex-direction:column;gap:10px}
+    .auth-modal-btns a{display:flex;align-items:center;justify-content:center;gap:8px;padding:13px 20px;border-radius:var(--radius-md);font-size:.9rem;font-weight:600;transition:all .2s;text-decoration:none}
+    .btn-login-modal{background:var(--green-500);color:var(--white);box-shadow:var(--shadow-green)}
+    .btn-login-modal:hover{background:var(--green-600);transform:translateY(-1px)}
+    .btn-register-modal{background:var(--off-white);color:var(--gray-800);border:1px solid var(--gray-100)}
+    .btn-register-modal:hover{background:var(--cream);transform:translateY(-1px)}
+    .auth-modal-sep{display:flex;align-items:center;gap:10px;margin:4px 0;color:var(--gray-400);font-size:.78rem}
+    .auth-modal-sep::before,.auth-modal-sep::after{content:'';flex:1;height:1px;background:var(--gray-100)}
+    .auth-modal-back{margin-top:16px;font-size:.82rem;color:var(--gray-400)}
+    .auth-modal-back a{color:var(--green-500);font-weight:600}
+    .auth-modal-back a:hover{text-decoration:underline}
+  </style>
+</head>
+<body>
+
+  <nav class="navbar" id="navbar">
+    <div class="navbar-inner">
+      <a href="index.html" class="nav-logo"><span class="dot"></span> Empieza en el Gym</a>
+      <button class="nav-toggle" id="navToggle" aria-label="Menú"><i class="bi bi-list"></i></button>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="mitos-errores.html">Mitos y Errores</a></li>
+        <li><a href="test.html">Test</a></li>
+        <li><a href="calculadora.html">Calculadora</a></li>
+
+        <li><a href="leaderboard.html" class="active">Ranking</a></li>
+        <li><a href="contacto.html">Contacto</a></li>
+        <li id="adminNavItem" style="display:none"><a href="admin.html"><i class="bi bi-shield-check"></i> Admin</a></li>
+        <li id="rutinaNavItem" style="display:none"><a href="mi-rutina.html"><i class="bi bi-journal-check"></i> Mi Rutina</a></li>
+        <li id="perfilNavItem" style="display:none"><a href="perfil.html"><i class="bi bi-person-circle"></i> Perfil</a></li>
+        <li id="logoutNavItem" style="display:none"><a href="#" onclick="cerrarSesion();return false;" style="color:#ef4444;font-weight:600"><i class="bi bi-box-arrow-right"></i> Salir</a></li>
+        <li id="loginNavItem"><a href="login.html">Login</a></li>
+        <li id="registerNavItem"><a href="register.html" class="nav-cta"><i class="bi bi-person-plus"></i> Registro</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="page-wrap">
+    <div class="page-top">
+      <div class="page-tag"><i class="bi bi-trophy-fill"></i> Competición</div>
+      <h1>Ranking de rachas</h1>
+      <p>Los usuarios con mayor racha de entrenamiento. ¿En qué posición estás tú?</p>
+    </div>
+
+    <!-- PODIUM -->
+    <div class="podium" id="podium"></div>
+
+    <!-- MY RANK -->
+    <div class="my-rank-card" id="myRankCard" style="display:none">
+      <div class="rank-num" id="myRankNum">#—</div>
+      <div class="rank-info">
+        <div class="rank-label"><i class="bi bi-person-fill"></i> Tu posición</div>
+        <div class="rank-name" id="myRankName"></div>
+        <div class="rank-streak"><i class="bi bi-fire"></i> <span id="myRankStreak">0</span> días de racha</div>
+      </div>
+    </div>
+
+    <!-- TABLE -->
+    <div class="lb-card">
+      <div class="lb-header">
+        <div>#</div><div>Usuario</div><div>Racha</div><div>Última actividad</div>
+      </div>
+      <div id="lbBody">
+        <div class="lb-loading"><i class="bi bi-arrow-repeat"></i>Cargando ranking...</div>
+      </div>
+    </div>
+  </main>
+
+  <!-- AUTH MODAL (shown when not logged in) -->
+  <div class="auth-overlay" id="authOverlay" style="display:none">
+    <div class="auth-overlay-bg"></div>
+    <div class="auth-modal">
+      <div class="auth-modal-icon"><i class="bi bi-trophy-fill"></i></div>
+      <h2>Accede para ver el Ranking</h2>
+      <p>El ranking de rachas es exclusivo para miembros. Crea una cuenta gratis o inicia sesión para ver tu posición.</p>
+      <div class="auth-modal-btns">
+        <a href="login.html" class="btn-login-modal"><i class="bi bi-box-arrow-in-right"></i> Iniciar sesión</a>
+        <div class="auth-modal-sep">o</div>
+        <a href="register.html" class="btn-register-modal"><i class="bi bi-person-plus"></i> Crear cuenta gratis</a>
+      </div>
+      <p class="auth-modal-back"><a href="index.html"><i class="bi bi-arrow-left"></i> Volver al inicio</a></p>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <small>&copy; 2026 Empieza en el Gym</small>
+      <div class="footer-links">
+        <a href="index.html">Inicio</a>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="ejercicios.html">Ejercicios</a>
+        <a href="contacto.html">Contacto</a>
+      </div>
+    </div>
+  </footer>
+
+<script>
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', () => navbar.classList.toggle('scrolled', window.scrollY > 30));
+if (window.scrollY > 30) navbar.classList.add('scrolled');
+const navToggle = document.getElementById('navToggle'), navLinksEl = document.getElementById('navLinks');
+if (navToggle) navToggle.addEventListener('click', () => {
+  navLinksEl.classList.toggle('open');
+  const i = navToggle.querySelector('i'); i.classList.toggle('bi-list'); i.classList.toggle('bi-x-lg');
+});
+function cerrarSesion() {
+  ['isLogged','gymCurrentUser','gymToken','gymRoutine','gymDailyProgress','gymStreak'].forEach(k => localStorage.removeItem(k));
+  window.location.href = 'index.html';
+}
+function initNavAuth(isLogged, user) {
+  if (isLogged && user) {
+    ['loginNavItem','registerNavItem'].forEach(function(id){ var el=document.getElementById(id); if(el) el.style.display='none'; });
+    ['rutinaNavItem','perfilNavItem','logoutNavItem'].forEach(function(id){ var el=document.getElementById(id); if(el) el.style.display=''; });
+    if (user.isAdmin) { var ai=document.getElementById('adminNavItem'); if(ai) ai.style.display=''; }
+  }
+}
+
+const MEDALS = ['', '<span class="medal">🥇</span>', '<span class="medal">🥈</span>', '<span class="medal">🥉</span>'];
+
+function formatDateShort(str) {
+  if (!str) return '—';
+  const d = new Date(str + 'T12:00:00');
+  return d.toLocaleDateString('es-ES', { day: 'numeric', month: 'short' });
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
+  // Auth guard
+  const isLogged = localStorage.getItem('isLogged') === 'true';
+  let user = null;
+  try { user = JSON.parse(localStorage.getItem('gymCurrentUser')); } catch(e) {}
+  if (!isLogged || !user) {
+    document.getElementById('authOverlay').style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+    return;
+  }
+  initNavAuth(isLogged, user);
+
+  // Fetch leaderboard
+  try {
+    const r = await fetch('http://localhost:5000/api/leaderboard');
+    const data = await r.json();
+    if (!data.ok || !data.leaderboard) throw new Error('Sin datos');
+    const lb = data.leaderboard;
+
+    // Podium (top 3)
+    const podiumEl = document.getElementById('podium');
+    const order = lb.length >= 3 ? [lb[1], lb[0], lb[2]] : lb;
+    const podiumClasses = lb.length >= 3 ? ['p2','p1','p3'] : ['p1','p2','p3'];
+    const podiumLabels = lb.length >= 3 ? ['2°','1°','3°'] : ['1°','2°','3°'];
+    order.forEach((u, idx) => {
+      if (!u) return;
+      const cls = podiumClasses[idx];
+      const lbl = podiumLabels[idx];
+      const initials = u.nombre ? u.nombre.substring(0,2).toUpperCase() : '?';
+      const div = document.createElement('div');
+      div.className = 'podium-item ' + cls;
+      div.innerHTML = `
+        <div class="podium-name">${u.nombre || 'Usuario'}</div>
+        <div class="podium-streak"><i class="bi bi-fire"></i> ${u.streak?.count || 0} días</div>
+        <div class="podium-avatar">${cls === 'p1' ? '<span class="podium-crown"><i class="bi bi-crown-fill" style="color:#f59e0b"></i></span>' : ''}${initials}</div>
+        <div class="podium-block">${lbl}</div>
+      `;
+      podiumEl.appendChild(div);
+    });
+    if (lb.length === 0) podiumEl.style.display = 'none';
+
+    // Find user position
+    let myRank = -1;
+    if (user) {
+      myRank = lb.findIndex(u => u.email === user.email);
+      if (myRank !== -1) {
+        document.getElementById('myRankCard').style.display = '';
+        document.getElementById('myRankNum').textContent = '#' + (myRank + 1);
+        document.getElementById('myRankName').textContent = lb[myRank].nombre;
+        document.getElementById('myRankStreak').textContent = lb[myRank].streak?.count || 0;
+      }
+    }
+
+    // Table
+    const lbBody = document.getElementById('lbBody');
+    if (lb.length === 0) {
+      lbBody.innerHTML = `<div class="lb-error"><i class="bi bi-people"></i>Aún no hay usuarios con racha registrada.</div>`;
+      return;
+    }
+    lbBody.innerHTML = lb.map((u, i) => {
+      const rank = i + 1;
+      const isMe = user && u.email === user.email;
+      const initials = u.nombre ? u.nombre.substring(0,2).toUpperCase() : '?';
+      const medalHtml = rank <= 3 ? MEDALS[rank] : '';
+      return `<div class="lb-row${isMe ? ' me' : ''}">
+        <div class="lb-rank">${medalHtml}<span style="color:${rank <= 3 ? 'var(--amber-500)' : 'var(--gray-400)'}">${rank}</span></div>
+        <div class="lb-user">
+          <div class="lb-avatar">${initials}</div>
+          <div class="lb-name">${u.nombre || 'Usuario'}${isMe ? '<span class="you-badge">Tú</span>' : ''}</div>
+        </div>
+        <div class="lb-streak"><i class="bi bi-fire"></i> ${u.streak?.count || 0} días</div>
+        <div class="lb-date">${formatDateShort(u.streak?.lastActive)}</div>
+      </div>`;
+    }).join('');
+
+  } catch(e) {
+    document.getElementById('lbBody').innerHTML = `<div class="lb-error"><i class="bi bi-wifi-off"></i>No se pudo conectar con el servidor.<br><small>Asegúrate de que el servidor está arrancado.</small></div>`;
+    document.getElementById('podium').style.display = 'none';
+  }
+});
+</script>
+</body>
+</html>
