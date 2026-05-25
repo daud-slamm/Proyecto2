@@ -622,10 +622,6 @@ app.get('/api/test-email', async (req, res) => {
 // ── SERVIR FRONTEND ──────────────────────────────────────────────────────────
 const path = require('path');
 app.use(express.static(path.join(__dirname, '..')));
-app.get('*', (req, res, next) => {
-  if (req.path.startsWith('/api')) return next();
-  res.sendFile(path.join(__dirname, '..', 'index.html'));
-});
 
 // ── ARRANCAR SERVIDOR ─────────────────────────────────────────────────────────
 const PORT = process.env.PORT || 5000;
