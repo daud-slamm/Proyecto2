@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
@@ -355,7 +355,7 @@ function fmtDate(str) {
 // ── USERS ──
 async function loadUsers() {
   try {
-    const r = await fetch('http://localhost:5000/api/admin/users', { headers: authHeaders() });
+    const r = await fetch('/api/admin/users', { headers: authHeaders() });
     const data = await r.json();
     document.getElementById('statUsers').textContent = data.users ? data.users.length : 0;
     if (!data.ok) { document.getElementById('usersBody').innerHTML = '<tr><td colspan="7" style="text-align:center;padding:24px;color:#ef4444">No autorizado</td></tr>'; return; }
@@ -388,7 +388,7 @@ async function toggleAdmin(id, nombre, isAdmin) {
     `¿${isAdmin ? 'Quitar' : 'Dar'} permisos de administrador a ${nombre}?`,
     async () => {
       try {
-        const r = await fetch('http://localhost:5000/api/admin/users/' + id + '/admin', { method: 'PATCH', headers: authHeaders() });
+        const r = await fetch('/api/admin/users/' + id + '/admin', { method: 'PATCH', headers: authHeaders() });
         const data = await r.json();
         if (data.ok) { showToast('Rol actualizado correctamente'); loadUsers(); }
         else showToast('Error: ' + (data.msg || 'Fallo'), 'error');
@@ -404,7 +404,7 @@ async function deleteUser(id, nombre) {
     `¿Eliminar permanentemente al usuario "${nombre}"? Esta acción no se puede deshacer.`,
     async () => {
       try {
-        const r = await fetch('http://localhost:5000/api/admin/users/' + id, { method: 'DELETE', headers: authHeaders() });
+        const r = await fetch('/api/admin/users/' + id, { method: 'DELETE', headers: authHeaders() });
         const data = await r.json();
         if (data.ok) { showToast('Usuario eliminado'); loadUsers(); }
         else showToast('Error: ' + (data.msg || 'Fallo'), 'error');
@@ -416,7 +416,7 @@ async function deleteUser(id, nombre) {
 // ── EXERCISES ──
 async function loadExercises() {
   try {
-    const r = await fetch('http://localhost:5000/api/exercises');
+    const r = await fetch('/api/exercises');
     const data = await r.json();
     const exs = data.exercises || [];
     document.getElementById('statExercises').textContent = exs.length;
@@ -490,7 +490,7 @@ async function saveExercise() {
     imagen: document.getElementById('exImagen').value.trim(),
   };
   try {
-    const url = editingExId ? 'http://localhost:5000/api/admin/exercises/' + editingExId : 'http://localhost:5000/api/admin/exercises';
+    const url = editingExId ? '/api/admin/exercises/' + editingExId : '/api/admin/exercises';
     const method = editingExId ? 'PUT' : 'POST';
     const r = await fetch(url, { method, headers: authHeaders(), body: JSON.stringify(body) });
     const data = await r.json();
@@ -502,7 +502,7 @@ async function saveExercise() {
 async function deleteExercise(id, nombre) {
   openConfirm('Eliminar ejercicio', `¿Eliminar el ejercicio "${nombre}"?`, async () => {
     try {
-      const r = await fetch('http://localhost:5000/api/admin/exercises/' + id, { method: 'DELETE', headers: authHeaders() });
+      const r = await fetch('/api/admin/exercises/' + id, { method: 'DELETE', headers: authHeaders() });
       const data = await r.json();
       if (data.ok) { showToast('Ejercicio eliminado'); loadExercises(); }
       else showToast('Error: ' + (data.msg || 'Fallo'), 'error');
@@ -518,7 +518,7 @@ async function seedExercises() {
       const btn = document.getElementById('seedBtn');
       btn.disabled = true; btn.innerHTML = '<i class="bi bi-arrow-repeat spin"></i> Sembrando...';
       try {
-        const r = await fetch('http://localhost:5000/api/admin/seed-exercises', { method: 'POST', headers: authHeaders() });
+        const r = await fetch('/api/admin/seed-exercises', { method: 'POST', headers: authHeaders() });
         const data = await r.json();
         if (data.ok) { showToast('Seed completado: ' + (data.count || 0) + ' ejercicios'); loadExercises(); }
         else showToast('Error: ' + (data.msg || 'Fallo'), 'error');
@@ -532,7 +532,7 @@ async function seedExercises() {
 // ── CONTACTS ──
 async function loadContacts() {
   try {
-    const r = await fetch('http://localhost:5000/api/admin/contacts', { headers: authHeaders() });
+    const r = await fetch('/api/admin/contacts', { headers: authHeaders() });
     const data = await r.json();
     const contacts = data.contacts || [];
     const unread = contacts.filter(c => !c.leido).length;
@@ -565,7 +565,7 @@ async function loadContacts() {
 
 async function markRead(id) {
   try {
-    const r = await fetch('http://localhost:5000/api/admin/contacts/' + id + '/leido', { method: 'PATCH', headers: authHeaders() });
+    const r = await fetch('/api/admin/contacts/' + id + '/leido', { method: 'PATCH', headers: authHeaders() });
     const data = await r.json();
     if (data.ok) { showToast('Marcado como leído'); loadContacts(); }
     else showToast('Error', 'error');

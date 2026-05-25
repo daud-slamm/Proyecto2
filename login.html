@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
@@ -442,7 +442,7 @@ textarea.form-input { resize:vertical; min-height:100px; }
       const btn   = document.getElementById('loginBtn');
       btn.disabled = true; btn.innerHTML = '<i class="bi bi-hourglass-split"></i> Entrando...';
       try {
-        const res  = await fetch('http://localhost:5000/api/login', {
+        const res  = await fetch('/api/login', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email, password: pass })
@@ -457,7 +457,7 @@ textarea.form-input { resize:vertical; min-height:100px; }
           localStorage.setItem('isLogged', 'true');
           // 3. Cargar perfil completo desde MongoDB
           try {
-            const profileRes = await fetch('http://localhost:5000/api/profile', {
+            const profileRes = await fetch('/api/profile', {
               headers: { 'Authorization': 'Bearer ' + data.token }
             });
             const profile = await profileRes.json();
@@ -526,7 +526,7 @@ textarea.form-input { resize:vertical; min-height:100px; }
       const btn = document.getElementById('forgotBtn');
       btn.disabled = true; btn.innerHTML = '<i class="bi bi-hourglass-split"></i> Enviando...';
       try {
-        const res  = await fetch('http://localhost:5000/api/forgot-password', {
+        const res  = await fetch('/api/forgot-password', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email })

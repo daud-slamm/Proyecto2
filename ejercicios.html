@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
@@ -139,7 +139,7 @@
   <footer class="footer"><div class="footer-inner"><small>&copy; 2026 Empieza en el Gym</small><div class="footer-links"><a href="index.html">Inicio</a><a href="mitos-errores.html">Mitos y Errores</a><a href="test.html">Test</a><a href="contacto.html">Contacto</a></div></div></footer>
 
   <script>
-    const API='http://localhost:5000';
+    const API='';
     const navbar=document.getElementById('navbar');if(navbar){window.addEventListener('scroll',()=>{navbar.classList.toggle('scrolled',window.scrollY>30)});if(window.scrollY>30)navbar.classList.add('scrolled')}
     const navToggle=document.getElementById('navToggle'),navLinks=document.getElementById('navLinks');if(navToggle&&navLinks){navToggle.addEventListener('click',()=>{navLinks.classList.toggle('open');const i=navToggle.querySelector('i');i.classList.toggle('bi-list');i.classList.toggle('bi-x-lg')})}
     const reveals=document.querySelectorAll('.reveal');if(reveals.length){const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target)}})},{threshold:.1});reveals.forEach(el=>obs.observe(el))}
@@ -225,7 +225,7 @@
       // 2. Guardar ejercicio completado en MongoDB
       if(_token){
         try{
-          await fetch('http://localhost:5000/api/progress',{
+          await fetch('/api/progress',{
             method:'POST',
             headers:{'Content-Type':'application/json','Authorization':'Bearer '+_token},
             body:JSON.stringify({date:_tk,exerciseId})
@@ -247,7 +247,7 @@
           // Guardar racha en MongoDB
           if(_token){
             try{
-              await fetch('http://localhost:5000/api/streak',{
+              await fetch('/api/streak',{
                 method:'POST',
                 headers:{'Content-Type':'application/json','Authorization':'Bearer '+_token},
                 body:JSON.stringify({count:_s.count,lastActive:_s.lastActive,history:_s.history})

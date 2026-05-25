@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
@@ -223,7 +223,7 @@ async function sendContact(e) {
   btn.innerHTML = '<i class="bi bi-hourglass-split"></i> Enviando...';
 
   try {
-    const r = await fetch('http://localhost:5000/api/contact', {
+    const r = await fetch('/api/contact', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ nombre, email, asunto, mensaje })

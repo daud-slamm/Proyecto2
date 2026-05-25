@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
@@ -416,7 +416,7 @@ textarea.form-input { resize:vertical; min-height:100px; }
       const btn = document.getElementById('regBtn');
       btn.disabled = true; btn.innerHTML = '<i class="bi bi-hourglass-split"></i> Creando cuenta...';
       try {
-        const res  = await fetch('http://localhost:5000/api/register', {
+        const res  = await fetch('/api/register', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ nombre, email, password: pass })

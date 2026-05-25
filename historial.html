@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
@@ -299,7 +299,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const token = localStorage.getItem('gymToken');
   if (token) {
     try {
-      const r = await fetch('http://localhost:5000/api/profile', { headers: { 'Authorization': 'Bearer ' + token } });
+      const r = await fetch('/api/profile', { headers: { 'Authorization': 'Bearer ' + token } });
       const data = await r.json();
       if (data.ok && data.user) {
         const u = data.user;

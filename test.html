@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
@@ -326,7 +326,7 @@
       const token = localStorage.getItem('gymToken');
       if (token) {
         try {
-          const res = await fetch('http://localhost:5000/api/routine', {
+          const res = await fetch('/api/routine', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
@@ -541,7 +541,7 @@
   </footer>
 
   <script>
-    const API = 'http://localhost:5000';
+    const API = '';
 
     // Navbar
     const navbar = document.getElementById('navbar');
@@ -696,7 +696,7 @@
       // 1. Guardar ejercicio completado en MongoDB
       if (_token) {
         try {
-          await fetch('http://localhost:5000/api/progress', {
+          await fetch('/api/progress', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + _token },
             body: JSON.stringify({ date: today, exerciseId })
@@ -715,7 +715,7 @@
         // Guardar racha en MongoDB
         if (_token) {
           try {
-            await fetch('http://localhost:5000/api/streak', {
+            await fetch('/api/streak', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + _token },
               body: JSON.stringify({ count: streakData.count, lastActive: streakData.lastActive, history: streakData.history })
@@ -740,7 +740,7 @@
       btn.disabled = true; btn.innerHTML = '<i class="bi bi-hourglass-split"></i> Guardando...';
       const token = localStorage.getItem('gymToken');
       try {
-        const r = await fetch('http://localhost:5000/api/profile', {
+        const r = await fetch('/api/profile', {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
           body: JSON.stringify({ nombre })
@@ -776,7 +776,7 @@
       btn.disabled = true; btn.innerHTML = '<i class="bi bi-hourglass-split"></i> Guardando...';
       const token = localStorage.getItem('gymToken');
       try {
-        const r = await fetch('http://localhost:5000/api/profile', {
+        const r = await fetch('/api/profile', {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
           body: JSON.stringify({ passwordActual: actual, passwordNueva: nueva })

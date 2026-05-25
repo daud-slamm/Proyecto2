@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
@@ -239,7 +239,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // Fetch leaderboard
   try {
-    const r = await fetch('http://localhost:5000/api/leaderboard');
+    const r = await fetch('/api/leaderboard');
     const data = await r.json();
     if (!data.ok || !data.leaderboard) throw new Error('Sin datos');
     const lb = data.leaderboard;
