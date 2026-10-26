@@ -5,14 +5,40 @@ const bcrypt     = require('bcryptjs');
 const jwt        = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
 const crypto     = require('crypto');
+const helmet     = require('helmet');
+const rateLimit  = require('express-rate-limit');
 require('dotenv').config();
 
-const app = express();
-app.use(cors());
-app.use(express.json());
+const path = require('path');
 
-const JWT_SECRET    = process.env.JWT_SECRET    || 'empieza_gym_secret_2025';
-const FRONTEND_URL  = process.env.FRONTEND_URL  || 'http://localhost:5500';
+const IS_PROD = process.env.NODE_ENV === 'production';
+
+if (!process.env.JWT_SECRET || process.env.JWT_SECRET.length < 32) {
+  console.error('❌ JWT_SECRET no definido (mínimo 32 caracteres). Genera uno con: node -e "console.log(require(\'crypto\').randomBytes(48).toString(\'hex\'))"');
+  process.exit(1);
+}
+const JWT_SECRET    = process.env.JWT_SECRET;
+const FRONTEND_URL  = process.env.FRONTEND_URL  || `http://localhost:${process.env.PORT || 5000}`;
+
+// Orígenes permitidos para la API (CSV). Por defecto solo el propio frontend.
+// Para apps Capacitor añade: capacitor://localhost,https://localhost
+const ALLOWED_ORIGINS = (process.env.ALLOWED_ORIGINS || FRONTEND_URL)
+  .split(',').map(o => o.trim()).filter(Boolean);
+
+const app = express();
+app.set('trust proxy', 1); // Railway está detrás de un proxy
+app.use(helmet({ contentSecurityPolicy: false })); // CSP desactivada: las páginas usan scripts inline
+app.use(cors({
+  origin: (origin, cb) => (!origin || ALLOWED_ORIGINS.includes(origin)) ? cb(null, true) : cb(null, false)
+}));
+app.use(express.json({ limit: '100kb' }));
+
+// Límite de intentos en endpoints sensibles
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, limit: 20, standardHeaders: 'draft-7', legacyHeaders: false,
+  message: { ok: false, msg: 'Demasiados intentos. Inténtalo de nuevo en unos minutos.' }
+});
+app.use(['/api/login', '/api/register', '/api/forgot-password', '/api/reset-password'], authLimiter);
 
 // ── EMAIL ─────────────────────────────────────────────────────────────────────
 const transporter = nodemailer.createTransport({
@@ -169,7 +195,7 @@ app.post('/api/register', async (req, res) => {
     const hash = await bcrypt.hash(password, 10);
     await new User({ nombre, email, password: hash, emailVerified: false, verificationToken }).save();
 
-    const verifyLink = `http://localhost:${process.env.PORT || 5000}/api/verify-email/${verificationToken}`;
+    const verifyLink = `${FRONTEND_URL}/api/verify-email/${verificationToken}`;
     console.log(`🔗 Token de verificación (manual): ${verifyLink}`);
     await sendMail(email, '✅ Verifica tu cuenta — Empieza en el Gym', `
       <div style="font-family:'Segoe UI',sans-serif;max-width:520px;margin:0 auto;background:#f7f8fa;padding:32px;border-radius:16px">
@@ -209,8 +235,6 @@ app.post('/api/login', async (req, res) => {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
     if (!user) return res.status(401).json({ ok: false, msg: 'Email o contraseña incorrectos' });
-
-    console.log(`🔍 Login: ${email} | emailVerified = ${user.emailVerified} | tipo = ${typeof user.emailVerified}`);
 
     if (user.emailVerified === false)
       return res.status(401).json({ ok: false, msg: 'Debes verificar tu email antes de entrar. Revisa tu bandeja de entrada.', code: 'EMAIL_NOT_VERIFIED' });
@@ -602,7 +626,7 @@ app.post('/api/contact', async (req, res) => {
 });
 
 // ── TEST EMAIL (solo desarrollo) ──────────────────────────────────────────────
-app.get('/api/test-email', async (req, res) => {
+if (!IS_PROD) app.get('/api/test-email', async (req, res) => {
   const to = req.query.to || process.env.EMAIL_USER;
   try {
     console.log(`🧪 Enviando email de prueba a ${to}...`);
@@ -620,8 +644,7 @@ app.get('/api/test-email', async (req, res) => {
 });
 
 // ── SERVIR FRONTEND ──────────────────────────────────────────────────────────
-const path = require('path');
-app.use(express.static(path.join(__dirname, '..')));
+app.use(express.static(path.join(__dirname, '..', 'public')));
 
 // ── ARRANCAR SERVIDOR ─────────────────────────────────────────────────────────
 const PORT = process.env.PORT || 5000;
